@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="countries">
+        <item name="ghana">Ghana</item>
+        <item name="benin">Benin</item>
+        <item name="mali">Mali</item>
+        <item />
+    </string-array>
+    
+</resources>
