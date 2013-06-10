@@ -11,6 +11,8 @@
         android:layout_height="35dp"
         android:layout_gravity="center|center_vertical"
         android:layout_marginLeft="15dp"
-        android:text="TextView" />
+        android:textIsSelectable="true"
+        android:background="#000000"
+        android:textColor="#ffffff" />
     
 </LinearLayout>
