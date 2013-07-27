@@ -16,12 +16,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class CountriesList extends Activity{
+public class CountriesList extends Activity {
+	
+	private final String title = "Country List";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.country_list);
-		setTitle("Countries");
+		setTitle(title);
 		new LongRunningGetIO(this).execute();
 	}
 	
@@ -37,7 +40,7 @@ public class CountriesList extends Activity{
 		
 		@Override
 		protected void onPreExecute() {
-			progressDialog.setMessage("Loading...");
+			progressDialog.setMessage("Loading " + this.getTitle() + "...");
 			progressDialog.show();
 		}
 		
@@ -91,5 +94,10 @@ public class CountriesList extends Activity{
 				});
 			}
 		}
+		
+		private String getTitle() {
+			return title;
+		}
+
 	}
 }

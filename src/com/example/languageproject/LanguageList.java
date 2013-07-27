@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -18,6 +19,7 @@ import android.widget.ListView;
 
 public class LanguageList extends Activity {
 	private String country_name;
+	private final String title = "Language List";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,7 @@ public class LanguageList extends Activity {
 		Intent i = getIntent();
 		Bundle b = i.getExtras();
 		country_name = b.getString("countryName");
-		setTitle(country_name);
+		setTitle(title + " for " + country_name);
 		new LongRunningGetIO(this).execute();
 	}
 
@@ -43,7 +45,7 @@ public class LanguageList extends Activity {
 		
 		@Override
 		protected void onPreExecute() {
-			progressDialog.setMessage("Loading...");
+			progressDialog.setMessage("Loading " + this.getTitle() + " for " + this.getCountryName() + "...");
 			progressDialog.show();
 		}
 		
@@ -64,10 +66,11 @@ public class LanguageList extends Activity {
 			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					Intent languageActivity = new Intent(context, CountriesList.class);
+					startActivity(languageActivity);
 				}
 			});
-			builder.setMessage(error)
-			.setTitle("Error");
+			builder.setMessage(error).setTitle("Oops!");
 			AlertDialog errorDialog = builder.create();
 			errorDialog.show();
 		}
@@ -75,10 +78,10 @@ public class LanguageList extends Activity {
 		protected void onPostExecute(ArrayList<String> languageList) {
 			progressDialog.dismiss();
 			
-			if (languageList == null || languageList.isEmpty()) {
-				showErrorMessage("List is empty");
-			} else if (languageList.get(0).startsWith("Error:")) {
-				showErrorMessage(languageList.get(0));
+			if (languageList == null || languageList.isEmpty() || languageList.get(0).startsWith("Error:")) {
+				
+				showErrorMessage("Language lessons currently unavailable for " + this.getCountryName());
+				
 			} else {
 				lv = (ListView)findViewById(R.id.language_list);
 
@@ -103,6 +106,14 @@ public class LanguageList extends Activity {
 					}
 				});
 			}
+		}
+		
+		private String getTitle() {
+			return title;
+		}
+		
+		private String getCountryName() {
+			return country_name;
 		}
 	}
 }
