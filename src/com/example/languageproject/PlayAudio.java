@@ -57,7 +57,11 @@ public class PlayAudio extends Activity {
 					if (currentLesson != null) {
 						ArrayList<Phrase> phrases = currentLesson.getPhrases();
 						for (Phrase p : phrases) {
-							p.downloadAudioFile();
+							try {
+								p.downloadAudioFile();
+							} catch (Exception e) {
+								showErrorMessage(e.toString());
+							}
 						}
 						ArrayList<String> phraseOrder = currentLesson.getPhraseOrder();
 						return orderPhrases(phrases, phraseOrder);
@@ -113,7 +117,7 @@ public class PlayAudio extends Activity {
 				mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 				try {
 					mediaPlayer.setDataSource(p.getAudioLocation());
-					mediaPlayer.prepare();
+					mediaPlayer.prepareAsync();
 					mediaPlayer.start();
 				} catch (Exception e) {
 					showErrorMessage(e.toString());

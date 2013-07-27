@@ -1,6 +1,8 @@
 package com.example.languageproject;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 public class Phrase {
 	private String phraseId;
@@ -10,6 +12,7 @@ public class Phrase {
 	private Lesson lesson;
 	private String audioLocation;
 
+	// Constructors
 	public Phrase(String[] entry, Lesson phraseLesson) {
 		try {
 			phraseId = entry[0];
@@ -20,18 +23,21 @@ public class Phrase {
 			e.printStackTrace();
 		}
 		lesson = phraseLesson;
-		audioLocation = lesson.getDirectoryName() + "/" + phraseId;
+		int temp = audioURL.lastIndexOf("/");
+		audioLocation = lesson.getDirectoryName() + "/"
+				+ audioURL.substring(temp + 1);
 	}
 
-	// Constructors
-	public Phrase(String id, String pText, String tText, String url, Lesson phraseLesson) {
+	public Phrase(String id, String pText, String tText, String url,
+			Lesson phraseLesson) {
 		phraseId = id;
 		phraseText = pText;
 		translatedText = tText;
 		audioURL = url;
 		lesson = phraseLesson;
 		int temp = audioURL.lastIndexOf("/");
-		audioLocation = lesson.getDirectoryName() + "/" + audioURL.substring(temp + 1);
+		audioLocation = lesson.getDirectoryName() + "/"
+				+ audioURL.substring(temp + 1);
 	}
 
 	public String getPhraseId() {
@@ -49,19 +55,22 @@ public class Phrase {
 	public String getAudioURL() {
 		return audioURL;
 	}
-	
+
 	public Lesson getLesson() {
 		return lesson;
 	}
-	
+
 	public String getAudioLocation() {
 		return audioLocation;
 	}
-	
-	public void downloadAudioFile() {
-		File loc = new File(audioLocation);
-		if (!loc.exists()) {
-			WebAPI.DownloadAndSaveAudio(audioURL, audioLocation);
+
+	public void downloadAudioFile() throws MalformedURLException, IOException {
+		File audioFile = new File(audioLocation);
+		if (!audioFile.exists()) {
+			if (!audioFile.createNewFile()) {
+				throw new IOException("Could Not Create New File");
+			}
+			WebAPI.DownloadAndSaveAudio(audioURL, audioFile);
 		}
 	}
 }

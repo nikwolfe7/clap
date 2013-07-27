@@ -1,5 +1,6 @@
 package com.example.languageproject;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,37 +21,31 @@ import org.apache.http.protocol.HttpContext;
 import android.util.Log;
 
 public class WebAPI {
-	public static void DownloadAndSaveAudio(String urlString, String audioPath) {
+	public static void DownloadAndSaveAudio(String urlString, File audioFile)
+			throws MalformedURLException, IOException {
 		URL url;
-		try {
-			url = new URL(urlString);
-			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-			urlConnection.setRequestMethod("GET");
-			urlConnection.setDoOutput(true);
-			urlConnection.connect();
-			
-			FileOutputStream fileOutput = new FileOutputStream(audioPath);
-			InputStream inputStream = urlConnection.getInputStream();
-			
-			int totalSize = urlConnection.getContentLength();
-			int downloadedSize = 0;
-			byte[] buffer = new byte[1024];
-			int bufferLength = 0;
-			
-			while ((bufferLength = inputStream.read(buffer)) > 0) {
-				fileOutput.write(buffer, 0, bufferLength);
-				downloadedSize += bufferLength;
-				int progress = (int)(downloadedSize*100/totalSize);
-				Log.d("downloading file", "progress: " + String.valueOf(progress));
-			}
-			
-			fileOutput.close();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		url = new URL(urlString);
+		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+		urlConnection.setRequestMethod("GET");
+		urlConnection.setDoOutput(true);
+		urlConnection.connect();
+		
+		FileOutputStream fileOutput = new FileOutputStream(audioFile);
+		InputStream inputStream = urlConnection.getInputStream();
+		
+		int totalSize = urlConnection.getContentLength();
+		int downloadedSize = 0;
+		byte[] buffer = new byte[1024];
+		int bufferLength = 0;
+		
+		while ((bufferLength = inputStream.read(buffer)) > 0) {
+			fileOutput.write(buffer, 0, bufferLength);
+			downloadedSize += bufferLength;
+			int progress = (int)(downloadedSize*100/totalSize);
+			Log.d("downloading file", "progress: " + String.valueOf(progress));
 		}
-
+		
+		fileOutput.close();
 	}
 
 	public static String getJSONArray(String httpGetString) {

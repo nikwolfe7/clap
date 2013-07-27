@@ -4,6 +4,8 @@ import java.io.File;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import android.os.Environment;
+
 public class Country {
 	private static String GET_LANGUAGES_HTTP_STRING = "http://www.celebrate-language.com/public-api/?action=get_lang_list_by&country=";
 
@@ -12,11 +14,15 @@ public class Country {
 	private File directory;
 
 	public Country(String countryName) {
-		name = countryName;
-		File root = android.os.Environment.getExternalStorageDirectory();
-		directory = new File(root.getAbsolutePath() + "/" + name);
-		if (!directory.exists()) {
-			directory.mkdirs();
+		try {
+			name = countryName;
+			String root = Environment.getExternalStorageDirectory().toString() + "/LanguageProject/";
+			directory = new File(root + name);
+			if (!directory.mkdirs()) {
+				throw new Exception("Error making dirs");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
