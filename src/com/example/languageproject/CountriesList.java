@@ -44,7 +44,7 @@ public class CountriesList extends Activity{
 		@Override
 		protected ArrayList<String> doInBackground(Void... params) {
 			ApplicationState state = (ApplicationState)getApplication();
-			return state.getCountryNames();
+			return state.getCountryNames(); // This is sent to onPostExecute
 		}
 
 		private void showErrorMessage(String error) {
@@ -60,6 +60,7 @@ public class CountriesList extends Activity{
 			errorDialog.show();
 		}
 		
+		// receives a list of country names from doInBackground process
 		protected void onPostExecute(ArrayList<String> countryList) {
 			progressDialog.dismiss();
 			

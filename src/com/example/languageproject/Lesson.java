@@ -20,7 +20,7 @@ public class Lesson {
 		name = lessonName;
 		id = lessonID;
 		language = lessonLanguage;
-		directory = new File(language.getDirectoryName() + "/" + name);
+		directory = new File(language.getDirectoryName() + "/" + name + " (" + id + ")");
 		if (!directory.exists()) {
 			directory.mkdirs();
 		}
@@ -89,8 +89,7 @@ public class Lesson {
 			return temp;
 		} else {
 			String temp = results.substring(2, results.length() - 2); // remove surrounding brackets
-			Pattern p = Pattern.compile("\\],\\[");
-			String[] strPhraseEntries = temp.split(p.pattern()); // break the string into separate phrase entries
+			String[] strPhraseEntries = temp.split(Pattern.compile("\\Q]\\E,\\Q[\\E").pattern()); // break the string into separate phrase entries
 			ArrayList<String> phraseIDs = new ArrayList<String>();
 			for (String s : strPhraseEntries) {
 				StringBuilder sBuilder = new StringBuilder(s);
@@ -106,16 +105,6 @@ public class Lesson {
 				String tempEntry = sBuilder.toString();
 				tempEntry = tempEntry.replace("\"", "");
 				String[] entry = tempEntry.split("@");
-				// remove surrounding quotes
-				//String tempEntry = s.substring(1, s.length() - 1);
-				
-				// break the string into:
-				// phrase id, phrase text, translated text, audio url
-			/*	tempEntry = tempEntry.replaceAll("[\"][,]", "@");
-				tempEntry = tempEntry.replaceAll("[,][\"]", "@");
-				tempEntry = tempEntry.replace("\"", "");
-			*/	
-				//String[] entry = s.split("\"");
 				
 				if (entry != null) {
 					phrases.add(new Phrase(entry, this));

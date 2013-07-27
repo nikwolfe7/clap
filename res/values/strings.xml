@@ -12,5 +12,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_play_audio">PlayAudio</string>
     <string name="ok">OK</string>
+    <string name="splash_img_desc">Africa Image</string>
 
 </resources>

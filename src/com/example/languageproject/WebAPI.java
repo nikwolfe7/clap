@@ -65,10 +65,10 @@ public class WebAPI {
 			if (text.equals("[]") || text.equals("[null]")) {
 				return "Error: empty list";
 			} else {
-				Pattern p = Pattern.compile("^\\[(.*)\\]$");
+				Pattern p = Pattern.compile("^" + Pattern.quote("[") + "(.*)" + Pattern.quote("]") + "$");
 				Matcher matcher = p.matcher(text);
 				if (matcher.find()) {
-					return text;
+					return matcher.group(1);
 				} else {
 					return "Error: results don't match expected format:\n" + text;
 				}

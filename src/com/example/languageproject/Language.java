@@ -3,6 +3,8 @@ package com.example.languageproject;
 import java.io.File;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Language {
 	private static String GET_LESSONS_HTTP_STRING = "http://www.celebrate-language.com/public-api/?action=get_lessons_by_lang&lang=";
@@ -44,8 +46,23 @@ public class Language {
 
 	public ArrayList<String> getLessonNames() {
 		if (lessons.isEmpty()) {
-			// get the list of lessons from the language name
-			return processJSONArray(WebAPI.getJSONArray(GET_LESSONS_HTTP_STRING + encodedName()));
+			/*if (directory.exists() && directory.isDirectory()) {
+				ArrayList<String> temp = new ArrayList<String>();
+				for (File f : directory.listFiles()) {
+					if (f.isDirectory()) {
+						Pattern p = Pattern.compile("^[(^\\ )] \\([(^\\))]\\)$");
+						Matcher matcher = p.matcher(f.getName());
+						if (matcher.find()) {
+							temp.add(matcher.group(0));
+							lessons.add(new Lesson(matcher.group(0), matcher.group(1), this));
+						}
+					}
+				}
+				return temp;
+			} else {*/
+				// get the list of lessons from the language name
+				return processJSONArray(WebAPI.getJSONArray(GET_LESSONS_HTTP_STRING + encodedName()));
+			//}
 		} else {
 			ArrayList<String> temp = new ArrayList<String>();
 			for (Lesson l : lessons) {
@@ -81,14 +98,13 @@ public class Language {
 			return temp;
 		} else {
 			results = results.replace("\"", "");
-			results = results.substring(1, results.length() - 1); // remove surrounding brackets
-			String[] lessonNameAndIDArray = results.split(",");
+			results = results.substring(1, results.length() - 1); // remove first bracket of first group and
+																  // last bracket of last group
+			String[] lessonNameAndIDArray = results.split(Pattern.compile("\\Q]\\E,\\Q[\\E").pattern());
 	
 			ArrayList<String> lessonNames = new ArrayList<String>();
 			for (String s : lessonNameAndIDArray) {
-				String temp = s.replace("{", "");
-				temp = temp.replace("}", "");
-				String[] tempArray = temp.split(":");
+				String[] tempArray = s.split(",");
 				String lessonName = tempArray[0];
 				String lessonID = tempArray[1];
 				lessonNames.add(lessonName);
