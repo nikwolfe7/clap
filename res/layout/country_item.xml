@@ -8,11 +8,12 @@
     <TextView
         android:id="@+id/country_item_id"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_gravity="center|center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
         android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:textIsSelectable="true"
-        android:background="#000000"
         android:textColor="#ffffff" />
     
 </LinearLayout>
