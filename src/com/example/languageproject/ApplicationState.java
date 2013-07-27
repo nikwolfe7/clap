@@ -26,7 +26,7 @@ public class ApplicationState extends Application {
 			} else {*/
 				// get the list of countries from the website
 				return processJSONArray(WebAPI
-						.getJSONArray(GET_COUNTRIES_HTTP_STRING));
+						.getJSONArray(WebAPI.HTTP_GET.COUNTRIES));
 			//}
 		} else {
 			ArrayList<String> temp = new ArrayList<String>();

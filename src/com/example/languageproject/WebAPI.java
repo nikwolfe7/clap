@@ -21,6 +21,25 @@ import org.apache.http.protocol.HttpContext;
 import android.util.Log;
 
 public class WebAPI {
+
+	public enum HTTP_GET {
+		COUNTRIES("http://www.celebrate-language.com/public-api/?action=get_country_list"),
+		LANGUAGES("http://www.celebrate-language.com/public-api/?action=get_lang_list_by&country="),
+		LESSONS("http://www.celebrate-language.com/public-api/?action=get_lessons_by_lang&lang="),
+		PHRASES("http://www.celebrate-language.com/public-api/?action=get_phrases_by_lesson_id&id="),
+		PHRASE_ORDER("http://www.celebrate-language.com/public-api/?action=get_order_by_lesson_id&id=");
+		
+		private String httpGetString;
+		
+		private HTTP_GET(String s) {
+			this.httpGetString = s;
+		}
+		
+		public String stringValue() {
+			return this.httpGetString;
+		}
+	}
+
 	public static void DownloadAndSaveAudio(String urlString, File audioFile)
 			throws MalformedURLException, IOException {
 		URL url;
@@ -48,10 +67,14 @@ public class WebAPI {
 		fileOutput.close();
 	}
 
-	public static String getJSONArray(String httpGetString) {
+	public static String getJSONArray(HTTP_GET httpGetValue) {
+		return getJSONArray(httpGetValue, "");
+	}
+
+	public static String getJSONArray(HTTP_GET httpGetValue, String httpGetParam) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
-		HttpGet httpGet = new HttpGet(httpGetString);
+		HttpGet httpGet = new HttpGet(httpGetValue.stringValue() + httpGetParam);
 		String text = null;
 		try {
 			HttpResponse response = httpClient.execute(httpGet, localContext);
@@ -63,18 +86,18 @@ public class WebAPI {
 		
 		if (text != null) {
 			if (text.equals("[]") || text.equals("[null]")) {
-				return "Error: empty list";
+				return "EMPTY";
 			} else {
 				Pattern p = Pattern.compile("^" + Pattern.quote("[") + "(.*)" + Pattern.quote("]") + "$");
 				Matcher matcher = p.matcher(text);
 				if (matcher.find()) {
 					return matcher.group(1);
 				} else {
-					return "Error: results don't match expected format:\n" + text;
+					throw new IllegalStateException(text);
 				}
 			}
 		} else {
-			return "Error: results were null";
+			return "EMPTY";
 		}
 	}
 

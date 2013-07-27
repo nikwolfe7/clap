@@ -54,7 +54,7 @@ public class Country {
 			} else {*/
 				// get the list of languages from the country name
 				return processJSONArray(WebAPI
-						.getJSONArray(GET_LANGUAGES_HTTP_STRING + encodedName()));
+						.getJSONArray(WebAPI.HTTP_GET.LANGUAGES, encodedName()));
 			//}
 		} else {
 			ArrayList<String> temp = new ArrayList<String>();
@@ -68,8 +68,7 @@ public class Country {
 	public ArrayList<Language> getLanguages() {
 		if (languages.isEmpty()) {
 			// get the list of languages from the country name
-			processJSONArray(WebAPI.getJSONArray(GET_LANGUAGES_HTTP_STRING
-					+ encodedName()));
+			processJSONArray(WebAPI.getJSONArray(WebAPI.HTTP_GET.LANGUAGES, encodedName()));
 		}
 		return languages;
 	}
@@ -90,7 +89,6 @@ public class Country {
 			return temp;
 		} else {
 			results = results.replace("\"", "");
-			//results = results.substring(1, results.length() - 1);
 			String[] strArray = results.split(",");
 			ArrayList<String> temp = new ArrayList<String>();
 			for (String s : strArray) {

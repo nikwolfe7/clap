@@ -61,7 +61,7 @@ public class Language {
 				return temp;
 			} else {*/
 				// get the list of lessons from the language name
-				return processJSONArray(WebAPI.getJSONArray(GET_LESSONS_HTTP_STRING + encodedName()));
+				return processJSONArray(WebAPI.getJSONArray(WebAPI.HTTP_GET.LESSONS, encodedName()));
 			//}
 		} else {
 			ArrayList<String> temp = new ArrayList<String>();
@@ -74,7 +74,7 @@ public class Language {
 	
 	public ArrayList<Lesson> getLessons() {
 		if (lessons.isEmpty()) {
-			processJSONArray(WebAPI.getJSONArray(GET_LESSONS_HTTP_STRING + encodedName()));
+			processJSONArray(WebAPI.getJSONArray(WebAPI.HTTP_GET.LESSONS, encodedName()));
 		}
 		return lessons;
 	}

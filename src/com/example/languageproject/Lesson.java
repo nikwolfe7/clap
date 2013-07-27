@@ -54,7 +54,7 @@ public class Lesson {
 	public ArrayList<String> getPhraseText() {
 		if (phrases.isEmpty()) {
 			// get the phrase list from the lesson id
-			return processJSONArray(WebAPI.getJSONArray(GET_PHRASES_HTTP_STRING + encodedId()));
+			return processJSONArray(WebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASES, encodedId()));
 		} else {
 			ArrayList<String> temp = new ArrayList<String>();
 			for (Phrase p : phrases) {
@@ -66,14 +66,14 @@ public class Lesson {
 	
 	public ArrayList<Phrase> getPhrases() {
 		if (phrases.isEmpty()) {
-			processJSONArray(WebAPI.getJSONArray(GET_PHRASES_HTTP_STRING + encodedId()));
+			processJSONArray(WebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASES, encodedId()));
 		}
 		return phrases;
 	}
 	
 	public ArrayList<String> getPhraseOrder() {
 		if (phraseOrder.isEmpty()) {
-			processJSONArrayPhraseOrder(WebAPI.getJSONArray(GET_PHRASE_ORDER_HTTP_STRING + encodedId()));
+			processJSONArrayPhraseOrder(WebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASE_ORDER, encodedId()));
 		}
 		return phraseOrder;
 	}
