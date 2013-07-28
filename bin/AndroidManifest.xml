@@ -26,14 +26,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.languageproject.Main_menu" >
-        </activity>
-        <activity android:name="com.example.languageproject.CountriesList" >
-        </activity>
-        <activity android:name="com.example.languageproject.LanguageList" >
-        </activity>
-        <activity android:name="com.example.languageproject.LessonList" >
-        </activity>
+        <activity android:name="com.example.languageproject.Main_menu" ></activity>
+        <activity android:name="com.example.languageproject.CountriesList" ></activity>
+        <activity android:name="com.example.languageproject.LanguageList" ></activity>
+        <activity android:name="com.example.languageproject.LessonList" ></activity>
+        <activity android:name="com.example.languageproject.LessonDialog"></activity>
         <activity
             android:name="com.example.languageproject.PlayAudio"
             android:label="@string/title_activity_play_audio" >

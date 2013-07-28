@@ -17,8 +17,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class LessonList extends Activity {
+	
+	public final static String EXTRAS = "extras";
+	public final static String LESSON_TITLE = "title";
+	
 	private String language_name;
 	private String country_name;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -101,11 +106,25 @@ public class LessonList extends Activity {
 						// What was selected?
 						String lessonSelected = (parent.getAdapter().getItem(position).toString());
 						
+						// create the lesson dialog
+						Intent lessonDialog = new Intent(context, LessonDialog.class);
+						ArrayList<String> extras = new ArrayList<String>();
+						extras.add(country_name);
+						extras.add(language_name);
+						extras.add(lessonSelected);
+						lessonDialog.putStringArrayListExtra(EXTRAS, extras);
+						lessonDialog.putExtra(LESSON_TITLE, lessonSelected);
+						startActivity(lessonDialog);
+						
+						
+						// FIX.
+						/*
 						Intent lessonAudio = new Intent(context, PlayAudio.class);
 						lessonAudio.putExtra("lessonName", lessonSelected);
 						lessonAudio.putExtra("languageName", language_name);
 						lessonAudio.putExtra("countryName", country_name);
 						startActivity(lessonAudio);
+						*/
 					}
 				});
 			}
