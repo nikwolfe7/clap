@@ -1,6 +1,7 @@
 package com.clap;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
@@ -50,7 +51,7 @@ public class Phrase {
 		return audioLocation;
 	}
 
-	public File getAudioFile() throws MalformedURLException, IOException {
+	public void downloadAudio() throws MalformedURLException, IOException {
 		File audioFile = new File(audioLocation);
 		if (!audioFile.exists()) {
 			if (!audioFile.createNewFile()) {
@@ -58,6 +59,5 @@ public class Phrase {
 			}
 			WebAPI.DownloadAndSaveAudio(audioURL, audioFile);
 		}
-		return audioFile;
 	}
 }

@@ -2,8 +2,6 @@ package com.clap;
 
 import java.util.ArrayList;
 
-import com.clap.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -87,7 +85,7 @@ public class CountriesList extends Activity {
 					public void onItemClick(AdapterView<?> parent, View arg1,
 							int position, long arg3) {
 						// What was selected?
-						String countrySelected = (parent.getAdapter().getItem(position).toString());
+						String countrySelected = parent.getAdapter().getItem(position).toString();
 						
 						// Start the language list activity
 						Intent languageActivity = new Intent(context, LanguageList.class);

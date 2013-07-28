@@ -7,7 +7,7 @@ import android.app.Application;
 import android.os.Environment;
 
 public class ApplicationState extends Application {
-	private String directory = Environment.getExternalStorageDirectory().toString() + "/LanguageProject/";
+	private String directory = Environment.getExternalStorageDirectory().toString(); 
 	private ClapDatabase database = new ClapDatabase(this);
 
 	public ArrayList<String> getCountryNames() {
@@ -24,7 +24,8 @@ public class ApplicationState extends Application {
 
 	public ArrayList<Phrase> getPhrases(String lessonName) throws Exception {
 		String languageName = lessonName.split(" ")[0];
-		File dir = new File(directory + languageName + "/" + lessonName);
+		File dir = new File(directory + "/" + getResources().getString(R.string.app_name) + "/"
+				+ languageName + "/" + lessonName);
 		dir.mkdirs();
 		return database.getPhrases(database.getLessonId(lessonName), dir.getAbsolutePath());
 	}

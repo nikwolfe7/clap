@@ -89,7 +89,8 @@ public class WebAPI {
 		if (text != null) {
 			if (text.equals("[]") || text.equals("[null]")) {
 				throw new Exception("Empty List");
-			} else if (!text.startsWith("[") || !text.endsWith("]")) {
+			} else if (!text.startsWith("[") || !text.endsWith("]")
+					|| text.matches("www.celebrate-language.com")) {
 				throw new Exception("Invalid List: " + text);
 			} else {
 				Pattern p = Pattern.compile("^" + Pattern.quote("[") + "(.*)" + Pattern.quote("]") + "$");
@@ -123,7 +124,7 @@ public class WebAPI {
 			byte[] b = new byte[4096];
 			n = in.read(b);
 			if (n > 0)
-				out.append(new String(b, 0, n));
+				out.append(new String(b, 0, n, "UTF-8"));
 		}
 		return out.toString();
 	}

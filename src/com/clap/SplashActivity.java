@@ -1,7 +1,5 @@
 package com.clap;
 
-import com.clap.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +10,12 @@ public class SplashActivity extends Activity {
 	// used to know if the back button was pressed
 	// in the splash screen activity and avoid opening the next activity
     private boolean isBackButtonPressed = false;
-    private static final int SPLASH_DURATION = 500; // 2 seconds
+    private static final int SPLASH_DURATION = 3000; // 3 seconds
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.splash_screen);
 		Handler handler = new Handler();
 
 		// run a thread after 2 seconds to start the home screen

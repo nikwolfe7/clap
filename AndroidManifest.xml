@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.languageproject"
+    package="com.clap"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -33,7 +33,7 @@
         <activity android:name="com.clap.LessonDialog" ></activity>
         <activity android:name="com.clap.StudyActivity" ></activity>
         <activity
-            android:name="com.clap.PlayAudio"
+            android:name="com.clap.PlayActivity"
             android:label="@string/title_activity_play_audio" >
         </activity>
     </application>

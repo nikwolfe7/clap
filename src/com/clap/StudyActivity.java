@@ -1,15 +1,17 @@
 package com.clap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.clap.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 
 public class StudyActivity extends Activity {
 
@@ -97,19 +98,50 @@ public class StudyActivity extends Activity {
 				lv.setOnItemClickListener(new OnItemClickListener() {
 
 					@Override
-					public void onItemClick(AdapterView<?> arg0, View arg1,
-							int arg2, long arg3) {
-						// TODO Auto-generated method stub
-						
+					public void onItemClick(AdapterView<?> parent, View arg1,
+							int position, long arg3) {
+						String phraseSelected = parent.getAdapter().getItem(position).toString();
+						displayPhrase(phraseSelected);
 					}
-				
-				
 				});
-				
-				
 			}
 		}
 		
+		private void displayPhrase(String phraseSelected) {
+			Phrase phrase = phraseMap.get(phraseSelected);
+			
+			AlertDialog.Builder dialog = new AlertDialog.Builder(c);
+			dialog.setPositiveButton(R.string.play, new PlayPhrase(phrase));
+			dialog.setNeutralButton(R.string.close, null);
+			dialog.setCancelable(true);
+			dialog.setMessage(phrase.getTranslatedText());
+			dialog.setTitle(phraseSelected);
+			
+			dialog.create().show();
+		}
+		
+		private class PlayPhrase implements OnClickListener {
+			Phrase phrase;
+			
+			public PlayPhrase(Phrase p) {
+				this.phrase = p;
+			}
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				MediaPlayer mediaPlayer = new MediaPlayer();
+				mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+				try {
+					phrase.downloadAudio();
+					mediaPlayer.setDataSource(phrase.getAudioLocation());
+					mediaPlayer.prepare();
+					mediaPlayer.start();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 		private void displayError(String msg) {
 			AlertDialog.Builder b = new AlertDialog.Builder(c);
 			b.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {

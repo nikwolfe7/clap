@@ -2,8 +2,6 @@ package com.clap;
 
 import java.util.ArrayList;
 
-import com.clap.R;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -57,8 +55,10 @@ public class LessonDialog extends Activity {
 	private class PlayLesson implements OnClickListener {
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			
+			Intent i = new Intent(v.getContext(), PlayActivity.class);
+			i.putExtra(LESSON_TITLE, getIntent().getExtras().getString(LessonList.LESSON_TITLE));
+			i.putStringArrayListExtra(EXTRAS, params);
+			startActivity(i);
 		}
 		
 	}

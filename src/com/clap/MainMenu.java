@@ -1,14 +1,11 @@
 package com.clap;
 
-import com.clap.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.view.View.OnClickListener;
-
 
 public class MainMenu extends Activity {
 
@@ -59,7 +56,10 @@ public class MainMenu extends Activity {
 	private class AboutButton implements OnClickListener {
 		@Override
 		public void onClick(View v) {
-			
+			// Start the about activity
+			Intent aboutActivity = new Intent();
+			aboutActivity.setClass(v.getContext(), AboutActivity.class);
+			startActivity(aboutActivity);
 		}
 	}
 }
