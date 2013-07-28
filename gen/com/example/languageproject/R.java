@@ -33,26 +33,20 @@ public final class R {
         public static final int previous=0x7f020006;
     }
     public static final class id {
-        public static final int action_settings=0x7f090016;
+        public static final int action_settings=0x7f090010;
         public static final int btnNext=0x7f090005;
         public static final int btnPlay=0x7f090004;
         public static final int btnPrevious=0x7f090003;
-        public static final int btn_play_lesson=0x7f09000c;
-        public static final int btn_quit_lesson=0x7f09000e;
-        public static final int btn_study_phrases=0x7f09000d;
-        public static final int buttonAbout=0x7f090015;
-        public static final int buttonCountry=0x7f090012;
-        public static final int buttonHelp=0x7f090014;
-        public static final int buttonReset=0x7f090013;
-        public static final int country_item_id=0x7f090006;
-        public static final int country_list=0x7f090007;
-        public static final int item_id=0x7f090008;
-        public static final int language_item_id=0x7f090009;
-        public static final int language_list=0x7f09000a;
-        public static final int lesson_item_id=0x7f09000f;
-        public static final int lesson_list=0x7f090010;
-        public static final int lesson_title=0x7f09000b;
-        public static final int list=0x7f090011;
+        public static final int btn_play_lesson=0x7f090008;
+        public static final int btn_quit_lesson=0x7f09000a;
+        public static final int btn_study_phrases=0x7f090009;
+        public static final int buttonAbout=0x7f09000f;
+        public static final int buttonCountry=0x7f09000c;
+        public static final int buttonHelp=0x7f09000e;
+        public static final int buttonReset=0x7f09000d;
+        public static final int item_id=0x7f090006;
+        public static final int lesson_title=0x7f090007;
+        public static final int list=0x7f09000b;
         public static final int main_icon=0x7f090000;
         public static final int pc_icon=0x7f090001;
         public static final int screen=0x7f090002;
@@ -61,16 +55,10 @@ public final class R {
         public static final int activity_main=0x7f030000;
         public static final int activity_play_audio=0x7f030001;
         public static final int audio_lesson=0x7f030002;
-        public static final int country_item=0x7f030003;
-        public static final int country_list=0x7f030004;
-        public static final int item=0x7f030005;
-        public static final int language_item=0x7f030006;
-        public static final int language_list=0x7f030007;
-        public static final int lesson_dialog=0x7f030008;
-        public static final int lesson_item=0x7f030009;
-        public static final int lesson_list=0x7f03000a;
-        public static final int list=0x7f03000b;
-        public static final int main_menu=0x7f03000c;
+        public static final int item=0x7f030003;
+        public static final int lesson_dialog=0x7f030004;
+        public static final int list=0x7f030005;
+        public static final int main_menu=0x7f030006;
     }
     public static final class menu {
         public static final int lesson_list=0x7f080000;
