@@ -182,7 +182,8 @@ public class ClapDatabase {
 			return "";
 		}
 	}
-	public ArrayList<Phrase> getPhrases(String lessonId) throws Exception {
+
+	public ArrayList<Phrase> getPhrases(String lessonId, String directoryName) throws Exception {
 		ArrayList<Phrase> phrases = new ArrayList<Phrase>();
 
 		if (database == null) {
@@ -193,22 +194,30 @@ public class ClapDatabase {
 		// information yet
 		Cursor cursor = database.query(SQLHelper.TABLE_PHRASES, new String[] { SQLHelper.COLUMN_ID,
 				SQLHelper.COLUMN_LESSON_ID, SQLHelper.COLUMN_PHRASE_ID,
-				SQLHelper.COLUMN_PHRASE_TEXT, SQLHelper.COLUMN_TRANSLATED_TEXT, SQLHelper.COLUMN_AUDIO_URL},
+				SQLHelper.COLUMN_PHRASE_TEXT, SQLHelper.COLUMN_TRANSLATED_TEXT,
+				SQLHelper.COLUMN_AUDIO_URL, SQLHelper.COLUMN_AUDIO_LOCATION},
 				SQLHelper.COLUMN_LESSON_ID + WHERE, new String[] { lessonId },
 				null, null, null);
 		
 		if (cursor.moveToFirst()) {
+			// phrase information is already in the database
 			int phraseIdColIndex = cursor.getColumnIndexOrThrow(SQLHelper.COLUMN_PHRASE_ID);
 			int phraseTextColIndex = cursor.getColumnIndexOrThrow(SQLHelper.COLUMN_PHRASE_TEXT);
 			int translatedTextColIndex = cursor.getColumnIndexOrThrow(SQLHelper.COLUMN_TRANSLATED_TEXT);
 			int audioURLColIndex = cursor.getColumnIndexOrThrow(SQLHelper.COLUMN_AUDIO_URL);
+			int audioLocColIndex = cursor.getColumnIndexOrThrow(SQLHelper.COLUMN_AUDIO_LOCATION);
+
 			while (!cursor.isAfterLast()) {
-				phrases.add(new Phrase(cursor.getString(phraseIdColIndex),
+				phrases.add(new Phrase(lessonId,
+						cursor.getString(phraseIdColIndex),
 						cursor.getString(phraseTextColIndex),
 						cursor.getString(translatedTextColIndex),
-						cursor.getString(audioURLColIndex)));
+						cursor.getString(audioURLColIndex),
+						cursor.getString(audioLocColIndex)));
+
 				cursor.moveToNext();
 			}
+
 			// Make sure to close the cursor
 			cursor.close();
 		} else {
@@ -223,7 +232,7 @@ public class ClapDatabase {
 					"\\Q]\\E,\\Q[\\E").pattern());
 
 			for (String entry : phraseEntries) {
-				// s should have the format: "PHRASE ID","PHRASE TEXT","TRANSLATED TEXT","AUDIO URL"
+				// entry should have the format: "PHRASE ID","PHRASE TEXT","TRANSLATED TEXT","AUDIO URL"
 				// sometimes an entry like "PHRASE TEXT" or "TRANSLATED TEXT" is just: null
 
 				// use StringBuilder to edit the String
@@ -256,7 +265,8 @@ public class ClapDatabase {
 					String phraseText = splitEntry[1];
 					String translatedText = splitEntry[2];
 					String audioURL = splitEntry[3];
-					phrases.add(new Phrase(phraseId, phraseText, translatedText, audioURL));
+					String audioLoc = directoryName + audioURL.substring(audioURL.lastIndexOf("/"));
+					phrases.add(new Phrase(lessonId, phraseId, phraseText, translatedText, audioURL, audioLoc));
 
 					// add to the database
 					ContentValues values = new ContentValues();
@@ -265,6 +275,7 @@ public class ClapDatabase {
 					values.put(SQLHelper.COLUMN_PHRASE_TEXT, phraseText);
 					values.put(SQLHelper.COLUMN_TRANSLATED_TEXT, translatedText);
 					values.put(SQLHelper.COLUMN_AUDIO_URL, audioURL);
+					values.put(SQLHelper.COLUMN_AUDIO_LOCATION, audioLoc);
 					database.insert(SQLHelper.TABLE_PHRASES, null, values);
 				}
 			}
@@ -273,6 +284,9 @@ public class ClapDatabase {
 	}
 	
 	public ArrayList<String> getPhraseOrder(String lessonId) {
+		String results;
+		ArrayList<String> phraseOrder = new ArrayList<String>();
+
 		if (database == null) {
 			database = databaseHelper.getWritableDatabase();
 		}
@@ -280,32 +294,41 @@ public class ClapDatabase {
 		// Check the database table to see if we have downloaded the lessons yet
 		Cursor cursor = database.query(SQLHelper.TABLE_PHRASE_ORDER, new String[] {
 				SQLHelper.COLUMN_ID, SQLHelper.COLUMN_LESSON_ID, SQLHelper.COLUMN_PHRASE_ORDERING },
-				null, null, null, null, null);
+				SQLHelper.COLUMN_LESSON_ID + WHERE, new String[] { lessonId },
+				null, null, null);
 
 		if (cursor.moveToFirst()) {
-			//return getFromCursor(cursor, SQLHelper.COLUMN_PHRASE_ID);
+			results = cursor.getString(cursor.getColumnIndexOrThrow(SQLHelper.COLUMN_PHRASE_ORDERING));
 		} else {
 			// database table was empty
 			// download the lesson names and populate the table
-			String results;
 			try {
 				results = WebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASE_ORDER, lessonId);
+
+				// add to the database
+				ContentValues values = new ContentValues();
+				values.put(SQLHelper.COLUMN_LESSON_ID, lessonId);
+				values.put(SQLHelper.COLUMN_PHRASE_ORDERING, results);
+				database.insert(SQLHelper.TABLE_PHRASE_ORDER, null, values);
 			} catch (Exception e) {
 				ArrayList<String> temp = new ArrayList<String>();
 				temp.add(e.getMessage());
 				return temp;
 			}
-
-			// remove quotes
-			results = results.replace("\"", "");
-			// remove first bracket of first group and last bracket of last group
-			results = results.substring(1, results.length() - 1); 
-			// should have a list of phrase ids, split by commas
-			String[] tempPhraseOrder = results.split(",");
-
-			//return phraseOrder;
 		}
-		return null;
+
+		// remove quotes
+		results = results.replace("\"", "");
+		// remove first bracket of first group and last bracket of last group
+		results = results.substring(1, results.length() - 1); 
+		// should have a list of phrase ids, split by commas
+		String[] tempPhraseOrder = results.split(",");
+
+		for (String s : tempPhraseOrder) {
+			phraseOrder.add(s);
+		}
+
+		return phraseOrder;
 	}
 
 	public void reset() {

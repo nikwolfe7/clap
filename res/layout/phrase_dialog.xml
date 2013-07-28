@@ -51,24 +51,15 @@
             android:contentDescription="@string/btnNext"
             android:src="@drawable/next" />
     </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.07" >
-        
-        <ImageButton
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/play" 
-            android:contentDescription="@string/btnPlay"
-            />
-        
-    </TableRow>
     
      </TableLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.07"
+        android:src="@android:drawable/btn_star" />
 
     <TextView
         android:id="@+id/lesson_title"

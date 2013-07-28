@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.example.languageproject;
+package com.clap;
 
 public final class R {
     public static final class array {

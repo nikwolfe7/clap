@@ -26,7 +26,7 @@ public class ApplicationState extends Application {
 		String languageName = lessonName.split(" ")[0];
 		File dir = new File(directory + languageName + "/" + lessonName);
 		dir.mkdirs();
-		return database.getPhrases(database.getLessonId(lessonName));
+		return database.getPhrases(database.getLessonId(lessonName), dir.getAbsolutePath());
 	}
 
 	public void resetDatabase() {

@@ -2,7 +2,7 @@ package com.clap;
 
 import java.util.ArrayList;
 
-import com.example.languageproject.R;
+import com.clap.R;
 
 import android.app.Activity;
 import android.content.Context;

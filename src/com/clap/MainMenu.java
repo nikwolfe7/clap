@@ -1,6 +1,6 @@
 package com.clap;
 
-import com.example.languageproject.R;
+import com.clap.R;
 
 import android.app.Activity;
 import android.content.Intent;

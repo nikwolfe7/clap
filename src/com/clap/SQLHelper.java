@@ -8,16 +8,15 @@ public class SQLHelper extends SQLiteOpenHelper {
 	public static final String DATABASE_NAME = "CLAP";
 	public static final int DATABASE_VERSION = 1;
 
-	// Table Names
+	/*** Table Names ***/
 	public static final String TABLE_COUNTRIES = "COUNTRIES";
 	public static final String TABLE_LANGUAGES = "LANGUAGES";
 	public static final String TABLE_LESSONS = "LESSONS";
 	public static final String TABLE_PHRASES = "PHRASES";
 	public static final String TABLE_PHRASE_ORDER = "PHRASE_ORDER";
 
-	// Columns
+	/*** Columns ***/
 	public static final String COLUMN_ID = "_ID";
-	//public static final String COLUMN_COUNTRY_ID = "COUNTRY_ID";
 	public static final String COLUMN_COUNTRY = "COUNTRY";
 	public static final String COLUMN_LANGUAGE = "LANGUAGE";
 	public static final String COLUMN_LESSON = "LESSON";
@@ -26,17 +25,19 @@ public class SQLHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_PHRASE_TEXT = "PHRASE_TEXT";
 	public static final String COLUMN_TRANSLATED_TEXT = "TRANSLATED_TEXT";
 	public static final String COLUMN_AUDIO_URL = "AUDIO_URL";
+	public static final String COLUMN_AUDIO_LOCATION = "AUDIO_LOCATION";
 	public static final String COLUMN_PHRASE_ORDERING = "PHRASE_ORDERING";
 
-	// Helper Strings
+	/*** Helper Strings ***/
 	private static final String INT = " INTEGER";
 	private static final String PRIMARYKEY = " PRIMARY KEY AUTOINCREMENT";
 	private static final String TEXT = " TEXT NOT NULL";
+	private static final String TEXT_NULL = " TEXT";
 	private static final String BLOB = " BLOB";
 	private static final String COMMA = ",";
 	private static final String CREATE = "CREATE TABLE IF NOT EXISTS ";
 
-	// Create Tables
+	/*** Create Tables ***/
 	private static final String CREATE_COUNTRIES = CREATE
 			+ TABLE_COUNTRIES + " ("
 			+ COLUMN_ID + INT + PRIMARYKEY + COMMA
@@ -59,7 +60,8 @@ public class SQLHelper extends SQLiteOpenHelper {
 			+ COLUMN_PHRASE_ID + INT + COMMA
 			+ COLUMN_PHRASE_TEXT + TEXT + COMMA
 			+ COLUMN_TRANSLATED_TEXT + TEXT + COMMA
-			+ COLUMN_AUDIO_URL + TEXT + ");";
+			+ COLUMN_AUDIO_URL + TEXT + COMMA
+			+ COLUMN_AUDIO_LOCATION + TEXT_NULL + ");";
 	private static final String CREATE_PHRASE_ORDER = CREATE
 			+ TABLE_PHRASE_ORDER + " ("
 			+ COLUMN_ID + INT + PRIMARYKEY + COMMA
