@@ -9,11 +9,10 @@
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="#000000"
         android:textColor="#ffffff" 
         android:cacheColorHint="#000000">
 	</ListView>
-    
     
 </LinearLayout>
