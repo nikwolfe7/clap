@@ -68,7 +68,12 @@ public class LessonDialog extends Activity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			
+			ApplicationState state = (ApplicationState)getApplication();
+			try {
+				state.getPhrases(params.get(2));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
