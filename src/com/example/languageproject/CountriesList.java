@@ -23,7 +23,7 @@ public class CountriesList extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.country_list);
+		setContentView(R.layout.list);
 		setTitle(title);
 		new LongRunningGetIO(this).execute();
 	}
@@ -55,8 +55,8 @@ public class CountriesList extends Activity {
 			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					Intent mainActivity = new Intent(context, MainMenu.class);
-					startActivity(mainActivity);
+					// return to main menu
+					finish();
 				}
 			});
 			builder.setMessage(error).setTitle("Oops!");
@@ -69,15 +69,15 @@ public class CountriesList extends Activity {
 			progressDialog.dismiss();
 			
 			if (countryList == null || countryList.isEmpty() || countryList.get(0).startsWith("Empty List")) {
-				showErrorMessage("Unable to load country list");
+				showErrorMessage("Country list was empty. Sorry!");
 			} else if (countryList.get(0).startsWith("Invalid List")) {
 				showErrorMessage(countryList.get(0));
 			} else {
-				lv = (ListView) findViewById(R.id.country_list);
+				lv = (ListView) findViewById(R.id.list);
 
 				// Display the countries
 				ArrayAdapter<String> adapter;
-				adapter = new ArrayAdapter<String>(context,R.layout.country_item, R.id.country_item_id, countryList);
+				adapter = new ArrayAdapter<String>(context,R.layout.item, R.id.item_id, countryList);
 				lv.setAdapter(adapter);
 				
 				lv.setOnItemClickListener(new OnItemClickListener(){
@@ -90,7 +90,7 @@ public class CountriesList extends Activity {
 						// Start the language list activity
 						Intent languageActivity = new Intent(context, LanguageList.class);
 					    languageActivity.putExtra("countryName", countrySelected);
-						startActivity(languageActivity);
+					    startActivity(languageActivity);
 					}
 				});
 			}
@@ -99,6 +99,5 @@ public class CountriesList extends Activity {
 		private String getTitle() {
 			return title;
 		}
-
 	}
 }

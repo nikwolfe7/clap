@@ -25,12 +25,16 @@ public class LessonList extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lesson_list);
+		
+		// Get the information passed to us from the last activity
 		Intent i = getIntent();
 		Bundle b = i.getExtras();
 		language_name = b.getString("languageName");
 		country_name = b.getString("countryName");
+
 		title = title + language_name;
 		setTitle(title);
+
 		new LongRunningGetIO(this).execute();
 	}
 
@@ -53,7 +57,7 @@ public class LessonList extends Activity {
 		@Override
 		protected ArrayList<String> doInBackground(Void... params) {
 			ApplicationState state = (ApplicationState) getApplication();
-			return state.getLessonNames(language_name);
+			return state.getLessonNames(this.getLanguageName());
 		}
 
 		private void showErrorMessage(String error) {
@@ -61,8 +65,8 @@ public class LessonList extends Activity {
 			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					Intent languageActivity = new Intent(context, LanguageList.class);
-					startActivity(languageActivity);
+					// return to language activity
+					finish();
 				}
 			});
 			builder.setMessage(error).setTitle("Oops!");
@@ -74,15 +78,17 @@ public class LessonList extends Activity {
 			progressDialog.dismiss();
 			
 			if (lessonList == null || lessonList.isEmpty() || lessonList.get(0).startsWith("Empty List")) {
-				showErrorMessage("Unable to load lessons for " + this.getLanguageName());
+				showErrorMessage("Language lessons currently unavailable for " + this.getLanguageName());
 			} else if (lessonList.get(0).startsWith("Invalid List")) {
 				showErrorMessage(lessonList.get(0));
 			} else {
 				lv = (ListView)findViewById(R.id.lesson_list);
 
 				// Display the lessons
-				ArrayAdapter<String> adapter;
-				adapter = new ArrayAdapter<String>(context,R.layout.lesson_item, R.id.lesson_item_id, lessonList);
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+						R.layout.lesson_item,
+						R.id.lesson_item_id,
+						lessonList);
 				lv.setAdapter(adapter);
 				
 				lv.setOnItemClickListener(new OnItemClickListener(){
@@ -92,10 +98,12 @@ public class LessonList extends Activity {
 						// What was selected?
 						String lessonSelected = (parent.getAdapter().getItem(position).toString());
 						
+						// Open the lesson audio activity
+						// Pass it the lesson name, language name and country name
 						Intent lessonAudio = new Intent(context, PlayAudio.class);
 						lessonAudio.putExtra("lessonName", lessonSelected);
-						lessonAudio.putExtra("languageName", language_name);
-						lessonAudio.putExtra("countryName", country_name);
+						lessonAudio.putExtra("languageName", getLanguageName());
+						lessonAudio.putExtra("countryName", getCountryName());
 						startActivity(lessonAudio);
 					}
 				});
@@ -104,6 +112,10 @@ public class LessonList extends Activity {
 
 		private String getLanguageName() {
 			return language_name;
+		}
+		
+		private String getCountryName() {
+			return country_name;
 		}
 		
 		private String getTitle() {

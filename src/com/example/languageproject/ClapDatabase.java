@@ -179,8 +179,15 @@ public class ClapDatabase {
 				null, null, null);
 		
 		if (cursor.moveToFirst()) {
+			int phraseIdColIndex = cursor.getColumnIndexOrThrow(SQLHelper.COLUMN_PHRASE_ID);
+			int phraseTextColIndex = cursor.getColumnIndexOrThrow(SQLHelper.COLUMN_PHRASE_TEXT);
+			int translatedTextColIndex = cursor.getColumnIndexOrThrow(SQLHelper.COLUMN_TRANSLATED_TEXT);
+			int audioURLColIndex = cursor.getColumnIndexOrThrow(SQLHelper.COLUMN_AUDIO_URL);
 			while (!cursor.isAfterLast()) {
-				phrases.add(new Phrase(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4)));
+				phrases.add(new Phrase(cursor.getString(phraseIdColIndex),
+						cursor.getString(phraseTextColIndex),
+						cursor.getString(translatedTextColIndex),
+						cursor.getString(audioURLColIndex)));
 				cursor.moveToNext();
 			}
 			// Make sure to close the cursor

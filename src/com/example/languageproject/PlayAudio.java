@@ -98,6 +98,8 @@ public class PlayAudio extends Activity {
 			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					// return to the lesson activity
+					finish();
 				}
 			});
 			builder.setMessage(error)

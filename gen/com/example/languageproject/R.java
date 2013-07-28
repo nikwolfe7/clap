@@ -36,12 +36,12 @@ public final class R {
         public static final int buttonCountry=0x7f07000b;
         public static final int buttonHelp=0x7f07000d;
         public static final int buttonReset=0x7f07000c;
-        public static final int country_item_id=0x7f070005;
-        public static final int country_list=0x7f070006;
-        public static final int language_item_id=0x7f070007;
-        public static final int language_list=0x7f070008;
-        public static final int lesson_item_id=0x7f070009;
-        public static final int lesson_list=0x7f07000a;
+        public static final int item_id=0x7f070005;
+        public static final int language_item_id=0x7f070006;
+        public static final int language_list=0x7f070007;
+        public static final int lesson_item_id=0x7f070008;
+        public static final int lesson_list=0x7f070009;
+        public static final int list=0x7f07000a;
         public static final int main_icon=0x7f070000;
         public static final int screen=0x7f070001;
     }
@@ -49,12 +49,12 @@ public final class R {
         public static final int activity_main=0x7f030000;
         public static final int activity_play_audio=0x7f030001;
         public static final int audio_lesson=0x7f030002;
-        public static final int country_item=0x7f030003;
-        public static final int country_list=0x7f030004;
-        public static final int language_item=0x7f030005;
-        public static final int language_list=0x7f030006;
-        public static final int lesson_item=0x7f030007;
-        public static final int lesson_list=0x7f030008;
+        public static final int item=0x7f030003;
+        public static final int language_item=0x7f030004;
+        public static final int language_list=0x7f030005;
+        public static final int lesson_item=0x7f030006;
+        public static final int lesson_list=0x7f030007;
+        public static final int list=0x7f030008;
         public static final int main_menu=0x7f030009;
     }
     public static final class string {

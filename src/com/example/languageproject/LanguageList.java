@@ -60,8 +60,8 @@ public class LanguageList extends Activity {
 			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					Intent countriesActivity = new Intent(context, CountriesList.class);
-					startActivity(countriesActivity);
+					// return to countries activity
+					finish();
 				}
 			});
 			builder.setMessage(error).setTitle("Oops!");
@@ -82,7 +82,9 @@ public class LanguageList extends Activity {
 				// Display the languages in a list
 				ArrayAdapter<String> adapter;
 				adapter = new ArrayAdapter<String>(context,
-						R.layout.language_item, R.id.language_item_id, languageList);
+						R.layout.language_item,
+						R.id.language_item_id,
+						languageList);
 				lv.setAdapter(adapter);
 
 				lv.setOnItemClickListener(new OnItemClickListener() {
@@ -93,9 +95,10 @@ public class LanguageList extends Activity {
 						String languageSelected = (parent.getAdapter().getItem(position).toString());
 
 						// Start the lesson list activity
+						// Pass it the language name and country name
 						Intent lessonActivity = new Intent(context, LessonList.class);
 						lessonActivity.putExtra("languageName", languageSelected);
-						lessonActivity.putExtra("countryName", country_name);
+						lessonActivity.putExtra("countryName", getCountryName());
 						startActivity(lessonActivity);
 					}
 				});
