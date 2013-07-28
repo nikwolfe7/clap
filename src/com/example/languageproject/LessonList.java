@@ -19,6 +19,7 @@ import android.widget.ListView;
 public class LessonList extends Activity {
 	private String language_name;
 	private String country_name;
+	private String title = "Lesson List for ";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,8 @@ public class LessonList extends Activity {
 		Bundle b = i.getExtras();
 		language_name = b.getString("languageName");
 		country_name = b.getString("countryName");
-		setTitle(country_name + " : " + language_name);
+		title = title + language_name;
+		setTitle(title);
 		new LongRunningGetIO(this).execute();
 	}
 
@@ -44,26 +46,14 @@ public class LessonList extends Activity {
 		
 		@Override
 		protected void onPreExecute() {
-			progressDialog.setMessage("Loading...");
+			progressDialog.setMessage("Loading " + this.getTitle() + "...");
 			progressDialog.show();
 		}
 		
 		@Override
 		protected ArrayList<String> doInBackground(Void... params) {
 			ApplicationState state = (ApplicationState) getApplication();
-			Country currentCountry = state.getCountry(country_name);
-			if (currentCountry != null) {
-				Language currentLanguage = currentCountry.getLanguage(language_name);
-				if (currentLanguage != null) {
-					return currentLanguage.getLessonNames();
-				} else {
-					// couldn't get current language
-					return null;
-				}
-			} else {
-				// couldn't get current country
-				return null;
-			}
+			return state.getLessonNames(language_name);
 		}
 
 		private void showErrorMessage(String error) {
@@ -71,10 +61,11 @@ public class LessonList extends Activity {
 			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					Intent languageActivity = new Intent(context, LanguageList.class);
+					startActivity(languageActivity);
 				}
 			});
-			builder.setMessage(error)
-			.setTitle("Error");
+			builder.setMessage(error).setTitle("Oops!");
 			AlertDialog errorDialog = builder.create();
 			errorDialog.show();
 		}
@@ -82,9 +73,9 @@ public class LessonList extends Activity {
 		protected void onPostExecute(ArrayList<String> lessonList) {
 			progressDialog.dismiss();
 			
-			if (lessonList == null || lessonList.isEmpty()) {
-				showErrorMessage("Empty List");
-			} else if (lessonList.get(0).startsWith("Error:")) {
+			if (lessonList == null || lessonList.isEmpty() || lessonList.get(0).startsWith("Empty List")) {
+				showErrorMessage("Unable to load lessons for " + this.getLanguageName());
+			} else if (lessonList.get(0).startsWith("Invalid List")) {
 				showErrorMessage(lessonList.get(0));
 			} else {
 				lv = (ListView)findViewById(R.id.lesson_list);
@@ -109,6 +100,14 @@ public class LessonList extends Activity {
 					}
 				});
 			}
+		}
+
+		private String getLanguageName() {
+			return language_name;
+		}
+		
+		private String getTitle() {
+			return title;
 		}
 	}
 }

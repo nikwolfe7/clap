@@ -3,12 +3,9 @@ package com.example.languageproject;
 import java.io.File;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Language {
-	private static String GET_LESSONS_HTTP_STRING = "http://www.celebrate-language.com/public-api/?action=get_lessons_by_lang&lang=";
-
 	private String name;
 	private ArrayList<Lesson> lessons = new ArrayList<Lesson>();
 	private Country country;
@@ -44,25 +41,10 @@ public class Language {
 		}
 	}
 
-	public ArrayList<String> getLessonNames() {
+	/*public ArrayList<String> getLessonNames() {
 		if (lessons.isEmpty()) {
-			/*if (directory.exists() && directory.isDirectory()) {
-				ArrayList<String> temp = new ArrayList<String>();
-				for (File f : directory.listFiles()) {
-					if (f.isDirectory()) {
-						Pattern p = Pattern.compile("^[(^\\ )] \\([(^\\))]\\)$");
-						Matcher matcher = p.matcher(f.getName());
-						if (matcher.find()) {
-							temp.add(matcher.group(0));
-							lessons.add(new Lesson(matcher.group(0), matcher.group(1), this));
-						}
-					}
-				}
-				return temp;
-			} else {*/
-				// get the list of lessons from the language name
-				return processJSONArray(WebAPI.getJSONArray(WebAPI.HTTP_GET.LESSONS, encodedName()));
-			//}
+			// get the list of lessons from the language name
+			return processJSONArray(WebAPI.getJSONArray(WebAPI.HTTP_GET.LESSONS, encodedName()));
 		} else {
 			ArrayList<String> temp = new ArrayList<String>();
 			for (Lesson l : lessons) {
@@ -77,7 +59,7 @@ public class Language {
 			processJSONArray(WebAPI.getJSONArray(WebAPI.HTTP_GET.LESSONS, encodedName()));
 		}
 		return lessons;
-	}
+	}*/
 	
 	public Lesson getLesson(String lessonName) {
 		for (Lesson l : lessons) {

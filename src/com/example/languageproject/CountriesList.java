@@ -55,10 +55,11 @@ public class CountriesList extends Activity {
 			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					Intent mainActivity = new Intent(context, MainMenu.class);
+					startActivity(mainActivity);
 				}
 			});
-			builder.setMessage(error)
-			.setTitle("Error");
+			builder.setMessage(error).setTitle("Oops!");
 			AlertDialog errorDialog = builder.create();
 			errorDialog.show();
 		}
@@ -67,9 +68,9 @@ public class CountriesList extends Activity {
 		protected void onPostExecute(ArrayList<String> countryList) {
 			progressDialog.dismiss();
 			
-			if (countryList == null || countryList.isEmpty()) {
-				showErrorMessage("Empty List");
-			} else if (countryList.get(0).startsWith("Error:")) {
+			if (countryList == null || countryList.isEmpty() || countryList.get(0).startsWith("Empty List")) {
+				showErrorMessage("Unable to load country list");
+			} else if (countryList.get(0).startsWith("Invalid List")) {
 				showErrorMessage(countryList.get(0));
 			} else {
 				lv = (ListView) findViewById(R.id.country_list);

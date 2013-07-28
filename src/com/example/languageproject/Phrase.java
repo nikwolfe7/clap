@@ -28,8 +28,7 @@ public class Phrase {
 				+ audioURL.substring(temp + 1);
 	}
 
-	public Phrase(String id, String pText, String tText, String url,
-			Lesson phraseLesson) {
+	public Phrase(String id, String pText, String tText, String url, Lesson phraseLesson) {
 		phraseId = id;
 		phraseText = pText;
 		translatedText = tText;
@@ -38,6 +37,13 @@ public class Phrase {
 		int temp = audioURL.lastIndexOf("/");
 		audioLocation = lesson.getDirectoryName() + "/"
 				+ audioURL.substring(temp + 1);
+	}
+
+	public Phrase(String id, String pText, String tText, String url) {
+		phraseId = id;
+		phraseText = pText;
+		translatedText = tText;
+		audioURL = url;
 	}
 
 	public String getPhraseId() {

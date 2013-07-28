@@ -49,7 +49,8 @@ public class PlayAudio extends Activity {
 		@Override
 		protected ArrayList<Phrase> doInBackground(Void... params) {
 			ApplicationState state = (ApplicationState)getApplication();
-			Country currentCountry = state.getCountry(country_name);
+			return state.getPhrases(language_name, lesson_name);
+			/*Country currentCountry = state.getCountry(country_name);
 			if (currentCountry != null) {
 				Language currentLanguage = currentCountry.getLanguage(language_name);
 				if (currentLanguage != null) {
@@ -76,7 +77,7 @@ public class PlayAudio extends Activity {
 			} else {
 				// couldn't get current country
 				return null;
-			}
+			}*/
 		}
 		
 		private ArrayList<Phrase> orderPhrases(ArrayList<Phrase> phraseList, ArrayList<String> phraseOrder) {

@@ -67,11 +67,11 @@ public class WebAPI {
 		fileOutput.close();
 	}
 
-	public static String getJSONArray(HTTP_GET httpGetValue) {
+	public static String getJSONArray(HTTP_GET httpGetValue) throws Exception {
 		return getJSONArray(httpGetValue, "");
 	}
 
-	public static String getJSONArray(HTTP_GET httpGetValue, String httpGetParam) {
+	public static String getJSONArray(HTTP_GET httpGetValue, String httpGetParam) throws Exception {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		HttpGet httpGet = new HttpGet(httpGetValue.stringValue() + httpGetParam);
@@ -86,7 +86,9 @@ public class WebAPI {
 		
 		if (text != null) {
 			if (text.equals("[]") || text.equals("[null]")) {
-				return "EMPTY";
+				throw new Exception("Empty List");
+			} else if (!text.startsWith("[") || !text.endsWith("]")) {
+				throw new Exception("Invalid List: " + text);
 			} else {
 				Pattern p = Pattern.compile("^" + Pattern.quote("[") + "(.*)" + Pattern.quote("]") + "$");
 				Matcher matcher = p.matcher(text);
@@ -97,7 +99,7 @@ public class WebAPI {
 				}
 			}
 		} else {
-			return "EMPTY";
+			throw new Exception("Empty List");
 		}
 	}
 

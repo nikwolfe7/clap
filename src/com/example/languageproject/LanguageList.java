@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -19,7 +18,7 @@ import android.widget.ListView;
 
 public class LanguageList extends Activity {
 	private String country_name;
-	private final String title = "Language List";
+	private String title = "Language List for ";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +27,8 @@ public class LanguageList extends Activity {
 		Intent i = getIntent();
 		Bundle b = i.getExtras();
 		country_name = b.getString("countryName");
-		setTitle(title + " for " + country_name);
+		title = title + country_name;
+		setTitle(title);
 		new LongRunningGetIO(this).execute();
 	}
 
@@ -45,20 +45,14 @@ public class LanguageList extends Activity {
 		
 		@Override
 		protected void onPreExecute() {
-			progressDialog.setMessage("Loading " + this.getTitle() + " for " + this.getCountryName() + "...");
+			progressDialog.setMessage("Loading " + this.getTitle() + "...");
 			progressDialog.show();
 		}
 		
 		@Override
 		protected ArrayList<String> doInBackground(Void... params) {
 			ApplicationState state = (ApplicationState) getApplication();
-			Country currentCountry = state.getCountry(country_name);
-			if (currentCountry != null) {
-				return currentCountry.getLanguageNames();
-			} else {
-				// couldn't get current country
-				return null;
-			}
+			return state.getLanguageNames(country_name);
 		}
 
 		private void showErrorMessage(String error) {
@@ -66,8 +60,8 @@ public class LanguageList extends Activity {
 			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					Intent languageActivity = new Intent(context, CountriesList.class);
-					startActivity(languageActivity);
+					Intent countriesActivity = new Intent(context, CountriesList.class);
+					startActivity(countriesActivity);
 				}
 			});
 			builder.setMessage(error).setTitle("Oops!");
@@ -78,10 +72,10 @@ public class LanguageList extends Activity {
 		protected void onPostExecute(ArrayList<String> languageList) {
 			progressDialog.dismiss();
 			
-			if (languageList == null || languageList.isEmpty() || languageList.get(0).startsWith("Error:")) {
-				
+			if (languageList == null || languageList.isEmpty() || languageList.get(0).startsWith("Empty List")) {
 				showErrorMessage("Language lessons currently unavailable for " + this.getCountryName());
-				
+			} else if (languageList.get(0).startsWith("Invalid List")) {
+				showErrorMessage(languageList.get(0));
 			} else {
 				lv = (ListView)findViewById(R.id.language_list);
 
