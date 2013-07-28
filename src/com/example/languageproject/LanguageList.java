@@ -23,7 +23,7 @@ public class LanguageList extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.language_list);
+		setContentView(R.layout.list);
 		Intent i = getIntent();
 		Bundle b = i.getExtras();
 		country_name = b.getString("countryName");
@@ -77,13 +77,13 @@ public class LanguageList extends Activity {
 			} else if (languageList.get(0).startsWith("Invalid List")) {
 				showErrorMessage(languageList.get(0));
 			} else {
-				lv = (ListView)findViewById(R.id.language_list);
+				lv = (ListView)findViewById(R.id.list);
 
 				// Display the languages in a list
 				ArrayAdapter<String> adapter;
 				adapter = new ArrayAdapter<String>(context,
-						R.layout.language_item,
-						R.id.language_item_id,
+						R.layout.item,
+						R.id.item_id,
 						languageList);
 				lv.setAdapter(adapter);
 
