@@ -17,5 +17,6 @@
     <string name="btnPlayLesson">Play Lesson</string>
     <string name="btnStudyPhrases">Study Phrases</string>
     <string name="btnQuit">Return to Menu</string>
+    <string name="about">Developed by Peace Corps Ghana in collaboration with Coders4Africa and Mobile Web Ghana</string>
     
 </resources>
