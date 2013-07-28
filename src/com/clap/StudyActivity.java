@@ -81,6 +81,8 @@ public class StudyActivity extends Activity {
 		
 		@Override
 		protected void onPostExecute(ArrayList<String> phraseNameList) {
+			pd.dismiss(); // kill the load dialog
+			
 			if( phraseNameList == null || phraseNameList.size() < 1 ) {
 				displayError("Phrases for this lesson are currently unavailable!");
 			} else {
