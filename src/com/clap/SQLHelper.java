@@ -17,7 +17,6 @@ public class SQLHelper extends SQLiteOpenHelper {
 
 	// Columns
 	public static final String COLUMN_ID = "_ID";
-	//public static final String COLUMN_COUNTRY_ID = "COUNTRY_ID";
 	public static final String COLUMN_COUNTRY = "COUNTRY";
 	public static final String COLUMN_LANGUAGE = "LANGUAGE";
 	public static final String COLUMN_LESSON = "LESSON";

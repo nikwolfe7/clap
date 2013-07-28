@@ -273,6 +273,9 @@ public class ClapDatabase {
 	}
 	
 	public ArrayList<String> getPhraseOrder(String lessonId) {
+		String results;
+		ArrayList<String> phraseOrder = new ArrayList<String>();
+
 		if (database == null) {
 			database = databaseHelper.getWritableDatabase();
 		}
@@ -280,32 +283,41 @@ public class ClapDatabase {
 		// Check the database table to see if we have downloaded the lessons yet
 		Cursor cursor = database.query(SQLHelper.TABLE_PHRASE_ORDER, new String[] {
 				SQLHelper.COLUMN_ID, SQLHelper.COLUMN_LESSON_ID, SQLHelper.COLUMN_PHRASE_ORDERING },
-				null, null, null, null, null);
+				SQLHelper.COLUMN_LESSON_ID + WHERE, new String[] { lessonId },
+				null, null, null);
 
 		if (cursor.moveToFirst()) {
-			//return getFromCursor(cursor, SQLHelper.COLUMN_PHRASE_ID);
+			results = cursor.getString(cursor.getColumnIndexOrThrow(SQLHelper.COLUMN_PHRASE_ORDERING));
 		} else {
 			// database table was empty
 			// download the lesson names and populate the table
-			String results;
 			try {
 				results = WebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASE_ORDER, lessonId);
+
+				// add to the database
+				ContentValues values = new ContentValues();
+				values.put(SQLHelper.COLUMN_LESSON_ID, lessonId);
+				values.put(SQLHelper.COLUMN_PHRASE_ORDERING, results);
+				database.insert(SQLHelper.TABLE_PHRASE_ORDER, null, values);
 			} catch (Exception e) {
 				ArrayList<String> temp = new ArrayList<String>();
 				temp.add(e.getMessage());
 				return temp;
 			}
-
-			// remove quotes
-			results = results.replace("\"", "");
-			// remove first bracket of first group and last bracket of last group
-			results = results.substring(1, results.length() - 1); 
-			// should have a list of phrase ids, split by commas
-			String[] tempPhraseOrder = results.split(",");
-
-			//return phraseOrder;
 		}
-		return null;
+
+		// remove quotes
+		results = results.replace("\"", "");
+		// remove first bracket of first group and last bracket of last group
+		results = results.substring(1, results.length() - 1); 
+		// should have a list of phrase ids, split by commas
+		String[] tempPhraseOrder = results.split(",");
+
+		for (String s : tempPhraseOrder) {
+			phraseOrder.add(s);
+		}
+
+		return phraseOrder;
 	}
 
 	public void reset() {
