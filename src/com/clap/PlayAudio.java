@@ -51,7 +51,12 @@ public class PlayAudio extends Activity {
 		@Override
 		protected ArrayList<Phrase> doInBackground(Void... params) {
 			ApplicationState state = (ApplicationState)getApplication();
-			return state.getPhrases(language_name, lesson_name);
+			try {
+				return state.getPhrases(lesson_name);
+			} catch (Exception e) {
+				showErrorMessage(e.getMessage());
+				return new ArrayList<Phrase>();
+			}
 			/*Country currentCountry = state.getCountry(country_name);
 			if (currentCountry != null) {
 				Language currentLanguage = currentCountry.getLanguage(language_name);

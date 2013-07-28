@@ -22,10 +22,11 @@ public class ApplicationState extends Application {
 		return database.getLessonNames(languageName);
 	}
 
-	public ArrayList<Phrase> getPhrases(String languageName, String lessonName) {
+	public ArrayList<Phrase> getPhrases(String lessonName) throws Exception {
+		String languageName = lessonName.split(" ")[0];
 		File dir = new File(directory + languageName + "/" + lessonName);
 		dir.mkdirs();
-		return database.getPhrases(lessonName);
+		return database.getPhrases(database.getLessonId(lessonName));
 	}
 
 	public void resetDatabase() {

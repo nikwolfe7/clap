@@ -1,5 +1,6 @@
 package com.clap;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.example.languageproject.R;
 
@@ -47,6 +48,7 @@ public class StudyActivity extends Activity {
 
 		private Context c;
 		private ProgressDialog pd;
+		private HashMap<String, Phrase> phraseMap = new HashMap<String, Phrase>();
 		
 		public LongRunningGetIO(Context context) {
 			this.c = context;
@@ -62,20 +64,31 @@ public class StudyActivity extends Activity {
 		@Override
 		protected ArrayList<String> doInBackground(Void... params) {
 			ApplicationState state = (ApplicationState) getApplication();
+			try {
+				ArrayList<Phrase> phraseList = state.getPhrases(lesson);
+				ArrayList<String> keyList = new ArrayList<String>();
+				for( Phrase p : phraseList ) {
+					phraseMap.put(p.getPhraseText(), p);
+					keyList.add(p.getPhraseText());
+				}
+				return keyList;
+				
+			} catch (Exception e) {
+				displayError(e.getMessage());
+			}
 			return null;
-			//return state.getPhrases(lesson);
 		}
 		
 		@Override
-		protected void onPostExecute(ArrayList<String> phraseList) {
-			if( phraseList == null || phraseList.size() < 1 ) {
+		protected void onPostExecute(ArrayList<String> phraseNameList) {
+			if( phraseNameList == null || phraseNameList.size() < 1 ) {
 				displayError("Phrases for this lesson are currently unavailable!");
 			} else {
 				
 				// phrases list
 				ListView lv = (ListView) findViewById(R.id.list);
 				ArrayAdapter<String> adapter;
-				adapter = new ArrayAdapter<String>(c, R.layout.item, R.id.item_id, phraseList);
+				adapter = new ArrayAdapter<String>(c, R.layout.item, R.id.item_id, phraseNameList);
 				lv.setAdapter(adapter);
 				
 				// item in the phrase is clicked

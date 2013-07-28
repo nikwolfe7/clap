@@ -36,7 +36,7 @@ public class ClapDatabase {
 				null, null, null, null);
 
 		if (cursor.moveToFirst()) {
-			return getNamesFromCursor(cursor);
+			return getFromCursor(cursor, SQLHelper.COLUMN_COUNTRY);
 		} else {
 			// database table was empty
 			// download the country names and populate the table
@@ -77,7 +77,7 @@ public class ClapDatabase {
 				null, null, null);
 
 		if (cursor.moveToFirst()) {
-			return getNamesFromCursor(cursor);
+			return getFromCursor(cursor, SQLHelper.COLUMN_LANGUAGE);
 		} else {
 			// database table was empty
 			// download the language names and populate the table
@@ -120,7 +120,7 @@ public class ClapDatabase {
 				new String[] { languageName }, null, null, null);
 
 		if (cursor.moveToFirst()) {
-			return getNamesFromCursor(cursor);
+			return getFromCursor(cursor, SQLHelper.COLUMN_LESSON);
 		} else {
 			// database table was empty
 			// download the lesson names and populate the table
@@ -152,6 +152,7 @@ public class ClapDatabase {
 
 				lessonNames.add(lessonName);
 
+				// add to the database
 				ContentValues values = new ContentValues();
 				values.put(SQLHelper.COLUMN_LANGUAGE, languageName);
 				values.put(SQLHelper.COLUMN_LESSON, lessonName);
@@ -162,7 +163,24 @@ public class ClapDatabase {
 		}
 	}
 
-	public ArrayList<Phrase> getPhrases(String lessonId) {
+	public String getLessonId(String lessonName) {
+		if (database == null) {
+			database = databaseHelper.getWritableDatabase();
+		}
+
+		Cursor cursor = database.query(SQLHelper.TABLE_LESSONS, new String[] {
+				SQLHelper.COLUMN_LANGUAGE, SQLHelper.COLUMN_LESSON,
+				SQLHelper.COLUMN_LESSON_ID },
+				SQLHelper.COLUMN_LESSON + WHERE,
+				new String[] { lessonName }, null, null, null);
+		
+		if (cursor.moveToFirst()) {
+			return cursor.getString(cursor.getColumnIndexOrThrow(SQLHelper.COLUMN_LESSON_ID));
+		} else {
+			return "";
+		}
+	}
+	public ArrayList<Phrase> getPhrases(String lessonId) throws Exception {
 		ArrayList<Phrase> phrases = new ArrayList<Phrase>();
 
 		if (database == null) {
@@ -173,7 +191,7 @@ public class ClapDatabase {
 		// information yet
 		Cursor cursor = database.query(SQLHelper.TABLE_PHRASES, new String[] { SQLHelper.COLUMN_LESSON_ID, SQLHelper.COLUMN_PHRASE_ID,
 				SQLHelper.COLUMN_PHRASE_TEXT, SQLHelper.COLUMN_TRANSLATED_TEXT, SQLHelper.COLUMN_AUDIO_URL},
-				SQLHelper.COLUMN_LANGUAGE + WHERE, new String[] { lessonId },
+				SQLHelper.COLUMN_LESSON_ID + WHERE, new String[] { lessonId },
 				null, null, null);
 		
 		if (cursor.moveToFirst()) {
@@ -190,23 +208,76 @@ public class ClapDatabase {
 			}
 			// Make sure to close the cursor
 			cursor.close();
-		//} else {
+		} else {
 			// database table was empty
 			// download the phrase information and populate the table
-			//String results = WebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASES, lessonName);
+			String results = WebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASES, lessonId);
+			// remove first bracket of first group and last bracket of last group
+			results = results.substring(1, results.length() - 1); 
+			// split at '],['
+			// \\Q and \\E are used so the brackets are escaped properly
+			String[] phraseEntries = results.split(Pattern.compile(
+					"\\Q]\\E,\\Q[\\E").pattern());
+
+			for (String entry : phraseEntries) {
+				// s should have the format: "PHRASE ID","PHRASE TEXT","TRANSLATED TEXT","AUDIO URL"
+				// sometimes an entry like "PHRASE TEXT" or "TRANSLATED TEXT" is just: null
+
+				// use StringBuilder to edit the String
+				StringBuilder entryStringBuilder = new StringBuilder(entry);
+				
+				// check the string for commas, make sure we keep the ones
+				// inside of quotes, otherwise change the comma to @
+				boolean inQuotes = false;
+				for (int i = 0; i < entryStringBuilder.length(); i++) {
+					if (entryStringBuilder.charAt(i) == '\"') {
+						// inQuotes gets toggled
+						inQuotes = !inQuotes;
+					} else if (entryStringBuilder.charAt(i) == ',' && !inQuotes) {
+						// found a comma that was not in quotes
+						// replace it with @ so we can split using @
+						entryStringBuilder.setCharAt(i, '@');
+					}
+				}
+			
+				// convert the StringBuilder back to a String
+				String tempEntry = entryStringBuilder.toString();
+				// get rid of quotes
+				tempEntry = tempEntry.replace("\"", "");
+				// split at @, which is where commas not in quotes used to be
+				String[] splitEntry = tempEntry.split("@");
+				
+				if (splitEntry != null) {
+					// add to the list of phrases
+					String phraseId = splitEntry[0];
+					String phraseText = splitEntry[1];
+					String translatedText = splitEntry[2];
+					String audioURL = splitEntry[3];
+					phrases.add(new Phrase(phraseId, phraseText, translatedText, audioURL));
+
+					// add to the database
+					ContentValues values = new ContentValues();
+					values.put(SQLHelper.COLUMN_LESSON_ID, lessonId);
+					values.put(SQLHelper.COLUMN_PHRASE_ID, phraseId);
+					values.put(SQLHelper.COLUMN_PHRASE_TEXT, phraseText);
+					values.put(SQLHelper.COLUMN_TRANSLATED_TEXT, translatedText);
+					values.put(SQLHelper.COLUMN_AUDIO_URL, audioURL);
+					database.insert(SQLHelper.TABLE_PHRASES, null, values);
+				}
+			}
 		}
-		return new ArrayList<Phrase>();
+		return phrases;
 	}
 	
 	public void reset() {
 		databaseHelper.onUpgrade(database, 1, 1);
 	}
 
-	private ArrayList<String> getNamesFromCursor(Cursor cursor) {
+	private ArrayList<String> getFromCursor(Cursor cursor, String columnName) {
 		ArrayList<String> tempList = new ArrayList<String>();
 		// Get all of the names from the table
 		while (!cursor.isAfterLast()) {
-			tempList.add(cursor.getString(1));
+			tempList.add(cursor.getString(cursor.getColumnIndexOrThrow(columnName)));
 			cursor.moveToNext();
 		}
 		// Make sure to close the cursor

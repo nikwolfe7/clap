@@ -48,7 +48,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 			+ COLUMN_LESSON_ID + INT + ");";
 	private static final String CREATE_PHRASES = CREATE
 			+ TABLE_PHRASES + " ("
-			+ COLUMN_LESSON + TEXT + COMMA
+			+ COLUMN_LESSON_ID + INT + COMMA
 			+ COLUMN_PHRASE_ID + INT + COMMA
 			+ COLUMN_PHRASE_TEXT + TEXT + COMMA
 			+ COLUMN_TRANSLATED_TEXT + TEXT + COMMA
