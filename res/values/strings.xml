@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">LanguageProject</string>
+    <string name="app_name">CLAP 4 Android</string>
     <string name="action_settings">Settings</string>
     <string name="clap">The Celebrate Language Audio Project</string>
     <string name="clap2">CLAP</string>
+    <string name="website">www.celebrate-language.com</string>
     <string name="btnCountry">Country</string>
     <string name="btnReset">Reset</string><string name="btnHelp">Help</string>
     <string name="btnAbout">About</string>

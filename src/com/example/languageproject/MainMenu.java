@@ -25,7 +25,6 @@ public class MainMenu extends Activity {
 				Intent countriesActivity = new Intent();
 				countriesActivity.setClass(arg0.getContext(), CountriesList.class);
 				startActivity(countriesActivity);
-				
 			}
 		});
 		
