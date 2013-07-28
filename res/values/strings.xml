@@ -6,16 +6,14 @@
     <string name="clap">The Celebrate Language Audio Project</string>
     <string name="clap2">CLAP</string>
     <string name="btnCountry">Country</string>
-    <string name="btnHelp">Help</string>
+    <string name="btnReset">Reset</string><string name="btnHelp">Help</string>
     <string name="btnAbout">About</string>
     <string name="title_activity_lesson_list">LessonList</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_play_audio">PlayAudio</string>
     <string name="ok">OK</string>
     <string name="splash_img_desc">Africa Image</string>
     <string name="btnPlayLesson">Play Lesson</string>
     <string name="btnStudyPhrases">Study Phrases</string>
     <string name="btnQuit">Return to Menu</string>
-    
     
 </resources>

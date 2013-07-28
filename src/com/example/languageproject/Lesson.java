@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class Lesson {
-	private static String GET_PHRASES_HTTP_STRING = "http://www.celebrate-language.com/public-api/?action=get_phrases_by_lesson_id&id=";
-	private static String GET_PHRASE_ORDER_HTTP_STRING = "http://www.celebrate-language.com/public-api/?action=get_order_by_lesson_id&id=";
-
 	private String name;
 	private String id;
 	private ArrayList<Phrase> phrases = new ArrayList<Phrase>();
@@ -51,7 +48,7 @@ public class Lesson {
 		}
 	}
 
-	public ArrayList<String> getPhraseText() {
+	/*public ArrayList<String> getPhraseText() {
 		if (phrases.isEmpty()) {
 			// get the phrase list from the lesson id
 			return processJSONArray(WebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASES, encodedId()));
@@ -76,7 +73,7 @@ public class Lesson {
 			processJSONArrayPhraseOrder(WebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASE_ORDER, encodedId()));
 		}
 		return phraseOrder;
-	}
+	}*/
 
 	// processes the JSON array returned from the website
 	// returns list of phrase ids

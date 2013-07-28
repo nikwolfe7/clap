@@ -6,22 +6,31 @@
   android:layout_height="match_parent"
   android:gravity="center">
   
-    <Button 
-        android:id="@+id/button1" 
-        android:layout_width="150dp" android:layout_height="wrap_content" android:text="@string/btnCountry"/>
-    
-    <Button 
-        android:id="@+id/button2" 
-        android:layout_height="wrap_content" 
-        android:text="@string/btnHelp"
+    <Button
+        android:id="@+id/buttonCountry"
         android:layout_width="150dp"
-        android:layout_marginTop="20dip"/>
-    
-    <Button 
-        android:id="@+id/button3" 
+        android:layout_height="wrap_content"
+        android:text="@string/btnCountry" />
+
+    <Button
+        android:id="@+id/buttonReset"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dip"
-        android:layout_height="wrap_content" 
-        android:text="@string/btnAbout"
-        android:layout_width="150dp"/>
+        android:text="@string/btnReset" />
+
+    <Button
+        android:id="@+id/buttonHelp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:text="@string/btnHelp" />
+
+    <Button
+        android:id="@+id/buttonAbout"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:text="@string/btnAbout" />
     
 </LinearLayout>

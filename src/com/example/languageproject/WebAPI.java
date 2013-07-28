@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,14 +70,14 @@ public class WebAPI {
 		fileOutput.close();
 	}
 
-	public static String getJSONArray(HTTP_GET httpGetValue) {
+	public static String getJSONArray(HTTP_GET httpGetValue) throws Exception {
 		return getJSONArray(httpGetValue, "");
 	}
 
-	public static String getJSONArray(HTTP_GET httpGetValue, String httpGetParam) {
+	public static String getJSONArray(HTTP_GET httpGetValue, String httpGetParam) throws Exception {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
-		HttpGet httpGet = new HttpGet(httpGetValue.stringValue() + httpGetParam);
+		HttpGet httpGet = new HttpGet(httpGetValue.stringValue() + encodeParam(httpGetParam));
 		String text = null;
 		try {
 			HttpResponse response = httpClient.execute(httpGet, localContext);
@@ -86,7 +89,9 @@ public class WebAPI {
 		
 		if (text != null) {
 			if (text.equals("[]") || text.equals("[null]")) {
-				return "EMPTY";
+				throw new Exception("Empty List");
+			} else if (!text.startsWith("[") || !text.endsWith("]")) {
+				throw new Exception("Invalid List: " + text);
 			} else {
 				Pattern p = Pattern.compile("^" + Pattern.quote("[") + "(.*)" + Pattern.quote("]") + "$");
 				Matcher matcher = p.matcher(text);
@@ -97,10 +102,19 @@ public class WebAPI {
 				}
 			}
 		} else {
-			return "EMPTY";
+			throw new Exception("Empty List");
 		}
 	}
 
+	private static String encodeParam(String stringToEncode) {
+		try {
+			return URLEncoder.encode(stringToEncode, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return stringToEncode;
+		}
+		
+	}
 	private static String getASCIIContentFromEntity(HttpEntity entity)
 			throws IllegalStateException, IOException {
 		InputStream in = entity.getContent();
