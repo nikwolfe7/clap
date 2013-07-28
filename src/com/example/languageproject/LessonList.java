@@ -29,7 +29,7 @@ public class LessonList extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.lesson_list);
+		setContentView(R.layout.list);
 		
 		// Get the information passed to us from the last activity
 		Intent i = getIntent();
@@ -87,12 +87,12 @@ public class LessonList extends Activity {
 			} else if (lessonList.get(0).startsWith("Invalid List")) {
 				showErrorMessage(lessonList.get(0));
 			} else {
-				lv = (ListView)findViewById(R.id.lesson_list);
+				lv = (ListView)findViewById(R.id.list);
 
 				// Display the lessons
 				ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
-						R.layout.lesson_item,
-						R.id.lesson_item_id,
+						R.layout.item,
+						R.id.item_id,
 						lessonList);
 				lv.setAdapter(adapter);
 				
@@ -106,24 +106,12 @@ public class LessonList extends Activity {
 						// create the lesson dialog
 						Intent lessonDialog = new Intent(context, LessonDialog.class);
 						ArrayList<String> extras = new ArrayList<String>();
-						extras.add(country_name);
-						extras.add(language_name);
+						extras.add(getCountryName());
+						extras.add(getLanguageName());
 						extras.add(lessonSelected);
 						lessonDialog.putStringArrayListExtra(EXTRAS, extras);
 						lessonDialog.putExtra(LESSON_TITLE, lessonSelected);
 						startActivity(lessonDialog);
-						
-						
-						// FIX.
-						/*
-						// Open the lesson audio activity
-						// Pass it the lesson name, language name and country name
-						Intent lessonAudio = new Intent(context, PlayAudio.class);
-						lessonAudio.putExtra("lessonName", lessonSelected);
-						lessonAudio.putExtra("languageName", getLanguageName());
-						lessonAudio.putExtra("countryName", getCountryName());
-						startActivity(lessonAudio);
-						*/
 					}
 				});
 			}

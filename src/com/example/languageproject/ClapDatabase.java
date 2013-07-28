@@ -70,8 +70,7 @@ public class ClapDatabase {
 			database = databaseHelper.getWritableDatabase();
 		}
 
-		// Check the database table to see if we have downloaded the languages
-		// yet
+		// Check the database table to see if we have downloaded the languages yet
 		Cursor cursor = database.query(SQLHelper.TABLE_LANGUAGES, new String[] {
 				SQLHelper.COLUMN_COUNTRY, SQLHelper.COLUMN_LANGUAGE },
 				SQLHelper.COLUMN_COUNTRY + WHERE, new String[] { countryName },
