@@ -32,7 +32,7 @@ public class ClapDatabase {
 		// Check the database table to see if we have downloaded the countries
 		// yet
 		Cursor cursor = database.query(SQLHelper.TABLE_COUNTRIES, new String[] {
-				SQLHelper.COLUMN_COUNTRY_ID, SQLHelper.COLUMN_COUNTRY }, null,
+				SQLHelper.COLUMN_ID , SQLHelper.COLUMN_COUNTRY }, null,
 				null, null, null, null);
 
 		if (cursor.moveToFirst()) {
@@ -56,10 +56,12 @@ public class ClapDatabase {
 
 			ArrayList<String> countryNames = new ArrayList<String>();
 			for (String s : strArray) {
+				countryNames.add(s);
+				
+				// add to the database
 				ContentValues values = new ContentValues();
 				values.put(SQLHelper.COLUMN_COUNTRY, s);
 				database.insert(SQLHelper.TABLE_COUNTRIES, null, values);
-				countryNames.add(s);
 			}
 			return countryNames;
 		}
@@ -72,7 +74,7 @@ public class ClapDatabase {
 
 		// Check the database table to see if we have downloaded the languages yet
 		Cursor cursor = database.query(SQLHelper.TABLE_LANGUAGES, new String[] {
-				SQLHelper.COLUMN_COUNTRY, SQLHelper.COLUMN_LANGUAGE },
+				SQLHelper.COLUMN_ID, SQLHelper.COLUMN_COUNTRY, SQLHelper.COLUMN_LANGUAGE },
 				SQLHelper.COLUMN_COUNTRY + WHERE, new String[] { countryName },
 				null, null, null);
 
@@ -114,7 +116,7 @@ public class ClapDatabase {
 
 		// Check the database table to see if we have downloaded the lessons yet
 		Cursor cursor = database.query(SQLHelper.TABLE_LESSONS, new String[] {
-				SQLHelper.COLUMN_LANGUAGE, SQLHelper.COLUMN_LESSON,
+				SQLHelper.COLUMN_ID, SQLHelper.COLUMN_LANGUAGE, SQLHelper.COLUMN_LESSON,
 				SQLHelper.COLUMN_LESSON_ID },
 				SQLHelper.COLUMN_LANGUAGE + WHERE,
 				new String[] { languageName }, null, null, null);
@@ -169,7 +171,7 @@ public class ClapDatabase {
 		}
 
 		Cursor cursor = database.query(SQLHelper.TABLE_LESSONS, new String[] {
-				SQLHelper.COLUMN_LANGUAGE, SQLHelper.COLUMN_LESSON,
+				SQLHelper.COLUMN_ID, SQLHelper.COLUMN_LANGUAGE, SQLHelper.COLUMN_LESSON,
 				SQLHelper.COLUMN_LESSON_ID },
 				SQLHelper.COLUMN_LESSON + WHERE,
 				new String[] { lessonName }, null, null, null);
@@ -189,7 +191,8 @@ public class ClapDatabase {
 
 		// Check the database table to see if we have downloaded the phrase
 		// information yet
-		Cursor cursor = database.query(SQLHelper.TABLE_PHRASES, new String[] { SQLHelper.COLUMN_LESSON_ID, SQLHelper.COLUMN_PHRASE_ID,
+		Cursor cursor = database.query(SQLHelper.TABLE_PHRASES, new String[] { SQLHelper.COLUMN_ID,
+				SQLHelper.COLUMN_LESSON_ID, SQLHelper.COLUMN_PHRASE_ID,
 				SQLHelper.COLUMN_PHRASE_TEXT, SQLHelper.COLUMN_TRANSLATED_TEXT, SQLHelper.COLUMN_AUDIO_URL},
 				SQLHelper.COLUMN_LESSON_ID + WHERE, new String[] { lessonId },
 				null, null, null);
@@ -269,6 +272,42 @@ public class ClapDatabase {
 		return phrases;
 	}
 	
+	public ArrayList<String> getPhraseOrder(String lessonId) {
+		if (database == null) {
+			database = databaseHelper.getWritableDatabase();
+		}
+
+		// Check the database table to see if we have downloaded the lessons yet
+		Cursor cursor = database.query(SQLHelper.TABLE_PHRASE_ORDER, new String[] {
+				SQLHelper.COLUMN_ID, SQLHelper.COLUMN_LESSON_ID, SQLHelper.COLUMN_PHRASE_ORDERING },
+				null, null, null, null, null);
+
+		if (cursor.moveToFirst()) {
+			//return getFromCursor(cursor, SQLHelper.COLUMN_PHRASE_ID);
+		} else {
+			// database table was empty
+			// download the lesson names and populate the table
+			String results;
+			try {
+				results = WebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASE_ORDER, lessonId);
+			} catch (Exception e) {
+				ArrayList<String> temp = new ArrayList<String>();
+				temp.add(e.getMessage());
+				return temp;
+			}
+
+			// remove quotes
+			results = results.replace("\"", "");
+			// remove first bracket of first group and last bracket of last group
+			results = results.substring(1, results.length() - 1); 
+			// should have a list of phrase ids, split by commas
+			String[] tempPhraseOrder = results.split(",");
+
+			//return phraseOrder;
+		}
+		return null;
+	}
+
 	public void reset() {
 		databaseHelper.onUpgrade(database, 1, 1);
 	}
