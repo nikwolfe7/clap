@@ -20,6 +20,9 @@ public class LessonDialog extends Activity {
 	// be used to set the title, etc.
 	private ArrayList<String> params;
 	
+	public final static String EXTRAS = "extras";
+	public final static String LESSON_TITLE = "title";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,7 +39,7 @@ public class LessonDialog extends Activity {
 			}
 		}
 		setTitle(title);
-		String lt = b.getString(LessonList.LESSON_TITLE).replace(" L", "\n\nL");
+		String lt = b.getString(LessonList.LESSON_TITLE).replace(" L", "\nL");
 		TextView lessonTitle = (TextView)findViewById(R.id.lesson_title);
 		lessonTitle.setText(lt);
 		
@@ -48,9 +51,6 @@ public class LessonDialog extends Activity {
 		btnReturn.setOnClickListener(new ReturnButton());
 		btnStudy.setOnClickListener(new StudyButton());
 		btnPlay.setOnClickListener(new PlayLesson());
-		
-		new LongRunningGetIO(this).execute();
-		
 	}
 	
 	// play the damn lesson
@@ -67,8 +67,10 @@ public class LessonDialog extends Activity {
 	private class StudyButton implements OnClickListener {
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			
+			Intent i = new Intent(v.getContext(), StudyActivity.class);
+			i.putExtra(LESSON_TITLE, getIntent().getExtras().getString(LessonList.LESSON_TITLE));
+			i.putStringArrayListExtra(EXTRAS, params);
+			startActivity(i);
 		}
 		
 	}
@@ -82,7 +84,7 @@ public class LessonDialog extends Activity {
 		
 	}
 	
-	// screen IO class
+	/* screen IO class
 	private class LongRunningGetIO extends AsyncTask<Void, Void, ArrayList<String>> {
 
 		// The lesson dialog context
@@ -99,6 +101,7 @@ public class LessonDialog extends Activity {
 		}
 		
 	}
+	*/
 	
 
 }
