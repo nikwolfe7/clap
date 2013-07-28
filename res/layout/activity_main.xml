@@ -1,23 +1,47 @@
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent" android:gravity="center|center_horizontal|center_vertical" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" xmlns:tools="http://schemas.android.com/tools" android:paddingBottom="@dimen/activity_vertical_margin" android:paddingLeft="@dimen/activity_horizontal_margin" android:paddingRight="@dimen/activity_horizontal_margin" android:paddingTop="@dimen/activity_vertical_margin" tools:context=".SplashActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:gravity="center|center_horizontal|center_vertical"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".SplashActivity" >
 
-    
-    <TextView 
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/clap2"
-        android:gravity="center" android:textSize="40sp"/>
+        android:textColor="#ffffff"
+        android:layout_marginBottom="20dp"
+        android:textSize="50sp" />
 
     <ImageView
         android:id="@+id/main_icon"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:contentDescription="@string/splash_img_desc"
+        android:layout_marginBottom="35dp"
         android:src="@drawable/africa" />
-    
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/clap" />
+        android:text="@string/clap"
+        android:textColor="#ffffff"
+        android:layout_marginBottom="35dp"
+        android:textSize="15sp" />
+
+     <ImageView
+         android:id="@+id/pc_icon"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginBottom="25dp"
+         android:contentDescription="@string/pc_logo"
+         android:src="@drawable/pc_logo" />
 
 </LinearLayout>

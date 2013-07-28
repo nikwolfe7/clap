@@ -8,6 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class LessonDialog extends Activity {
@@ -32,9 +35,49 @@ public class LessonDialog extends Activity {
 			}
 		}
 		setTitle(title);
+		String lt = b.getString(LessonList.LESSON_TITLE).replace(" L", "\n\nL");
 		TextView lessonTitle = (TextView)findViewById(R.id.lesson_title);
-		lessonTitle.setText(b.getString(LessonList.LESSON_TITLE));
+		lessonTitle.setText(lt);
+		
+		// set button listeners
+		Button btnReturn = (Button) findViewById(R.id.btn_quit_lesson);
+		Button btnStudy = (Button) findViewById(R.id.btn_study_phrases);
+		Button btnPlay = (Button) findViewById(R.id.btn_play_lesson);
+		
+		btnReturn.setOnClickListener(new ReturnButton());
+		btnStudy.setOnClickListener(new StudyButton());
+		btnPlay.setOnClickListener(new PlayLesson());
+		
 		new LongRunningGetIO(this).execute();
+		
+	}
+	
+	// play the damn lesson
+	private class PlayLesson implements OnClickListener {
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	// study the damn stuff
+	private class StudyButton implements OnClickListener {
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	// return to the previous screen
+	private class ReturnButton implements OnClickListener {
+		@Override
+		public void onClick(View v) {
+			finish();
+		}
 		
 	}
 	

@@ -4,32 +4,41 @@
   android:orientation="vertical"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="#000000"
   android:gravity="center">
   
     <Button
         android:id="@+id/buttonCountry"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_width="175dp"
+        android:textColor="#ffffff"
+        android:background="#005AA3"
+        android:layout_height="35dp"
         android:text="@string/btnCountry" />
 
     <Button
         android:id="@+id/buttonReset"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_width="175dp"
+        android:textColor="#ffffff"
+        android:background="#005AA3"
+        android:layout_height="35dp"
         android:layout_marginTop="20dip"
         android:text="@string/btnReset" />
 
     <Button
         android:id="@+id/buttonHelp"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_width="175dp"
+        android:textColor="#ffffff"
+        android:background="#005AA3"
+        android:layout_height="35dp"
         android:layout_marginTop="20dip"
         android:text="@string/btnHelp" />
 
     <Button
         android:id="@+id/buttonAbout"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
+		android:layout_width="175dp"
+        android:textColor="#ffffff"
+        android:background="#005AA3"
+        android:layout_height="35dp"
         android:layout_marginTop="20dip"
         android:text="@string/btnAbout" />
     

@@ -12,6 +12,7 @@
     <string name="title_activity_play_audio">PlayAudio</string>
     <string name="ok">OK</string>
     <string name="splash_img_desc">Africa Image</string>
+    <string name="pc_logo">Peace Corps Logo</string>
     <string name="btnPlayLesson">Play Lesson</string>
     <string name="btnStudyPhrases">Study Phrases</string>
     <string name="btnQuit">Return to Menu</string>

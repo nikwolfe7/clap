@@ -10,7 +10,7 @@ public class SplashActivity extends Activity {
 	// used to know if the back button was pressed
 	// in the splash screen activity and avoid opening the next activity
     private boolean isBackButtonPressed = false;
-    private static final int SPLASH_DURATION = 2000; // 2 seconds
+    private static final int SPLASH_DURATION = 4000; // 2 seconds
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
