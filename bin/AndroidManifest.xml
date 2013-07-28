@@ -16,9 +16,9 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:name=".ApplicationState" >
+        android:name="com.clap.ApplicationState" >
         <activity
-            android:name="com.example.languageproject.SplashActivity"
+            android:name="com.clap.SplashActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,13 +26,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.languageproject.MainMenu" ></activity>
-        <activity android:name="com.example.languageproject.CountriesList" ></activity>
-        <activity android:name="com.example.languageproject.LanguageList" ></activity>
-        <activity android:name="com.example.languageproject.LessonList" ></activity>
-        <activity android:name="com.example.languageproject.LessonDialog" ></activity>
+        <activity android:name="com.clap.MainMenu" ></activity>
+        <activity android:name="com.clap.CountriesList" ></activity>
+        <activity android:name="com.clap.LanguageList" ></activity>
+        <activity android:name="com.clap.LessonList" ></activity>
+        <activity android:name="com.clap.LessonDialog" ></activity>
         <activity
-            android:name="com.example.languageproject.PlayAudio"
+            android:name="com.clap.PlayAudio"
             android:label="@string/title_activity_play_audio" >
         </activity>
     </application>
