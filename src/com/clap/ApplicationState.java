@@ -29,6 +29,10 @@ public class ApplicationState extends Application {
 		dir.mkdirs();
 		return database.getPhrases(database.getLessonId(lessonName), dir.getAbsolutePath());
 	}
+	
+	public ArrayList<String> getPhraseOrder(String lessonName) {
+		return database.getPhraseOrder(database.getLessonId(lessonName));
+	}
 
 	public void resetDatabase() {
 		database.reset();

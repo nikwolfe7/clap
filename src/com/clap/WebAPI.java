@@ -24,6 +24,9 @@ import android.util.Log;
 
 public class WebAPI {
 
+	public static final String ERROR_EMPTY_LIST = "Empty List";
+	public static final String ERROR_INVALID_LIST = "Invalid List";
+
 	public enum HTTP_GET {
 		COUNTRIES("http://www.celebrate-language.com/public-api/?action=get_country_list"),
 		LANGUAGES("http://www.celebrate-language.com/public-api/?action=get_lang_list_by&country="),
@@ -88,10 +91,10 @@ public class WebAPI {
 		
 		if (text != null) {
 			if (text.equals("[]") || text.equals("[null]")) {
-				throw new Exception("Empty List");
+				throw new Exception(ERROR_EMPTY_LIST);
 			} else if (!text.startsWith("[") || !text.endsWith("]")
 					|| text.matches("www.celebrate-language.com")) {
-				throw new Exception("Invalid List: " + text);
+				throw new Exception(ERROR_INVALID_LIST + ": " + text);
 			} else {
 				Pattern p = Pattern.compile("^" + Pattern.quote("[") + "(.*)" + Pattern.quote("]") + "$");
 				Matcher matcher = p.matcher(text);
@@ -102,7 +105,7 @@ public class WebAPI {
 				}
 			}
 		} else {
-			throw new Exception("Empty List");
+			throw new Exception(ERROR_EMPTY_LIST);
 		}
 	}
 

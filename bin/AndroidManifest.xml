@@ -26,16 +26,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.clap.MainMenu" ></activity>
-        <activity android:name="com.clap.CountriesList" ></activity>
-        <activity android:name="com.clap.LanguageList" ></activity>
-        <activity android:name="com.clap.LessonList" ></activity>
-        <activity android:name="com.clap.LessonDialog" ></activity>
+        <activity android:name="com.clap.MainMenuActivity" ></activity>
+        <activity android:name="com.clap.AboutActivity" ></activity>
+        <activity android:name="com.clap.CountriesListActivity" ></activity>
+        <activity android:name="com.clap.LanguageListActivity" ></activity>
+        <activity android:name="com.clap.LessonListActivity" ></activity>
+        <activity android:name="com.clap.LessonDialogActivity" ></activity>
         <activity android:name="com.clap.StudyActivity" ></activity>
-        <activity
-            android:name="com.clap.PlayActivity"
-            android:label="@string/title_activity_play_audio" >
-        </activity>
+        <activity android:name="com.clap.PlayActivity" ></activity>
     </application>
 
 </manifest>

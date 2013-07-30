@@ -2,46 +2,43 @@ package com.clap;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
 
-public class PlayActivity extends Activity {
-	private ArrayList<String> params;
+public class PlayActivity extends ClapActivity {
+	private String playingTitle = "Playing: ";
+	private String pausedTitle = "Paused: ";
 	private String lesson;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_play_audio);
+		setContentView(R.layout.play_activity);
+
 		Intent i = getIntent();
 		Bundle b = i.getExtras();
-		params = b.getStringArrayList(LessonDialog.EXTRAS);
-		String title = "";
-		for(int x = 0; x < params.size(); x++) {
-			if( x == params.size() - 1 ) {
-				title += params.get(x);
-			} else {
-				title += params.get(x) + " : ";
-			}
-		}
-		setTitle(title);
-		lesson = b.getString(LessonDialog.LESSON_TITLE);
-		new LongRunningGetIO(this).execute();
+
+		lesson = b.getString(EXTRA_LESSON_NAME);
+		playingTitle += lesson;
+		pausedTitle += lesson;
+
+		setTitle(playingTitle);
+
+		new LoadLessonTask(this).execute();
 	}
 
-	private class LongRunningGetIO extends AsyncTask<Void, Void, ArrayList<Phrase>> {
+	private class LoadLessonTask extends AsyncTask<Void, Void, ArrayList<Phrase>> {
 		private Context context;
 		private ProgressDialog progressDialog;
 		
-		public LongRunningGetIO(Context c) {
+		public LoadLessonTask(Context c) {
 			context = c;
 			progressDialog = new ProgressDialog(context);
 		}
@@ -56,10 +53,11 @@ public class PlayActivity extends Activity {
 		protected ArrayList<Phrase> doInBackground(Void... params) {
 			ApplicationState state = (ApplicationState)getApplication();
 			try {
-				return state.getPhrases(lesson);
+				ArrayList<Phrase> phrases = state.getPhrases(lesson);
+				ArrayList<String> phraseOrder = state.getPhraseOrder(lesson);
+				return orderPhrases(phrases, phraseOrder);
 			} catch (Exception e) {
-				showErrorMessage(e.getMessage());
-				return new ArrayList<Phrase>();
+				return null;
 			}
 		}
 		
@@ -76,20 +74,6 @@ public class PlayActivity extends Activity {
 			return temp;
 		}
 		
-		private void showErrorMessage(String error) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(context);
-			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// return to the lesson activity
-					finish();
-				}
-			});
-			builder.setMessage(error)
-			.setTitle("Error");
-			AlertDialog errorDialog = builder.create();
-			errorDialog.show();
-		}
 		
 		protected void onPostExecute(ArrayList<Phrase> phraseList) {
 			progressDialog.dismiss();
@@ -97,18 +81,109 @@ public class PlayActivity extends Activity {
 			if (phraseList == null || phraseList.isEmpty()) {
 				showErrorMessage("Phrases for this lesson are currently unavailable!");
 			} else {
-				// Do something
-				Phrase p = phraseList.get(0);
-				MediaPlayer mediaPlayer = new MediaPlayer();
-				mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+				//new DownloadAudio(phraseList).execute();
+				
+				Button playButton = (Button)findViewById(R.id.btnPlay);
+				playButton.setOnClickListener(new PlayAudio(phraseList));
+			}		}
+	}
+
+	private class DownloadAudio extends AsyncTask<Void, Void, Void> {
+		private ArrayList<Phrase> phraseList;
+
+		public DownloadAudio(ArrayList<Phrase> phrases) {
+			phraseList = phrases;
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			for (Phrase p : phraseList) {
 				try {
 					p.downloadAudio();
-					mediaPlayer.setDataSource(p.getAudioLocation());
-					mediaPlayer.prepare();
-					mediaPlayer.start();
-				} catch (Exception e) {
-					showErrorMessage(e.toString());
+				} catch(Exception e) {
+					showErrorMessage(e.getMessage(), false);
 				}
-			}		}
+			}
+			return null;
+		}
+	}
+
+	private class PlayAudio implements OnClickListener {
+		private ArrayList<Audio> phraseAudioList = new ArrayList<Audio>();
+		private int currentPhrase = 0;
+		private boolean isPlaying = false;
+		
+		public PlayAudio(ArrayList<Phrase> phrases) {
+			for (Phrase p : phrases) {
+				try {
+					phraseAudioList.add(new Audio(p));
+				} catch (Exception e) {
+					showErrorMessage(e.getMessage(), false);
+				}
+			}
+		}
+
+		@Override
+		public void onClick(View v) {
+			int itemClickedId = v.getId();
+			switch(itemClickedId) {
+				case R.id.btnPlay:
+					synchronized(this) {
+						if (isPlaying) {
+							isPlaying = false;
+							pause();
+						} else {
+							isPlaying = true;
+							play();
+						}
+					}
+					return;
+				case R.id.btnPrevious:
+					previous();
+					return;
+				case R.id.btnNext:
+					next();
+					return;
+				default:
+					return;
+			}
+		}
+		
+		private void play() {
+			try {
+				if (isPlaying) {
+					Audio a = phraseAudioList.get(currentPhrase);
+
+					TextView textView = (TextView)findViewById(R.id.phraseText);
+					textView.setText(a.getPhraseText());
+					textView = (TextView)findViewById(R.id.translatedText);
+					textView.setText(a.getTranslatedText());
+
+					a.play();
+					
+					setTitle(playingTitle);
+				}
+			} catch (Exception e) {
+				showErrorMessage(e.toString(), false);
+			}
+		}
+		
+		private void pause() {
+			phraseAudioList.get(currentPhrase).pause();
+			setTitle(pausedTitle);
+		}
+
+		private void next() {
+			if (currentPhrase < phraseAudioList.size() - 1) {
+				currentPhrase++;
+			}
+		}
+		
+		private void previous() {
+			if (currentPhrase > 0) {
+				currentPhrase--;
+			}
+		}
 	}
 }

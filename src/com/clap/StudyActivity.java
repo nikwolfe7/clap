@@ -3,65 +3,39 @@ package com.clap;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
-public class StudyActivity extends Activity {
+public class StudyActivity extends ListActivity {
 
-	private ArrayList<String> params;
 	private String lesson;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.list);
 		Intent i = getIntent();
 		Bundle b = i.getExtras();
-		params = b.getStringArrayList(LessonDialog.EXTRAS);
-		String title = "";
-		for(int x = 0; x < params.size(); x++) {
-			if( x == params.size() - 1 ) {
-				title += params.get(x);
-			} else {
-				title += params.get(x) + " : ";
-			}
-		}
-		setTitle(title);
-		lesson = b.getString(LessonDialog.LESSON_TITLE);
-		new LongRunningGetIO(this).execute();
+
+		lesson = b.getString(EXTRA_LESSON_NAME);
+		title = "Phrase List for " + lesson;
+
+		super.onCreate(savedInstanceState);
+
+		new LoadPhraseListTask(this).execute();
 	}
 	
-	private class LongRunningGetIO extends AsyncTask<Void, Void, ArrayList<String>> {
-
-		private Context c;
-		private ProgressDialog pd;
+	protected class LoadPhraseListTask extends LoadListTask {
 		private HashMap<String, Phrase> phraseMap = new HashMap<String, Phrase>();
 		
-		public LongRunningGetIO(Context context) {
-			this.c = context;
-			this.pd = new ProgressDialog(context);
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			pd.setMessage("Loading phrases for " + lesson + "...");
-			pd.show();
-		}
-		
+		public LoadPhraseListTask(Context c) {	super(c); }
+
 		@Override
 		protected ArrayList<String> doInBackground(Void... params) {
 			ApplicationState state = (ApplicationState) getApplication();
@@ -75,42 +49,25 @@ public class StudyActivity extends Activity {
 				return keyList;
 				
 			} catch (Exception e) {
-				displayError(e.getMessage());
+				return null;
 			}
-			return null;
 		}
 		
 		@Override
-		protected void onPostExecute(ArrayList<String> phraseNameList) {
-			pd.dismiss(); // kill the load dialog
-			
-			if( phraseNameList == null || phraseNameList.size() < 1 ) {
-				displayError("Phrases for this lesson are currently unavailable!");
-			} else {
-				
-				// phrases list
-				ListView lv = (ListView) findViewById(R.id.list);
-				ArrayAdapter<String> adapter;
-				adapter = new ArrayAdapter<String>(c, R.layout.item, R.id.item_id, phraseNameList);
-				lv.setAdapter(adapter);
-				
-				// item in the phrase is clicked
-				lv.setOnItemClickListener(new OnItemClickListener() {
-
-					@Override
-					public void onItemClick(AdapterView<?> parent, View arg1,
-							int position, long arg3) {
-						String phraseSelected = parent.getAdapter().getItem(position).toString();
-						displayPhrase(phraseSelected);
-					}
-				});
-			}
+		protected void showEmptyListMessage() {
+			showErrorMessage("Phrases for " + lesson + " are currently unavailable!");
 		}
-		
+
+		@Override
+		public void listItemOnClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+			String phraseSelected = parent.getAdapter().getItem(position).toString();
+			displayPhrase(phraseSelected);
+		}
+
 		private void displayPhrase(String phraseSelected) {
 			Phrase phrase = phraseMap.get(phraseSelected);
 			
-			AlertDialog.Builder dialog = new AlertDialog.Builder(c);
+			AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 			dialog.setPositiveButton(R.string.play, new PlayPhrase(phrase));
 			dialog.setNeutralButton(R.string.close, null);
 			dialog.setCancelable(true);
@@ -141,19 +98,5 @@ public class StudyActivity extends Activity {
 				}
 			}
 		}
-
-		private void displayError(String msg) {
-			AlertDialog.Builder b = new AlertDialog.Builder(c);
-			b.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					finish();
-				}
-			});
-			b.setMessage(msg).setTitle("Oops!");
-			b.create().show();
-		}
-		
 	}
-
 }
