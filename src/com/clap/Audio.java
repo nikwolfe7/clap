@@ -2,25 +2,27 @@ package com.clap;
 
 import java.io.IOException;
 
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 
 public class Audio implements OnCompletionListener {
-    MediaPlayer mediaPlayer;
-    Phrase phrase;
-    boolean isPrepared = false;
+    private MediaPlayer mediaPlayer;
+    private Phrase phrase;
+    private boolean isPrepared = false;
      
-    public Audio(Phrase p){
+    public Audio(Phrase p, Context c){
         mediaPlayer = new MediaPlayer();
         phrase = p;
-        try{
-        	p.downloadAudio();
+        try {
+        	p.downloadAudio(c);
+
             mediaPlayer.setDataSource(p.getAudioLocation());
             mediaPlayer.prepare();
             isPrepared = true;
             mediaPlayer.setOnCompletionListener(this);
-        } catch(Exception ex){
-        	throw new RuntimeException("Exception Loading Phrase \'" + phrase.getPhraseText() + "\':\n" + ex.getMessage());
+        } catch(Exception e) {
+        	throw new RuntimeException("Exception Loading Phrase \'" + phrase.getPhraseText() + "\':\n" + e.getMessage());
         }
     }
      
@@ -43,23 +45,23 @@ public class Audio implements OnCompletionListener {
         if(mediaPlayer.isPlaying()){
             return;
         }
-        try{
-            synchronized(this){
-                if(!isPrepared){
+        try {
+            synchronized(this) {
+                if(!isPrepared) {
                     mediaPlayer.prepare();
                 }
                 mediaPlayer.start();
             }
-        } catch(IllegalStateException ex){
-            ex.printStackTrace();
-        } catch(IOException ex){
-            ex.printStackTrace();
+        } catch(IllegalStateException e) {
+            e.printStackTrace();
+        } catch(IOException e) {
+            e.printStackTrace();
         }
     }
  
     public void stop() {
         mediaPlayer.stop();
-        synchronized(this){
+        synchronized(this) {
             isPrepared = false;
         }
     }
@@ -77,14 +79,6 @@ public class Audio implements OnCompletionListener {
         return mediaPlayer.isPlaying();
     }
      
-    public boolean isLooping() {
-        return mediaPlayer.isLooping();
-    }
-     
-    public void setLooping(boolean isLooping) {
-        mediaPlayer.setLooping(isLooping);
-    }
- 
     public void setVolume(float volumeLeft, float volumeRight) {
         mediaPlayer.setVolume(volumeLeft, volumeRight);
     }

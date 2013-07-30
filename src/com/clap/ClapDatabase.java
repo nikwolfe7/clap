@@ -13,11 +13,13 @@ public class ClapDatabase {
 	private SQLHelper databaseHelper;
 	private SQLiteDatabase database;
 	private Context context;
+	private WebAPI clapWebAPI;
 	private static final String WHERE = " is ?";
 
 	public ClapDatabase(Context c) {
-		this.context = c;
-		databaseHelper = new SQLHelper(this.context);
+		context = c;
+		databaseHelper = new SQLHelper(context);
+		clapWebAPI = new WebAPI(context);
 	}
 
 	public void open() throws SQLException {
@@ -42,7 +44,7 @@ public class ClapDatabase {
 			// download the country names and populate the table
 			String results;
 			try {
-				results = WebAPI.getJSONArray(WebAPI.HTTP_GET.COUNTRIES);
+				results = clapWebAPI.getJSONArray(WebAPI.HTTP_GET.COUNTRIES);
 			} catch (Exception e) {
 				ArrayList<String> temp = new ArrayList<String>();
 				temp.add(e.getMessage());
@@ -85,7 +87,7 @@ public class ClapDatabase {
 			// download the language names and populate the table
 			String results;
 			try {
-				results = WebAPI.getJSONArray(WebAPI.HTTP_GET.LANGUAGES, countryName);
+				results = clapWebAPI.getJSONArray(WebAPI.HTTP_GET.LANGUAGES, countryName);
 			} catch (Exception e) {
 				ArrayList<String> temp = new ArrayList<String>();
 				temp.add(e.getMessage());
@@ -128,7 +130,7 @@ public class ClapDatabase {
 			// download the lesson names and populate the table
 			String results;
 			try {
-				results = WebAPI.getJSONArray(WebAPI.HTTP_GET.LESSONS, languageName);
+				results = clapWebAPI.getJSONArray(WebAPI.HTTP_GET.LESSONS, languageName);
 			} catch (Exception e) {
 				ArrayList<String> temp = new ArrayList<String>();
 				temp.add(e.getMessage());
@@ -223,7 +225,7 @@ public class ClapDatabase {
 		} else {
 			// database table was empty
 			// download the phrase information and populate the table
-			String results = WebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASES, lessonId);
+			String results = clapWebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASES, lessonId);
 			// remove first bracket of first group and last bracket of last group
 			results = results.substring(1, results.length() - 1); 
 			// split at '],['
@@ -303,7 +305,7 @@ public class ClapDatabase {
 			// database table was empty
 			// download the lesson names and populate the table
 			try {
-				results = WebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASE_ORDER, lessonId);
+				results = clapWebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASE_ORDER, lessonId);
 
 				// add to the database
 				ContentValues values = new ContentValues();

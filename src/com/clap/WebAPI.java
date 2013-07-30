@@ -20,12 +20,17 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 public class WebAPI {
+	private Context context;
 
 	public static final String ERROR_EMPTY_LIST = "Empty List";
 	public static final String ERROR_INVALID_LIST = "Invalid List";
+	public static final String ERROR_NO_CONNECTION = "No Data Connection";
 
 	public enum HTTP_GET {
 		COUNTRIES("http://www.celebrate-language.com/public-api/?action=get_country_list"),
@@ -45,8 +50,16 @@ public class WebAPI {
 		}
 	}
 
-	public static void DownloadAndSaveAudio(String urlString, File audioFile)
+	public WebAPI(Context c) {
+		context = c;
+	}
+
+	public boolean DownloadAndSaveAudio(String urlString, File audioFile)
 			throws MalformedURLException, IOException {
+		if (!hasDataConnection()) {
+			return false;
+		}
+
 		URL url;
 		url = new URL(urlString);
 		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -70,13 +83,19 @@ public class WebAPI {
 		}
 		
 		fileOutput.close();
+		
+		return true;
 	}
 
-	public static String getJSONArray(HTTP_GET httpGetValue) throws Exception {
+	public String getJSONArray(HTTP_GET httpGetValue) throws Exception {
 		return getJSONArray(httpGetValue, "");
 	}
 
-	public static String getJSONArray(HTTP_GET httpGetValue, String httpGetParam) throws Exception {
+	public String getJSONArray(HTTP_GET httpGetValue, String httpGetParam) throws Exception {
+		if (!hasDataConnection()) {
+			throw new Exception(ERROR_NO_CONNECTION);
+		}
+
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		HttpGet httpGet = new HttpGet(httpGetValue.stringValue() + encodeParam(httpGetParam));
@@ -109,7 +128,7 @@ public class WebAPI {
 		}
 	}
 
-	private static String encodeParam(String stringToEncode) {
+	private String encodeParam(String stringToEncode) {
 		try {
 			return URLEncoder.encode(stringToEncode, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -118,7 +137,8 @@ public class WebAPI {
 		}
 		
 	}
-	private static String getASCIIContentFromEntity(HttpEntity entity)
+
+	private String getASCIIContentFromEntity(HttpEntity entity)
 			throws IllegalStateException, IOException {
 		InputStream in = entity.getContent();
 		StringBuffer out = new StringBuffer();
@@ -130,5 +150,11 @@ public class WebAPI {
 				out.append(new String(b, 0, n, "UTF-8"));
 		}
 		return out.toString();
+	}
+	
+	private boolean hasDataConnection() {
+		ConnectivityManager connectManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connectManager.getActiveNetworkInfo();
+		return (networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnectedOrConnecting());
 	}
 }

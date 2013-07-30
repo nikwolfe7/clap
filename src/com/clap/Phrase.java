@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import android.content.Context;
+
 public class Phrase {
 	private String lessonId;
 	private String phraseId;
@@ -50,13 +52,14 @@ public class Phrase {
 		return audioLocation;
 	}
 
-	public void downloadAudio() throws MalformedURLException, IOException {
+	public void downloadAudio(Context c) throws MalformedURLException, IOException {
 		File audioFile = new File(audioLocation);
 		if (!audioFile.exists()) {
 			if (!audioFile.createNewFile()) {
 				throw new IOException("Could Not Create Audio File: " + audioLocation);
 			}
-			WebAPI.DownloadAndSaveAudio(audioURL, audioFile);
+			WebAPI clapWebAPI = new WebAPI(c);
+			clapWebAPI.DownloadAndSaveAudio(audioURL, audioFile);
 		}
 	}
 }

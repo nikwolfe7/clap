@@ -47,9 +47,10 @@ public class StudyActivity extends ListActivity {
 					keyList.add(p.getPhraseText());
 				}
 				return keyList;
-				
 			} catch (Exception e) {
-				return null;
+				ArrayList<String> temp = new ArrayList<String>();
+				temp.add(e.getMessage());
+				return temp;
 			}
 		}
 		
@@ -68,7 +69,7 @@ public class StudyActivity extends ListActivity {
 			Phrase phrase = phraseMap.get(phraseSelected);
 			
 			AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-			dialog.setPositiveButton(R.string.play, new PlayPhrase(phrase));
+			dialog.setPositiveButton(R.string.play, new PlayPhrase(phrase, context));
 			dialog.setNeutralButton(R.string.close, null);
 			dialog.setCancelable(true);
 			dialog.setMessage(phrase.getTranslatedText());
@@ -78,10 +79,12 @@ public class StudyActivity extends ListActivity {
 		}
 		
 		private class PlayPhrase implements OnClickListener {
-			Phrase phrase;
-			
-			public PlayPhrase(Phrase p) {
-				this.phrase = p;
+			private Phrase phrase;
+			private Context context;
+
+			public PlayPhrase(Phrase p, Context c) {
+				phrase = p;
+				context = c;
 			}
 
 			@Override
@@ -89,7 +92,7 @@ public class StudyActivity extends ListActivity {
 				MediaPlayer mediaPlayer = new MediaPlayer();
 				mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 				try {
-					phrase.downloadAudio();
+					phrase.downloadAudio(context);
 					mediaPlayer.setDataSource(phrase.getAudioLocation());
 					mediaPlayer.prepare();
 					mediaPlayer.start();

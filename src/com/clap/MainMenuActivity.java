@@ -56,7 +56,14 @@ public class MainMenuActivity extends ClapActivity {
 	private class HelpButton implements OnClickListener {
 		@Override
 		public void onClick(View v) {
-			
+			try {
+				// Start the about activity
+				Intent helpActivity = new Intent();
+				helpActivity.setClass(v.getContext(), HelpActivity.class);
+				startActivity(helpActivity);
+			} catch (Exception e) {
+				showErrorMessage(e.getMessage(), false);
+			}
 		}
 	}
 	

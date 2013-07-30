@@ -57,6 +57,8 @@ public class PlayActivity extends ClapActivity {
 				ArrayList<String> phraseOrder = state.getPhraseOrder(lesson);
 				return orderPhrases(phrases, phraseOrder);
 			} catch (Exception e) {
+				progressDialog.dismiss();
+				showErrorMessage(e.getMessage());
 				return null;
 			}
 		}
@@ -82,42 +84,44 @@ public class PlayActivity extends ClapActivity {
 				showErrorMessage("Phrases for this lesson are currently unavailable!");
 			} else {
 
-				//new DownloadAudio(phraseList).execute();
+				//new DownloadAudio(phraseList, context).execute();
 				
 				Button playButton = (Button)findViewById(R.id.btnPlay);
-				playButton.setOnClickListener(new PlayAudio(phraseList));
+				playButton.setOnClickListener(new PlayAudio(phraseList, context));
 			}		}
 	}
 
-	private class DownloadAudio extends AsyncTask<Void, Void, Void> {
+	/*private class DownloadAudio extends AsyncTask<Void, Void, Void> {
+		private Context context;
 		private ArrayList<Phrase> phraseList;
 
-		public DownloadAudio(ArrayList<Phrase> phrases) {
+		public DownloadAudio(ArrayList<Phrase> phrases, Context c) {
 			phraseList = phrases;
+			context = c;
 		}
 
 		@Override
 		protected Void doInBackground(Void... params) {
 			for (Phrase p : phraseList) {
 				try {
-					p.downloadAudio();
+					p.downloadAudio(context);
 				} catch(Exception e) {
 					showErrorMessage(e.getMessage(), false);
 				}
 			}
 			return null;
 		}
-	}
+	}*/
 
 	private class PlayAudio implements OnClickListener {
 		private ArrayList<Audio> phraseAudioList = new ArrayList<Audio>();
 		private int currentPhrase = 0;
 		private boolean isPlaying = false;
 		
-		public PlayAudio(ArrayList<Phrase> phrases) {
+		public PlayAudio(ArrayList<Phrase> phrases, Context c) {
 			for (Phrase p : phrases) {
 				try {
-					phraseAudioList.add(new Audio(p));
+					phraseAudioList.add(new Audio(p, c));
 				} catch (Exception e) {
 					showErrorMessage(e.getMessage(), false);
 				}
