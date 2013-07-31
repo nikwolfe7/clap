@@ -1,9 +1,8 @@
 package com.clap;
 
-import android.app.Activity;
 import android.os.Bundle;
 
-public class HelpActivity extends Activity {
+public class HelpActivity extends ClapActivity {
 	private String title = "Help";
 
 	@Override

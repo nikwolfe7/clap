@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 
-public class LanguageListActivity extends ListActivity {
+public class LanguageListActivity extends ClapListActivity {
 	private String countryName;
 
 	@Override

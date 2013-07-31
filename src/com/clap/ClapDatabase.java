@@ -23,13 +23,13 @@ public class ClapDatabase {
 	}
 
 	public void open() throws SQLException {
-		database = databaseHelper.getWritableDatabase();
-	}
-
-	public ArrayList<String> getCountryNames() {
 		if (database == null) {
 			database = databaseHelper.getWritableDatabase();
 		}
+	}
+
+	public ArrayList<String> getCountryNames() {
+		open();
 
 		// Check the database table to see if we have downloaded the countries
 		// yet
@@ -70,9 +70,7 @@ public class ClapDatabase {
 	}
 
 	public ArrayList<String> getLanguageNames(String countryName) {
-		if (database == null) {
-			database = databaseHelper.getWritableDatabase();
-		}
+		open();
 
 		// Check the database table to see if we have downloaded the languages yet
 		Cursor cursor = database.query(SQLHelper.TABLE_LANGUAGES, new String[] {
@@ -112,9 +110,7 @@ public class ClapDatabase {
 	}
 
 	public ArrayList<String> getLessonNames(String languageName) {
-		if (database == null) {
-			database = databaseHelper.getWritableDatabase();
-		}
+		open();
 
 		// Check the database table to see if we have downloaded the lessons yet
 		Cursor cursor = database.query(SQLHelper.TABLE_LESSONS, new String[] {
@@ -168,9 +164,7 @@ public class ClapDatabase {
 	}
 
 	public String getLessonId(String lessonName) {
-		if (database == null) {
-			database = databaseHelper.getWritableDatabase();
-		}
+		open();
 
 		Cursor cursor = database.query(SQLHelper.TABLE_LESSONS, new String[] {
 				SQLHelper.COLUMN_ID, SQLHelper.COLUMN_LANGUAGE, SQLHelper.COLUMN_LESSON,
@@ -188,9 +182,7 @@ public class ClapDatabase {
 	public ArrayList<Phrase> getPhrases(String lessonId, String directoryName) throws Exception {
 		ArrayList<Phrase> phrases = new ArrayList<Phrase>();
 
-		if (database == null) {
-			database = databaseHelper.getWritableDatabase();
-		}
+		open();
 
 		// Check the database table to see if we have downloaded the phrase
 		// information yet
@@ -289,9 +281,7 @@ public class ClapDatabase {
 		String results;
 		ArrayList<String> phraseOrder = new ArrayList<String>();
 
-		if (database == null) {
-			database = databaseHelper.getWritableDatabase();
-		}
+		open();
 
 		// Check the database table to see if we have downloaded the lessons yet
 		Cursor cursor = database.query(SQLHelper.TABLE_PHRASE_ORDER, new String[] {
@@ -334,6 +324,7 @@ public class ClapDatabase {
 	}
 
 	public void reset() {
+		open();
 		databaseHelper.onUpgrade(database, 1, 1);
 	}
 

@@ -2,15 +2,13 @@
 <resources>
 
     <string name="app_name">Applause</string>
-    <string name="action_settings">Settings</string>
+    <string name="preferences">Preferences</string>
     <string name="clap">The Celebrate Language Audio Project</string>
     <string name="clap2">CLAP</string>
     <string name="website">www.celebrate-language.com</string>
     <string name="btnCountry">Country</string>
     <string name="btnReset">Reset</string><string name="btnHelp">Help</string>
     <string name="btnAbout">About</string>
-    <string name="title_activity_lesson_list">LessonList</string>
-    <string name="title_activity_play_audio">PlayAudio</string>
     <string name="ok">OK</string>
     <string name="splash_img_desc">Africa Image</string>
     <string name="pc_logo">Peace Corps Logo</string>
@@ -21,9 +19,19 @@
     <string name="btnNext">Next</string>
    	<string name="btnBack">Back</string>
    	<string name="btnPlay">Play</string>
-    <string name="about">Developed by Peace Corps Ghana in collaboration with Coders4Africa and Mobile Web Ghana</string>
+    <string name="about_full">Developed by Peace Corps Ghana in collaboration with Coders4Africa and Mobile Web Ghana</string>
     <string name="play">Play</string>
     <string name="close">Close</string>
     <string name="help">HELP MEEEE!!!!!</string>
+    <string name="preference_location">Location</string>
+    <string name="about_name">Applause\nApplication for Language Audio Users</string>
+    <string name="menu_clear">Clear Data</string>
+    <string-array name="dialog_clear_items">
+        <item >All</item>
+        <item >Database Only</item>
+        <item >Files Only</item>
+    </string-array>
+    <string name="dialog_clear">Clear</string>
+    <string name="dialog_cancel">Cancel</string>
     
 </resources>

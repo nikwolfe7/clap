@@ -16,8 +16,8 @@ public class MainMenuActivity extends ClapActivity {
 		Button countries = (Button)findViewById(R.id.buttonCountry);
 		countries.setOnClickListener(new CountriesButton());
 		
-		Button reset = (Button)findViewById(R.id.buttonReset);
-		reset.setOnClickListener(new ResetButton()); 
+		//Button reset = (Button)findViewById(R.id.buttonReset);
+		//reset.setOnClickListener(new ResetButton()); 
 		
 		Button help = (Button)findViewById(R.id.buttonHelp);
 		help.setOnClickListener(new HelpButton());
@@ -40,7 +40,7 @@ public class MainMenuActivity extends ClapActivity {
 		}
 	}
 
-	private class ResetButton implements OnClickListener {
+	/*private class ResetButton implements OnClickListener {
 		@Override
 		public void onClick(View v) {
 			try {
@@ -51,7 +51,7 @@ public class MainMenuActivity extends ClapActivity {
 				showErrorMessage(e.getMessage(), false);
 			}
 		}
-	}
+	}*/
 	
 	private class HelpButton implements OnClickListener {
 		@Override

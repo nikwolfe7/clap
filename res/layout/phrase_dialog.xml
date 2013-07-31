@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#000000"
-    android:gravity="center"
-    android:orientation="vertical" >
+    style="@style/DefaultLinearLayoutStyle" >
 
     <TableLayout
         android:id="@+id/table"
@@ -12,8 +8,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:layout_weight="0.07" >
-
-   
 
     <TableRow
         android:id="@+id/button_row"
@@ -27,18 +21,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#000000"
             android:contentDescription="@string/btnPrevious"
             android:src="@drawable/previous" />
-
-        
 
         <ImageButton
             android:id="@+id/back"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#000000"
             android:contentDescription="@string/btnBack"
             android:src="@drawable/back" />
 
@@ -47,7 +37,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#000000"
             android:contentDescription="@string/btnNext"
             android:src="@drawable/next" />
     </TableRow>
@@ -68,17 +57,6 @@
         android:layout_marginBottom="30dp"
         android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#ffffff"
-        android:textIsSelectable="false" />
-
-    <TextView
-        android:id="@+id/lesson_title"
-        android:layout_width="220dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="30dp"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#ffffff"
         android:textIsSelectable="false" />
 
 </LinearLayout>

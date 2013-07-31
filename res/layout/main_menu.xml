@@ -1,45 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:background="#000000"
-  android:gravity="center">
+  style="@style/DefaultLinearLayoutStyle" >
   
     <Button
         android:id="@+id/buttonCountry"
-        android:layout_width="175dp"
-        android:textColor="#ffffff"
-        android:background="@drawable/button_bg"
-        android:layout_height="35dp"
+        style="@style/DefaultButtonStyle"
         android:text="@string/btnCountry" />
-
+<!--  
     <Button
         android:id="@+id/buttonReset"
-        android:layout_width="175dp"
-        android:textColor="#ffffff"
-        android:background="@drawable/button_bg"
-        android:layout_height="35dp"
-        android:layout_marginTop="20dip"
+        style="@style/DefaultButtonStyle"
         android:text="@string/btnReset" />
+-->
 
     <Button
         android:id="@+id/buttonHelp"
-        android:layout_width="175dp"
-        android:textColor="#ffffff"
-        android:background="@drawable/button_bg"
-        android:layout_height="35dp"
-        android:layout_marginTop="20dip"
+        style="@style/DefaultButtonStyle"
         android:text="@string/btnHelp" />
 
     <Button
         android:id="@+id/buttonAbout"
-		android:layout_width="175dp"
-        android:textColor="#ffffff"
-        android:background="@drawable/button_bg"
-        android:layout_height="35dp"
-        android:layout_marginTop="20dip"
+        style="@style/DefaultButtonStyle"
         android:text="@string/btnAbout" />
     
 </LinearLayout>

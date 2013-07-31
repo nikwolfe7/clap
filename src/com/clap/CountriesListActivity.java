@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 
-public class CountriesListActivity extends ListActivity {
+public class CountriesListActivity extends ClapListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		title = "Country List";

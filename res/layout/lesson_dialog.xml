@@ -1,45 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical" 
-    android:background="#000000">
+    style="@style/DefaultLinearLayoutStyle" >
 
     <TextView
         android:id="@+id/lesson_title"
+        style="@style/DefaultTextViewStyle"
         android:layout_width="175dp"
         android:layout_height="75dp"
         android:layout_marginBottom="30dp"
         android:gravity="center"
         android:textIsSelectable="false"
-        android:textColor="#ffffff"
         android:textAppearance="?android:attr/textAppearanceLarge" />
   
     <Button
         android:id="@+id/btn_play_lesson"
-        android:layout_width="175dp"
-        android:textColor="#ffffff"
-        android:background="@drawable/button_bg"
-        android:layout_height="35dp"
+        style="@style/DefaultButtonStyle"
         android:text="@string/btnPlayLesson" />
     
     <Button 
         android:id="@+id/btn_study_phrases" 
-        android:textColor="#ffffff"
-        android:background="@drawable/button_bg"
-        android:text="@string/btnStudyPhrases"
-        android:layout_width="175dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="20dip"/>
+        style="@style/DefaultButtonStyle"
+        android:text="@string/btnStudyPhrases" />
     
     <Button 
         android:id="@+id/btn_quit_lesson" 
-        android:textColor="#ffffff"
-        android:background="@drawable/button_bg"
-        android:layout_marginTop="20dip"   
-        android:text="@string/btnQuit"
-        android:layout_width="175dp"
-        android:layout_height="35dp"/>
+        style="@style/DefaultButtonStyle"
+        android:text="@string/btnQuit" />
     
 </LinearLayout>

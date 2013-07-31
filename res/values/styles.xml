@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -15,6 +15,41 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="DefaultPreferenceStyle">
+        <item name="android:background">#000000</item>
+    </style>
+
+    <style name="DefaultListViewStyle" parent="@android:style/Widget.ListView">
+        <item name="android:background">#000000</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:cacheColorHint">#000000</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="DefaultTextViewStyle" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">match_parent</item>
+ 		<item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="DefaultLinearLayoutStyle">
+        <item name="android:background">#000000</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="DefaultButtonStyle" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/button_bg</item>
+        <item name="android:layout_width">175dp</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:layout_marginTop">20dip</item>
     </style>
 
 </resources>

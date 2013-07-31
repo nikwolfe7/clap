@@ -37,4 +37,25 @@ public class ApplicationState extends Application {
 	public void resetDatabase() {
 		database.reset();
 	}
+	
+	public void deleteAllFiles() {
+		File dir = new File(directory + "/" + getResources().getString(R.string.app_name));
+		if (dir.exists()) {
+			deleteAllFilesInFolder(dir);
+		}
+	}
+	
+	private void deleteAllFilesInFolder(File dir) {
+		// recursively delete all files in 'dir'
+		for (String s : dir.list()) {
+			File f = new File(dir, s);
+			if (f.isDirectory()) {
+				deleteAllFilesInFolder(f);
+			} else {
+				f.delete();
+			}
+		}
+		// delete the folder
+		dir.delete();
+	}
 }

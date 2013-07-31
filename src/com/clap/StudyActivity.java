@@ -14,7 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 
-public class StudyActivity extends ListActivity {
+public class StudyActivity extends ClapListActivity {
 
 	private String lesson;
 	
