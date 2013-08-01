@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  style="@style/DefaultLinearLayoutStyle" >
+  style="@style/DefaultLinearLayoutStyle"
+  android:background="@drawable/item_bg" >
   
     <TextView
         android:id="@+id/item_id"
         style="@style/DefaultTextViewStyle"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:textIsSelectable="true" />
     
 </LinearLayout>
