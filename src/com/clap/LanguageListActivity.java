@@ -25,17 +25,20 @@ public class LanguageListActivity extends ClapListActivity {
 
 	protected class LoadLanguageListTask extends LoadListTask {
 
-		public LoadLanguageListTask(Context c) { super(c);	}
-		
-		@Override
-		protected ArrayList<String> doInBackground(Void... params) {
-			ApplicationState state = (ApplicationState) getApplication();
-			return state.getLanguageNames(countryName);
+		public LoadLanguageListTask(Context c) {
+			super(c);
+			emptyListMessage = "Language lessons currently unavailable for " + countryName;
 		}
 		
 		@Override
-		protected void showEmptyListMessage() {
-			showErrorMessage("Language lessons currently unavailable for " + countryName);
+		protected ArrayList<String> doInBackground(Void... params) {
+			try {
+				ApplicationState state = (ApplicationState) getApplication();
+				return state.getLanguageNames(countryName);
+			} catch (Exception e) {
+				exception = e;
+				return null;
+			}
 		}
 		
 		@Override

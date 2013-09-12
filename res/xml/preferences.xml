@@ -5,10 +5,29 @@
        android:title="General"
        android:key="general_category" >
        
+       <ListPreference
+           android:key="pref_text_size"
+           android:summary="@string/pref_text_size_summary"
+           android:title="@string/pref_text_size"
+           android:dialogTitle="@string/pref_text_size"
+           android:entries="@array/pref_text_size_entries"
+           android:entryValues="@array/pref_text_size_entries"
+           android:defaultValue="@string/pref_text_size_default" />
+           
+       <ListPreference
+           android:key="pref_data_usage"
+           android:summary="@string/pref_data_usage_summary"
+           android:title="@string/pref_data_usage"
+           android:dialogTitle="@string/pref_data_usage"
+           android:entries="@array/pref_data_usage_entries"
+           android:entryValues="@array/pref_data_usage_entries"
+           android:defaultValue="@string/pref_data_usage_default" />
+       
        <CheckBoxPreference 
-           android:key="@string/preference_location"
-           android:summary="Allow Applause to use your location"
-           android:title="@string/preference_location" />
+           android:key="pref_location"
+           android:summary="@string/pref_location_summary"
+           android:title="@string/pref_location"
+           android:defaultValue="false" />
 
    </PreferenceCategory> 
 

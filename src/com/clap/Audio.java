@@ -2,35 +2,26 @@ package com.clap;
 
 import java.io.IOException;
 
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 
-public class Audio implements OnCompletionListener {
+public class Audio {
     private MediaPlayer mediaPlayer;
     private Phrase phrase;
     private boolean isPrepared = false;
      
-    public Audio(Phrase p, Context c){
+    public Audio(Phrase p, OnCompletionListener l){
         mediaPlayer = new MediaPlayer();
         phrase = p;
-        try {
-        	p.downloadAudio(c);
 
-            mediaPlayer.setDataSource(p.getAudioLocation());
-            mediaPlayer.prepare();
-            isPrepared = true;
-            mediaPlayer.setOnCompletionListener(this);
-        } catch(Exception e) {
-        	throw new RuntimeException("Exception Loading Phrase \'" + phrase.getPhraseText() + "\':\n" + e.getMessage());
-        }
-    }
-     
-    @Override
-    public void onCompletion(MediaPlayer mediaPlayer) {
-        synchronized(this){
-            isPrepared = false;
-        }
+        try {
+			mediaPlayer.setDataSource(phrase.getAudioLocation());
+	        mediaPlayer.prepare();
+	        isPrepared = true;
+	        mediaPlayer.setOnCompletionListener(l);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
     }
  
     public String getPhraseText() {
@@ -41,21 +32,15 @@ public class Audio implements OnCompletionListener {
     	return phrase.getTranslatedText();
     }
 
-    public void play() {
+    public void play() throws IllegalStateException, IOException {
         if(mediaPlayer.isPlaying()){
             return;
         }
-        try {
-            synchronized(this) {
-                if(!isPrepared) {
-                    mediaPlayer.prepare();
-                }
-                mediaPlayer.start();
+        synchronized(this) {
+            if(!isPrepared) {
+                mediaPlayer.prepare();
             }
-        } catch(IllegalStateException e) {
-            e.printStackTrace();
-        } catch(IOException e) {
-            e.printStackTrace();
+            mediaPlayer.start();
         }
     }
  
@@ -64,6 +49,7 @@ public class Audio implements OnCompletionListener {
         synchronized(this) {
             isPrepared = false;
         }
+        mediaPlayer.release();
     }
      
     public void switchTracks(){

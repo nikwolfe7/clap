@@ -18,12 +18,20 @@ public class CountriesListActivity extends ClapListActivity {
 	
 	protected class LoadCountryListTask extends LoadListTask {
 
-		public LoadCountryListTask(Context c) { super(c);	}
+		public LoadCountryListTask(Context c) {
+			super(c);
+			emptyListMessage = "Country list was empty...";
+		}
 
 		@Override
 		protected ArrayList<String> doInBackground(Void... params) {
-			ApplicationState state = (ApplicationState)getApplication();
-			return state.getCountryNames(); // This is sent to onPostExecute
+			try {
+				ApplicationState state = (ApplicationState)getApplication();
+				return state.getCountryNames(); // This is sent to onPostExecute
+			} catch (Exception e) {
+				exception = e;
+				return null;
+			}
 		}	
 
 		@Override

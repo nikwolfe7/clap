@@ -22,16 +22,20 @@
     <string name="about_full">Developed by Peace Corps Ghana in collaboration with Coders4Africa and Mobile Web Ghana</string>
     <string name="play">Play</string>
     <string name="close">Close</string>
-    <string name="help">HELP MEEEE!!!!!</string>
-    <string name="preference_location">Location</string>
+    <string name="help">HELP!!!!!!!!!!</string>
+    <string name="pref_location">Location</string>
     <string name="about_name">Applause\nApplication for Language Audio Users</string>
     <string name="menu_clear">Clear Data</string>
-    <string-array name="dialog_clear_items">
-        <item >All</item>
-        <item >Database Only</item>
-        <item >Files Only</item>
-    </string-array>
     <string name="dialog_clear">Clear</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="pref_data_usage">Data Usage</string>
+    <string name="pref_text_size">Text Size</string><string name="pref_location_summary">Allow Applause to use your location</string>
+    <string name="pref_data_usage_summary">Download data using Any Connection, WiFi Only or None</string>
+    <string name="pref_text_size_summary">Medium</string><string name="pref_text_size_default">medium</string><string name="pref_data_usage_default">any</string><string name="press_back_again">Please press BACK again to exit</string>
+    <string name="english">English</string>
+    
+    
+    
+    
     
 </resources>

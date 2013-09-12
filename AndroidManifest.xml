@@ -20,6 +20,7 @@
         android:name="com.clap.ApplicationState" >
         <activity
             android:name="com.clap.SplashActivity"
+            android:launchMode="singleTask"
             android:label="@string/app_name" 
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden" >
@@ -28,23 +29,48 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.clap.MainMenuActivity" ></activity>
+        <activity android:name="com.clap.MainMenuActivity"
+            android:launchMode="singleTask" ></activity>
         <activity
             android:name="com.clap.AboutActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden" >
+            android:configChanges="orientation|keyboardHidden" 
+            android:parentActivityName="MainMenuActivity" >
         </activity>
-        <activity android:name="com.clap.HelpActivity" ></activity>
+        <activity android:name="com.clap.HelpActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName="MainMenuActivity" >
+        </activity>
         <activity
             android:name="com.clap.ClapPreferenceActivity"
+            android:launchMode="singleTask"
             android:theme="@style/DefaultPreferenceStyle">
         </activity>
-        <activity android:name="com.clap.CountriesListActivity" ></activity>
-        <activity android:name="com.clap.LanguageListActivity" ></activity>
-        <activity android:name="com.clap.LessonListActivity" ></activity>
-        <activity android:name="com.clap.LessonDialogActivity" ></activity>
-        <activity android:name="com.clap.StudyActivity" ></activity>
-        <activity android:name="com.clap.PlayActivity" ></activity>
+        <activity android:name="com.clap.CountriesListActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName="MainMenuActivity" >
+        </activity>
+        <activity android:name="com.clap.LanguageListActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName="CountriesListActivity" >
+        </activity>
+        <activity android:name="com.clap.LessonListActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName="LanguageListActivity" >
+        </activity>
+        <activity android:name="com.clap.LessonActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName="LessonListActivity" >
+        </activity>
+        <activity android:name="com.clap.StudyActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName="LessonActivity" >
+        </activity>
+        <activity android:name="com.clap.PlayActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName="LessonActivity" >
+        </activity>
     </application>
 
 </manifest>

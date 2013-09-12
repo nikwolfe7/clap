@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000" >
+
+    <Button
+        android:id="@+id/button1"
+        style="@style/DefaultButtonStyle"
+        android:text="Prev" />
+
+    <Button
+        android:id="@+id/button2"
+        style="@style/DefaultButtonStyle"
+        android:layout_alignBottom="@+id/button1"
+        android:layout_toRightOf="@+id/button1"
+        android:text="Next" />
+
+</RelativeLayout>

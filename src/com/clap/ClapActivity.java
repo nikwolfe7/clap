@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -23,6 +24,18 @@ public class ClapActivity extends Activity {
 	private static final int ITEM_CLEAR_DATA = 1;
 	
 	private int clearDataItemSelected = 0;
+	
+	// boolean to determine if the back button on the Action Bar should be used
+	protected boolean USE_ACTION_BAR_BACK_BUTTON = true;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (USE_ACTION_BAR_BACK_BUTTON) {
+			getActionBar().setHomeButtonEnabled(true);
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -150,6 +163,18 @@ public class ClapActivity extends Activity {
 		}
 	}
 
+	protected void showErrorMessage(Exception exception) {
+		showErrorMessage(exception, true);
+	}
+	
+	protected void showErrorMessage(Exception exception, boolean returnToPreviousActivity) {
+		if (exception.getMessage() == null) {
+			showErrorMessage(exception.toString(), returnToPreviousActivity);
+		} else {
+			showErrorMessage(exception.getMessage(), returnToPreviousActivity);
+		}
+	}
+
 	protected void showErrorMessage(String error) {
 		// by default return to the previous activity
 		showErrorMessage(error, true);
@@ -161,8 +186,7 @@ public class ClapActivity extends Activity {
 		dialogBuilder.setPositiveButton(R.string.ok, new ErrorOkButtonOnClick(returnToPreviousActivity));
 		dialogBuilder.setMessage(error).setTitle("Oops!!");
 
-		AlertDialog errorDialog = dialogBuilder.create();
-		errorDialog.show();
+		dialogBuilder.create().show();
 	}
 	
 	private class ErrorOkButtonOnClick implements OnClickListener {

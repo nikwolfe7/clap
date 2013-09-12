@@ -26,28 +26,31 @@ public class LessonListActivity extends ClapListActivity {
 
 	protected class LoadLessonListTask extends LoadListTask {
 
-		public LoadLessonListTask(Context c) {	super(c); }
+		public LoadLessonListTask(Context c) {
+			super(c);
+			emptyListMessage = "Language lessons currently unavailable for " + languageName;
+		}
 
 		@Override
 		protected ArrayList<String> doInBackground(Void... params) {
-			ApplicationState state = (ApplicationState) getApplication();
-			return state.getLessonNames(languageName);
+			try {
+				ApplicationState state = (ApplicationState) getApplication();
+				return state.getLessonNames(languageName);
+			} catch (Exception e) {
+				exception = e;
+				return null;
+			}
 		}	
-		
-		@Override
-		protected void showEmptyListMessage() {
-			showErrorMessage("Language lessons currently unavailable for " + languageName);
-		}
 		
 		@Override
 		public void listItemOnClick(AdapterView<?> parent, View arg1, int position, long arg3) {
 			// What was selected?
 			String lessonSelected = (parent.getAdapter().getItem(position).toString());
 			
-			// create the lesson dialog
-			Intent lessonDialog = new Intent(context, LessonDialogActivity.class);
-			lessonDialog.putExtra(EXTRA_LESSON_NAME, lessonSelected);
-			startActivity(lessonDialog);
+			// create the lesson activity 
+			Intent lessonActivity = new Intent(context, LessonActivity.class);
+			lessonActivity.putExtra(EXTRA_LESSON_NAME, lessonSelected);
+			startActivity(lessonActivity);
 		}
 	}
 }

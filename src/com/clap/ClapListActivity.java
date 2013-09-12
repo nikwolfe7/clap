@@ -26,6 +26,8 @@ public class ClapListActivity extends ClapActivity {
 		protected ListView listView;
 		protected Context context;
 		protected ProgressDialog progressDialog;
+		protected Exception exception = null;
+		protected String emptyListMessage = "Empty List";
 		
 		public LoadListTask(Context c) {
 			context = c;
@@ -43,10 +45,6 @@ public class ClapListActivity extends ClapActivity {
 			return null;
 		}
 
-		protected void showEmptyListMessage() {
-			showErrorMessage("List was empty!");
-		}
-
 		@Override
 		// receives a list of names from doInBackground process
 		protected void onPostExecute(ArrayList<String> list) {
@@ -54,11 +52,12 @@ public class ClapListActivity extends ClapActivity {
 			
 			// check that our list is not empty
 			// and that WebAPI didn't have an error
-			if (list == null || list.isEmpty() || list.get(0).startsWith(WebAPI.ERROR_EMPTY_LIST)) {
-				showEmptyListMessage();
-			} else if (list.get(0).startsWith(WebAPI.ERROR_INVALID_LIST) ||
-					list.get(0).startsWith(WebAPI.ERROR_NO_CONNECTION)) {
-				showErrorMessage(list.get(0));
+			if (list == null || list.isEmpty()) {
+				if (exception == null || exception.getMessage() == WebAPI.ERROR_EMPTY_LIST) {
+					showErrorMessage(emptyListMessage);
+				} else {
+					showErrorMessage(exception);
+				}
 			} else {
 				listView = (ListView) findViewById(R.id.list);
 

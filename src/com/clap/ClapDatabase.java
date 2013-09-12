@@ -22,14 +22,16 @@ public class ClapDatabase {
 		clapWebAPI = new WebAPI(context);
 	}
 
-	public void open() throws SQLException {
+	// Open the Database for reading/writing if it is not
+	// already open
+	private void openDatabaseIfNotOpen() throws SQLException {
 		if (database == null) {
 			database = databaseHelper.getWritableDatabase();
 		}
 	}
 
-	public ArrayList<String> getCountryNames() {
-		open();
+	public ArrayList<String> getCountryNames() throws Exception {
+		openDatabaseIfNotOpen();
 
 		// Check the database table to see if we have downloaded the countries
 		// yet
@@ -42,14 +44,7 @@ public class ClapDatabase {
 		} else {
 			// database table was empty
 			// download the country names and populate the table
-			String results;
-			try {
-				results = clapWebAPI.getJSONArray(WebAPI.HTTP_GET.COUNTRIES);
-			} catch (Exception e) {
-				ArrayList<String> temp = new ArrayList<String>();
-				temp.add(e.getMessage());
-				return temp;
-			}
+			String results = clapWebAPI.getJSONArray(WebAPI.HTTP_GET.COUNTRIES);
 			
 			// remove quotes
 			results = results.replace("\"", "");
@@ -69,8 +64,8 @@ public class ClapDatabase {
 		}
 	}
 
-	public ArrayList<String> getLanguageNames(String countryName) {
-		open();
+	public ArrayList<String> getLanguageNames(String countryName) throws Exception {
+		openDatabaseIfNotOpen();
 
 		// Check the database table to see if we have downloaded the languages yet
 		Cursor cursor = database.query(SQLHelper.TABLE_LANGUAGES, new String[] {
@@ -83,14 +78,7 @@ public class ClapDatabase {
 		} else {
 			// database table was empty
 			// download the language names and populate the table
-			String results;
-			try {
-				results = clapWebAPI.getJSONArray(WebAPI.HTTP_GET.LANGUAGES, countryName);
-			} catch (Exception e) {
-				ArrayList<String> temp = new ArrayList<String>();
-				temp.add(e.getMessage());
-				return temp;
-			}
+			String results = clapWebAPI.getJSONArray(WebAPI.HTTP_GET.LANGUAGES, countryName);
 			
 			// remove quotes
 			results = results.replace("\"", "");
@@ -109,8 +97,8 @@ public class ClapDatabase {
 		}
 	}
 
-	public ArrayList<String> getLessonNames(String languageName) {
-		open();
+	public ArrayList<String> getLessonNames(String languageName) throws Exception {
+		openDatabaseIfNotOpen();
 
 		// Check the database table to see if we have downloaded the lessons yet
 		Cursor cursor = database.query(SQLHelper.TABLE_LESSONS, new String[] {
@@ -124,14 +112,7 @@ public class ClapDatabase {
 		} else {
 			// database table was empty
 			// download the lesson names and populate the table
-			String results;
-			try {
-				results = clapWebAPI.getJSONArray(WebAPI.HTTP_GET.LESSONS, languageName);
-			} catch (Exception e) {
-				ArrayList<String> temp = new ArrayList<String>();
-				temp.add(e.getMessage());
-				return temp;
-			}
+			String results = clapWebAPI.getJSONArray(WebAPI.HTTP_GET.LESSONS, languageName);
 
 			// remove quotes
 			results = results.replace("\"", "");
@@ -164,7 +145,7 @@ public class ClapDatabase {
 	}
 
 	public String getLessonId(String lessonName) {
-		open();
+		openDatabaseIfNotOpen();
 
 		Cursor cursor = database.query(SQLHelper.TABLE_LESSONS, new String[] {
 				SQLHelper.COLUMN_ID, SQLHelper.COLUMN_LANGUAGE, SQLHelper.COLUMN_LESSON,
@@ -182,7 +163,7 @@ public class ClapDatabase {
 	public ArrayList<Phrase> getPhrases(String lessonId, String directoryName) throws Exception {
 		ArrayList<Phrase> phrases = new ArrayList<Phrase>();
 
-		open();
+		openDatabaseIfNotOpen();
 
 		// Check the database table to see if we have downloaded the phrase
 		// information yet
@@ -218,6 +199,7 @@ public class ClapDatabase {
 			// database table was empty
 			// download the phrase information and populate the table
 			String results = clapWebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASES, lessonId);
+
 			// remove first bracket of first group and last bracket of last group
 			results = results.substring(1, results.length() - 1); 
 			// split at '],['
@@ -277,11 +259,11 @@ public class ClapDatabase {
 		return phrases;
 	}
 	
-	public ArrayList<String> getPhraseOrder(String lessonId) {
+	public ArrayList<String> getPhraseOrder(String lessonId) throws Exception {
 		String results;
 		ArrayList<String> phraseOrder = new ArrayList<String>();
 
-		open();
+		openDatabaseIfNotOpen();
 
 		// Check the database table to see if we have downloaded the lessons yet
 		Cursor cursor = database.query(SQLHelper.TABLE_PHRASE_ORDER, new String[] {
@@ -294,19 +276,13 @@ public class ClapDatabase {
 		} else {
 			// database table was empty
 			// download the lesson names and populate the table
-			try {
-				results = clapWebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASE_ORDER, lessonId);
+			results = clapWebAPI.getJSONArray(WebAPI.HTTP_GET.PHRASE_ORDER, lessonId);
 
-				// add to the database
-				ContentValues values = new ContentValues();
-				values.put(SQLHelper.COLUMN_LESSON_ID, lessonId);
-				values.put(SQLHelper.COLUMN_PHRASE_ORDERING, results);
-				database.insert(SQLHelper.TABLE_PHRASE_ORDER, null, values);
-			} catch (Exception e) {
-				ArrayList<String> temp = new ArrayList<String>();
-				temp.add(e.getMessage());
-				return temp;
-			}
+			// add to the database
+			ContentValues values = new ContentValues();
+			values.put(SQLHelper.COLUMN_LESSON_ID, lessonId);
+			values.put(SQLHelper.COLUMN_PHRASE_ORDERING, results);
+			database.insert(SQLHelper.TABLE_PHRASE_ORDER, null, values);
 		}
 
 		// remove quotes
@@ -324,7 +300,7 @@ public class ClapDatabase {
 	}
 
 	public void reset() {
-		open();
+		openDatabaseIfNotOpen();
 		databaseHelper.onUpgrade(database, 1, 1);
 	}
 

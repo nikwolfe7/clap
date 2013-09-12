@@ -1,62 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/DefaultLinearLayoutStyle" >
-
-    <TableLayout
-        android:id="@+id/table"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_weight="0.07" >
-
-    <TableRow
-        android:id="@+id/button_row"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:baselineAligned="true" >
-
-        <ImageButton
-            android:id="@+id/previous"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="@string/btnPrevious"
-            android:src="@drawable/previous" />
-
-        <ImageButton
-            android:id="@+id/back"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="@string/btnBack"
-            android:src="@drawable/back" />
-
-        <ImageButton
-            android:id="@+id/next"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="@string/btnNext"
-            android:src="@drawable/next" />
-    </TableRow>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
     
-     </TableLayout>
 
-    <ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.07"
-        android:src="@android:drawable/btn_star" />
-
-    <TextView
-        android:id="@+id/lesson_title"
-        android:layout_width="220dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="30dp"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textIsSelectable="false" />
-
-</LinearLayout>
+</RelativeLayout>

@@ -1,12 +1,12 @@
 package com.clap;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.regex.Matcher;
@@ -28,10 +28,11 @@ import android.util.Log;
 public class WebAPI {
 	private Context context;
 
-	public static final String ERROR_EMPTY_LIST = "Empty List";
-	public static final String ERROR_INVALID_LIST = "Invalid List";
+	public static final String ERROR_EMPTY_LIST = "Received Empty List From Server";
+	public static final String ERROR_INVALID_LIST = "Received Invalid List From Server";
 	public static final String ERROR_NO_CONNECTION = "No Data Connection";
 
+	// enum to hold all the HTTP GET requests we use
 	public enum HTTP_GET {
 		COUNTRIES("http://www.celebrate-language.com/public-api/?action=get_country_list"),
 		LANGUAGES("http://www.celebrate-language.com/public-api/?action=get_lang_list_by&country="),
@@ -54,37 +55,55 @@ public class WebAPI {
 		context = c;
 	}
 
-	public boolean DownloadAndSaveAudio(String urlString, File audioFile)
-			throws MalformedURLException, IOException {
+	public void DownloadAndSaveAudio(String urlString, File audioFile)
+		throws IOException {
+
 		if (!hasDataConnection()) {
-			return false;
+			throw new RuntimeException(ERROR_NO_CONNECTION);
 		}
 
-		URL url;
-		url = new URL(urlString);
-		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-		urlConnection.setRequestMethod("GET");
-		urlConnection.setDoOutput(true);
-		urlConnection.connect();
-		
-		FileOutputStream fileOutput = new FileOutputStream(audioFile);
-		InputStream inputStream = urlConnection.getInputStream();
-		
-		int totalSize = urlConnection.getContentLength();
-		int downloadedSize = 0;
-		byte[] buffer = new byte[1024];
-		int bufferLength = 0;
-		
-		while ((bufferLength = inputStream.read(buffer)) > 0) {
-			fileOutput.write(buffer, 0, bufferLength);
-			downloadedSize += bufferLength;
-			int progress = (int)(downloadedSize*100/totalSize);
-			Log.d("downloading file", "progress: " + String.valueOf(progress));
+		try {
+			// Open a GET connection to the URL for the Audio File
+			URL url = new URL(urlString);
+			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setRequestMethod("GET");
+			urlConnection.setDoOutput(true);
+			urlConnection.connect();
+			
+			// Open the Audio File for writing
+			FileOutputStream fileOutput = new FileOutputStream(audioFile);
+
+			// Open the URL stream
+			InputStream inputStream = urlConnection.getInputStream();
+			
+			int totalSize = urlConnection.getContentLength();
+			int downloadedSize = 0;
+			byte[] buffer = new byte[1024];
+			int bufferLength = 0;
+			
+			// Read from the URL and write to the file
+			while ((bufferLength = inputStream.read(buffer)) > 0) {
+				fileOutput.write(buffer, 0, bufferLength);
+				downloadedSize += bufferLength;
+				int progress = (int)(downloadedSize*100/totalSize);
+				Log.d("downloading file", "progress: " + String.valueOf(progress));
+			}
+			
+			fileOutput.close();
+
+			// If for some reason the file is empty, delete it
+			if (audioFile.length() == 0) {
+				audioFile.delete();
+			}
+		} catch (FileNotFoundException e) {
+			// Something went wrong, the file is probably corrupt or empty, delete it
+			audioFile.delete();
+			throw new IOException("Audio File Not Downloaded\n\nURL Not Found:\n" + urlString);
+		} catch (IOException e) {
+			// Something went wrong, the file is probably corrupt or empty, delete it
+			audioFile.delete();
+			throw new IOException("Audio File NOt Downloaded\n\n" + e.getMessage());
 		}
-		
-		fileOutput.close();
-		
-		return true;
 	}
 
 	public String getJSONArray(HTTP_GET httpGetValue) throws Exception {
@@ -93,38 +112,37 @@ public class WebAPI {
 
 	public String getJSONArray(HTTP_GET httpGetValue, String httpGetParam) throws Exception {
 		if (!hasDataConnection()) {
-			throw new Exception(ERROR_NO_CONNECTION);
+			throw new RuntimeException(ERROR_NO_CONNECTION);
 		}
 
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
+		
+		// Create the HTTP GET request with the given parameter
 		HttpGet httpGet = new HttpGet(httpGetValue.stringValue() + encodeParam(httpGetParam));
 		String text = null;
-		try {
-			HttpResponse response = httpClient.execute(httpGet, localContext);
-			HttpEntity entity = response.getEntity();
-			text = getASCIIContentFromEntity(entity);
-		} catch (Exception e) {
-			return e.getLocalizedMessage();
-		}
+
+		HttpResponse response = httpClient.execute(httpGet, localContext);
+		HttpEntity entity = response.getEntity();
+		text = getASCIIContentFromEntity(entity);
 		
-		if (text != null) {
-			if (text.equals("[]") || text.equals("[null]")) {
-				throw new Exception(ERROR_EMPTY_LIST);
-			} else if (!text.startsWith("[") || !text.endsWith("]")
-					|| text.matches("www.celebrate-language.com")) {
-				throw new Exception(ERROR_INVALID_LIST + ": " + text);
-			} else {
-				Pattern p = Pattern.compile("^" + Pattern.quote("[") + "(.*)" + Pattern.quote("]") + "$");
-				Matcher matcher = p.matcher(text);
-				if (matcher.find()) {
-					return matcher.group(1);
-				} else {
-					throw new IllegalStateException(text);
-				}
-			}
+		if (text == null || text.equals("")
+				|| text.equals("[]") || text.equals("[null]")) {
+			// Empty List
+			throw new RuntimeException(ERROR_EMPTY_LIST);
+		} else if (!text.startsWith("[") || !text.endsWith("]")
+				|| text.matches("www.celebrate-language.com")) {
+			// We received something weird
+			throw new RuntimeException(ERROR_INVALID_LIST + ": " + text);
 		} else {
-			throw new Exception(ERROR_EMPTY_LIST);
+			// We don't need the surrounding square brackets
+			Pattern p = Pattern.compile("^" + Pattern.quote("[") + "(.*)" + Pattern.quote("]") + "$");
+			Matcher matcher = p.matcher(text);
+			if (matcher.find()) {
+				return matcher.group(1);
+			} else {
+				throw new RuntimeException(ERROR_INVALID_LIST + ": " + text);
+			}
 		}
 	}
 

@@ -3,23 +3,49 @@
     style="@style/DefaultLinearLayoutStyle">
     
     <TextView
+        style="@style/DefaultTextViewStyle"
+        android:text="@string/english"
+        android:textSize="15sp"
+        android:gravity="center_horizontal"
+        />
+
+    <TextView
         android:id="@+id/phraseText"
         style="@style/DefaultTextViewStyle"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:textSize="15sp" />
+        android:background="@drawable/rounded_border"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:maxLines="3"
+        android:minLines="3"
+        android:textIsSelectable="true"
+        android:textSize="30sp" />
     
+    <TextView
+        android:id="@+id/language"
+        style="@style/DefaultTextViewStyle"
+        android:textSize="15sp"
+        android:gravity="center_horizontal"
+        />
+
     <TextView
         android:id="@+id/translatedText"
         style="@style/DefaultTextViewStyle"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:textSize="15sp" />
+        android:background="@drawable/rounded_border"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:maxLines="3"
+        android:minLines="3"
+        android:textIsSelectable="true"
+        android:textSize="30sp" />
 
 	<LinearLayout
 	    android:id="@+id/layoutButtons"
+	    android:background="@drawable/rounded_border"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
+	    android:layout_marginTop="5dp"
 	    android:gravity="center|bottom"
 	    android:orientation="horizontal"
 	    android:weightSum="7" >
@@ -28,24 +54,31 @@
 	        android:id="@+id/btnPrevious"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_margin="5dp"
-	        android:background="@drawable/previous"
+	        android:layout_marginTop="5dp"
+	        android:layout_marginBottom="5dp"
+	        android:layout_marginRight="10dp"
+	        android:background="@drawable/previous_button"
 	        android:onClick="click" />
 	
 	    <Button
 	        android:id="@+id/btnPlay"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_margin="5dp"
-	        android:background="@drawable/play"
+	        android:layout_marginTop="5dp"
+	        android:layout_marginBottom="5dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        android:background="@drawable/play_button"
 	        android:onClick="click" />
 	
 	    <Button
 	        android:id="@+id/btnNext"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_margin="5dp"
-	        android:background="@drawable/next"
+	        android:layout_marginTop="5dp"
+	        android:layout_marginBottom="5dp"
+	        android:layout_marginLeft="10dp"
+	        android:background="@drawable/next_button"
 	        android:onClick="click" />
 	
 	</LinearLayout>

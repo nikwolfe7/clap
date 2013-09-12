@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="dialog_clear_items">
+        <item >All</item>
+        <item >Database Only</item>
+        <item >Files Only</item>
+    </string-array>
+    <string-array name="pref_data_usage_entries">
+        <item name="any">Any Connection</item>
+        <item name="wifi">WiFi Only</item>
+        <item name="none">None</item>
+    </string-array>
+    <string-array name="pref_text_size_entries">
+        <item name="verysmall">Very Small</item>
+        <item name="small">Small</item>
+        <item name="medium">Medium</item>
+        <item name="large">Large</item>
+        <item name="verylarge">Very Large</item>
+    </string-array>
+</resources>

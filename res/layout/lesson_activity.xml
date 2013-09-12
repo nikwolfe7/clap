@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DefaultLinearLayoutStyle" >
+
+    <TextView
+        android:id="@+id/lesson_title"
+        style="@style/DefaultTextViewStyle"
+        android:layout_width="175dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:textIsSelectable="false"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+  
+    <Button
+        android:id="@+id/btn_play_lesson"
+        style="@style/DefaultButtonStyle"
+        android:layout_marginBottom="15dp"
+        android:text="@string/btnPlayLesson" />
+    
+    <Button 
+        android:id="@+id/btn_study_phrases" 
+        style="@style/DefaultButtonStyle"
+        android:text="@string/btnStudyPhrases" />
+    <!--
+    <Button 
+        android:id="@+id/btn_quit_lesson" 
+        style="@style/DefaultButtonStyle"
+        android:text="@string/btnQuit" />
+    -->
+     
+</LinearLayout>

@@ -2,7 +2,6 @@ package com.clap;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import android.content.Context;
 
@@ -52,11 +51,12 @@ public class Phrase {
 		return audioLocation;
 	}
 
-	public void downloadAudio(Context c) throws MalformedURLException, IOException {
+	public void downloadAudio(Context c) throws IOException {
 		File audioFile = new File(audioLocation);
 		if (!audioFile.exists()) {
+			// If the file doesn't exist yet we need to download it
 			if (!audioFile.createNewFile()) {
-				throw new IOException("Could Not Create Audio File: " + audioLocation);
+				throw new IOException("Could Not Create File: \'" + audioFile.getName() + "\'");
 			}
 			WebAPI clapWebAPI = new WebAPI(c);
 			clapWebAPI.DownloadAndSaveAudio(audioURL, audioFile);
