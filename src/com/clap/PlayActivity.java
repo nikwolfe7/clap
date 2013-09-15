@@ -1,5 +1,6 @@
 package com.clap;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.app.ProgressDialog;
@@ -18,6 +19,7 @@ public class PlayActivity extends ClapActivity {
 	private String playingTitle = "Playing: ";
 	private String pausedTitle = "Paused: ";
 	private String lesson;
+	private PlayAudio playAudio;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,20 @@ public class PlayActivity extends ClapActivity {
 		setTitle(lesson);
 
 		new LoadLessonTask(this).execute();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+		
+		savedInstanceState.putSerializable("PlayAudio", playAudio);
+	}
+
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		playAudio = (PlayAudio) savedInstanceState.getSerializable("PlayAudio");
 	}
 
 	private class LoadLessonTask extends AsyncTask<Void, Integer, ArrayList<Phrase>> {
@@ -151,7 +167,7 @@ public class PlayActivity extends ClapActivity {
 				Button nextButton = (Button)findViewById(R.id.btnNext);
 
 				// PlayAudio will be the OnClickListener for all the Buttons
-				PlayAudio playAudio = new PlayAudio(phraseList, context);
+				playAudio = new PlayAudio(phraseList, context);
 
 				playButton.setOnClickListener(playAudio);
 				prevButton.setOnClickListener(playAudio);
@@ -159,7 +175,9 @@ public class PlayActivity extends ClapActivity {
 			}		}
 	}
 
-	private class PlayAudio implements OnClickListener, OnCompletionListener {
+	private class PlayAudio implements OnClickListener, OnCompletionListener, Serializable {
+		private static final long serialVersionUID = 1L;
+
 		private ArrayList<Audio> phraseAudioList = new ArrayList<Audio>();
 		private int currentPhrase = 0;
 		private boolean isPlaying = false;

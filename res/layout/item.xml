@@ -2,9 +2,9 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   style="@style/DefaultLinearLayoutStyle"
-  android:background="@drawable/item_bg" >
+  android:background="@drawable/item_background" >
   
-    <TextView
+    <com.clap.ListItemTextView
         android:id="@+id/item_id"
         style="@style/DefaultTextViewStyle"
         android:layout_marginBottom="10dp"

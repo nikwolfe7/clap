@@ -7,27 +7,24 @@
        
        <ListPreference
            android:key="pref_text_size"
-           android:summary="@string/pref_text_size_summary"
            android:title="@string/pref_text_size"
            android:dialogTitle="@string/pref_text_size"
            android:entries="@array/pref_text_size_entries"
            android:entryValues="@array/pref_text_size_entries"
-           android:defaultValue="@string/pref_text_size_default" />
+           android:defaultValue="Medium" />
            
        <ListPreference
            android:key="pref_data_usage"
-           android:summary="@string/pref_data_usage_summary"
            android:title="@string/pref_data_usage"
            android:dialogTitle="@string/pref_data_usage"
            android:entries="@array/pref_data_usage_entries"
            android:entryValues="@array/pref_data_usage_entries"
-           android:defaultValue="@string/pref_data_usage_default" />
+           android:defaultValue="Any Connection" />
        
        <CheckBoxPreference 
            android:key="pref_location"
-           android:summary="@string/pref_location_summary"
            android:title="@string/pref_location"
-           android:defaultValue="false" />
+           android:defaultValue="true" />
 
    </PreferenceCategory> 
 

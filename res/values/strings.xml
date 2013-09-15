@@ -12,8 +12,9 @@
     <string name="ok">OK</string>
     <string name="splash_img_desc">Africa Image</string>
     <string name="pc_logo">Peace Corps Logo</string>
-    <string name="btnPlayLesson">Play Lesson</string>
-    <string name="btnStudyPhrases">Study Phrases</string>
+    <string name="btnPlayLesson">Play</string>
+    <string name="btnStudyPhrases">Study</string>
+    <string name="btnMemorize">Memorize</string>
     <string name="btnQuit">Return to Menu</string>
     <string name="btnPrevious">Previous</string>
     <string name="btnNext">Next</string>
@@ -29,9 +30,13 @@
     <string name="dialog_clear">Clear</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="pref_data_usage">Data Usage</string>
-    <string name="pref_text_size">Text Size</string><string name="pref_location_summary">Allow Applause to use your location</string>
+    <string name="pref_text_size">Text Size</string>
+    <string name="pref_text_size_summary">Medium</string>
+    <string name="pref_text_size_default">medium</string>
+    <string name="pref_location_summary">Allow Applause to use your location</string>
     <string name="pref_data_usage_summary">Download data using Any Connection, WiFi Only or None</string>
-    <string name="pref_text_size_summary">Medium</string><string name="pref_text_size_default">medium</string><string name="pref_data_usage_default">any</string><string name="press_back_again">Please press BACK again to exit</string>
+    <string name="pref_data_usage_default">any</string>
+    <string name="press_back_again">Please press BACK again to exit</string>
     <string name="english">English</string>
     
     

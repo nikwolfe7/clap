@@ -28,9 +28,17 @@ import android.util.Log;
 public class WebAPI {
 	private Context context;
 
+	private static DATA_USAGE dataUsage = DATA_USAGE.ANY;
+
 	public static final String ERROR_EMPTY_LIST = "Received Empty List From Server";
 	public static final String ERROR_INVALID_LIST = "Received Invalid List From Server";
-	public static final String ERROR_NO_CONNECTION = "No Data Connection";
+	public static final String ERROR_NO_DATA_CONNECTION = "No Data Connection";
+	public static final String ERROR_NO_WIFI_CONNECTION = "No WiFi Connection";
+	public static final String ERROR_DATA_OFF = "Data Usage Turned Off";
+
+	public enum DATA_USAGE {
+		ANY, WIFI, NONE;
+	}
 
 	// enum to hold all the HTTP GET requests we use
 	public enum HTTP_GET {
@@ -54,13 +62,20 @@ public class WebAPI {
 	public WebAPI(Context c) {
 		context = c;
 	}
+	
+	public static void setDataUsage(String dataUsageString) {
+		if (dataUsageString.equals("None")) {
+			dataUsage = DATA_USAGE.NONE;
+		} else if (dataUsageString.equals("WiFi Only")) {
+			dataUsage = DATA_USAGE.WIFI;
+		} else {
+			dataUsage = DATA_USAGE.ANY;
+		}
+	}
 
 	public void DownloadAndSaveAudio(String urlString, File audioFile)
 		throws IOException {
-
-		if (!hasDataConnection()) {
-			throw new RuntimeException(ERROR_NO_CONNECTION);
-		}
+		checkConnection(); // Runtime Exception thrown if no connection
 
 		try {
 			// Open a GET connection to the URL for the Audio File
@@ -111,9 +126,7 @@ public class WebAPI {
 	}
 
 	public String getJSONArray(HTTP_GET httpGetValue, String httpGetParam) throws Exception {
-		if (!hasDataConnection()) {
-			throw new RuntimeException(ERROR_NO_CONNECTION);
-		}
+		checkConnection(); // Runtime Exception thrown if no connection
 
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
@@ -170,6 +183,26 @@ public class WebAPI {
 		return out.toString();
 	}
 	
+	private void checkConnection() {
+		if (dataUsage == DATA_USAGE.NONE) {
+			throw new RuntimeException(ERROR_DATA_OFF);
+		} else if (dataUsage == DATA_USAGE.WIFI) {
+			if (!hasWifiConnection()) {
+				throw new RuntimeException(ERROR_NO_WIFI_CONNECTION);
+			}
+		} else {
+			if (!hasDataConnection()) {
+				throw new RuntimeException(ERROR_NO_DATA_CONNECTION);
+			}
+		}
+	}
+
+	private boolean hasWifiConnection() {
+		ConnectivityManager connectManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connectManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		return (networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnectedOrConnecting());
+	}
+
 	private boolean hasDataConnection() {
 		ConnectivityManager connectManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connectManager.getActiveNetworkInfo();

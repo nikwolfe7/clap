@@ -20,18 +20,17 @@ public class MainMenuActivity extends ClapActivity {
 		
 		super.onCreate(savedInstanceState);
 
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		preferences.registerOnSharedPreferenceChangeListener(new ClapPreferenceActivity());
-
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+		
+		// Set the user's preferences from the previous time Applause was run
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		ListItemTextView.setUserTextSize(sharedPreferences.getString(ClapPreferenceActivity.KEY_TEXT_SIZE, ""));
+		WebAPI.setDataUsage(sharedPreferences.getString(ClapPreferenceActivity.KEY_DATA_USAGE, ""));
 
 		setContentView(R.layout.main_menu);
 
 		Button countries = (Button) findViewById(R.id.buttonCountry);
 		countries.setOnClickListener(new CountriesButton());
-
-		// Button reset = (Button)findViewById(R.id.buttonReset);
-		// reset.setOnClickListener(new ResetButton());
 
 		Button help = (Button) findViewById(R.id.buttonHelp);
 		help.setOnClickListener(new HelpButton());
@@ -73,15 +72,6 @@ public class MainMenuActivity extends ClapActivity {
 			}
 		}
 	}
-
-	/*
-	 * private class ResetButton implements OnClickListener {
-	 * 
-	 * @Override public void onClick(View v) { try { // Reset the database
-	 * ApplicationState state = (ApplicationState)getApplication();
-	 * state.resetDatabase(); } catch (Exception e) {
-	 * showErrorMessage(e.getMessage(), false); } } }
-	 */
 
 	private class HelpButton implements OnClickListener {
 		@Override

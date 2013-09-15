@@ -186,7 +186,8 @@ public class ClapActivity extends Activity {
 		dialogBuilder.setPositiveButton(R.string.ok, new ErrorOkButtonOnClick(returnToPreviousActivity));
 		dialogBuilder.setMessage(error).setTitle("Oops!!");
 
-		dialogBuilder.create().show();
+		AlertDialog alertDialog = dialogBuilder.create();
+		alertDialog.show();
 	}
 	
 	private class ErrorOkButtonOnClick implements OnClickListener {
