@@ -33,6 +33,7 @@ public class Audio {
     }
 
     public void play() throws IllegalStateException, IOException {
+    	try {
         if(mediaPlayer.isPlaying()){
             return;
         }
@@ -42,19 +43,15 @@ public class Audio {
             }
             mediaPlayer.start();
         }
+    	}catch(IllegalStateException e) {
+    		throw e;
+    	}
     }
  
     public void stop() {
-        mediaPlayer.stop();
-        synchronized(this) {
-            isPrepared = false;
-        }
-        mediaPlayer.release();
-    }
-     
-    public void switchTracks(){
-        mediaPlayer.seekTo(0);
-        mediaPlayer.pause();
+    	mediaPlayer.stop();
+    	isPrepared = false;
+    	//mediaPlayer.release();
     }
      
     public void pause() {

@@ -1,15 +1,13 @@
 package com.clap;
 
-import android.app.Activity;
 import android.os.Bundle;
 
-public class AboutActivity extends Activity {
-	private String title = "About";
+public class AboutActivity extends ClapActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		title = "About Applause";
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.about_activity);
-		setTitle(title);
 	}
 }

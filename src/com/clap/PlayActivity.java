@@ -23,7 +23,9 @@ public class PlayActivity extends ClapActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		USE_OPTIONS_MENU_EXPORT = true;
+		USE_OPTIONS_MENU_ADD = true;
+
 		setContentView(R.layout.play_activity);
 
 		Intent i = getIntent();
@@ -39,9 +41,13 @@ public class PlayActivity extends ClapActivity {
 
 		setTitle(lesson);
 
+		super.onCreate(savedInstanceState);
+
 		new LoadLessonTask(this).execute();
 	}
 
+	/* This is supposed to help with changing orientation or something
+	 * But, I have no idea how to work this correctly
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
@@ -54,7 +60,7 @@ public class PlayActivity extends ClapActivity {
 		super.onRestoreInstanceState(savedInstanceState);
 		
 		playAudio = (PlayAudio) savedInstanceState.getSerializable("PlayAudio");
-	}
+	}*/
 
 	private class LoadLessonTask extends AsyncTask<Void, Integer, ArrayList<Phrase>> {
 		private Context context;
@@ -128,7 +134,7 @@ public class PlayActivity extends ClapActivity {
 		
 		@Override
 		protected void onPreExecute() {
-			progressDialog.setMessage("Loading phrases for " + lesson + "...");
+			progressDialog.setMessage("Loading audio files for " + lesson + "...");
 			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			progressDialog.setMax(phraseList.size());
             progressDialog.setCancelable(false);
@@ -197,7 +203,7 @@ public class PlayActivity extends ClapActivity {
 		@Override
 	    public void onCompletion(MediaPlayer mediaPlayer) {
 			// Release the resources that MediaPlayer was using
-			mediaPlayer.release();
+			//mediaPlayer.release();
 			
 			try {
 				// Wait 1.5 seconds before playing the next track
@@ -240,10 +246,14 @@ public class PlayActivity extends ClapActivity {
 						}
 						return;
 					case R.id.btnPrevious:
-						previous();
+						synchronized(this) {
+							previous();
+						}
 						return;
 					case R.id.btnNext:
-						next();
+						synchronized(this) {
+							next();
+						}
 						return;
 					default:
 						return;

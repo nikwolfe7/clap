@@ -16,7 +16,7 @@ public class MainMenuActivity extends ClapActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		USE_ACTION_BAR_BACK_BUTTON = false;
+		USE_ACTION_BAR_BACK_BUTTON = false; 
 		
 		super.onCreate(savedInstanceState);
 
@@ -29,8 +29,11 @@ public class MainMenuActivity extends ClapActivity {
 
 		setContentView(R.layout.main_menu);
 
-		Button countries = (Button) findViewById(R.id.buttonCountry);
-		countries.setOnClickListener(new CountriesButton());
+		Button findLanguages = (Button)findViewById(R.id.buttonFindLanguages);
+		findLanguages.setOnClickListener(new FindLanguagesButton());
+
+		Button myLessons = (Button)findViewById(R.id.buttonMyLessons);
+		myLessons.setOnClickListener(new MyLessonsButton());
 
 		Button help = (Button) findViewById(R.id.buttonHelp);
 		help.setOnClickListener(new HelpButton());
@@ -42,14 +45,18 @@ public class MainMenuActivity extends ClapActivity {
 	@Override
 	public void onBackPressed() {
 		if (doubleBackToExitPressedOnce) {
+			// the back button has now been pressed twice within 2 seconds
+			// exit the app
 			super.onBackPressed();
 			return;
 		}
 
+		// set the flag, inform the user to press back again to exit
 		this.doubleBackToExitPressedOnce = true;
 		Toast.makeText(this, R.string.press_back_again,
 				Toast.LENGTH_SHORT).show();
 
+		// after 2 seconds, the flag should be set to false again
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
@@ -58,31 +65,37 @@ public class MainMenuActivity extends ClapActivity {
 		}, 2000);
 	}
 
-	private class CountriesButton implements OnClickListener {
+	private class FindLanguagesButton implements OnClickListener {
 		@Override
 		public void onClick(View v) {
 			try {
-				// Start the countries list activity
-				Intent countriesActivity = new Intent();
-				countriesActivity.setClass(v.getContext(),
-						CountriesListActivity.class);
-				startActivity(countriesActivity);
+				// Start the find languages activity
+				startActivity(new Intent(v.getContext(), FindLanguagesActivity.class));
 			} catch (Exception e) {
-				showErrorMessage(e.getMessage(), false);
+				showErrorMessage(e, false);
 			}
 		}
 	}
 
+	private class MyLessonsButton implements OnClickListener {
+		@Override
+		public void onClick(View v) {
+			try {
+				// Start the my lessons activity
+				startActivity(new Intent(v.getContext(), MyLessonsActivity.class));
+			} catch (Exception e) {
+				showErrorMessage(e, false);
+			}
+		}
+	}
 	private class HelpButton implements OnClickListener {
 		@Override
 		public void onClick(View v) {
 			try {
-				// Start the about activity
-				Intent helpActivity = new Intent();
-				helpActivity.setClass(v.getContext(), HelpActivity.class);
-				startActivity(helpActivity);
+				// Start the help activity
+				startActivity(new Intent(v.getContext(), HelpActivity.class));
 			} catch (Exception e) {
-				showErrorMessage(e.getMessage(), false);
+				showErrorMessage(e, false);
 			}
 		}
 	}
@@ -92,11 +105,9 @@ public class MainMenuActivity extends ClapActivity {
 		public void onClick(View v) {
 			try {
 				// Start the about activity
-				Intent aboutActivity = new Intent();
-				aboutActivity.setClass(v.getContext(), AboutActivity.class);
-				startActivity(aboutActivity);
+				startActivity(new Intent(v.getContext(), AboutActivity.class));
 			} catch (Exception e) {
-				showErrorMessage(e.getMessage(), false);
+				showErrorMessage(e, false);
 			}
 		}
 	}

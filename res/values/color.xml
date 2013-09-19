@@ -2,4 +2,5 @@
 <resources>
     <color name="default_background">#000000</color>
     <color name="default_text_color">#ffffff</color>
+    <color name="default_dialog_background">#2e2e2e</color>
 </resources>

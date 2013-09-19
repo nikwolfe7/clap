@@ -15,8 +15,8 @@ public class ListItemTextView extends TextView {
 	private static float textSize = TEXT_SIZE.MEDIUM.getTextSizeFloat();
 	
 	// The map from String to float for the text size
-	private static Map<String, TEXT_SIZE> TEXT_SIZE_MAP = createMap();
-	private static Map<String, TEXT_SIZE> createMap() {
+	private static final Map<String, TEXT_SIZE> TEXT_SIZE_MAP = createMap();
+	private static final Map<String, TEXT_SIZE> createMap() {
 		HashMap<String, TEXT_SIZE> tempMap = new HashMap<String, TEXT_SIZE>();
 		tempMap.put("Very Small", TEXT_SIZE.VERY_SMALL);
 		tempMap.put("Small", TEXT_SIZE.SMALL);

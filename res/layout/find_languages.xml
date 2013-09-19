@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DefaultLinearLayoutStyle" >
+    
+    <Button
+        android:id="@+id/buttonFindByCountry"
+        style="@style/DefaultButtonStyle"
+        android:text="@string/btnFindByCountry" />
+
+    <Button
+        android:id="@+id/buttonFindByLocation"
+        style="@style/DefaultButtonStyle"
+        android:text="@string/btnFindByLocation" />
+
+    <Button
+        android:id="@+id/buttonSearch"
+        style="@style/DefaultButtonStyle"
+        android:text="@string/btnSearch" />
+
+</LinearLayout>

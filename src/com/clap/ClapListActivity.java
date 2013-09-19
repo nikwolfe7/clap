@@ -9,25 +9,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class ClapListActivity extends ClapActivity {
-	protected String title = "Applause";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list);
-		setTitle(title);
 	}
-	
+
 	protected class LoadListTask extends AsyncTask<Void,Void,ArrayList<String>> {
 		protected ListView listView;
 		protected Context context;
 		protected ProgressDialog progressDialog;
 		protected Exception exception = null;
 		protected String emptyListMessage = "Empty List";
+		protected String loadMessage = "Loading " + this.getTitle() + "...";
 		
 		public LoadListTask(Context c) {
 			context = c;
@@ -36,7 +36,7 @@ public class ClapListActivity extends ClapActivity {
 		
 		@Override
 		protected void onPreExecute() {
-			progressDialog.setMessage("Loading " + this.getTitle() + "...");
+			progressDialog.setMessage(loadMessage);
 			progressDialog.show();
 		}
 		
@@ -71,6 +71,7 @@ public class ClapListActivity extends ClapActivity {
 				
 				// Set what will happen when an item in the list is clicked on
 				listView.setOnItemClickListener(new listItemOnClickListener());
+				listView.setOnItemLongClickListener(new listItemOnClickListener());
 			}
 		}
 
@@ -80,13 +81,28 @@ public class ClapListActivity extends ClapActivity {
 			// Do something with the item
 		}
 
-		private class listItemOnClickListener implements OnItemClickListener {
+		protected void listItemOnLongClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+			// This needs to be overridden by the subclass
+			// Get item selected
+			// Do something with the item
+		}
+
+		private class listItemOnClickListener implements OnItemClickListener, OnItemLongClickListener {
 			@Override
 			public void onItemClick(AdapterView<?> parent,
 					View arg1,
 					int position,
 					long arg3) {
 				listItemOnClick(parent, arg1, position, arg3);
+			}
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent,
+					View arg1,
+					int position,
+					long arg3) {
+				listItemOnLongClick(parent, arg1, position, arg3);
+				return false;
 			}
 		}
 		

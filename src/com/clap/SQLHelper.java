@@ -14,6 +14,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 	public static final String TABLE_LESSONS = "LESSONS";
 	public static final String TABLE_PHRASES = "PHRASES";
 	public static final String TABLE_PHRASE_ORDER = "PHRASE_ORDER";
+	public static final String TABLE_MY_LESSONS ="MY_LESSONS";
 
 	/*** Columns ***/
 	public static final String COLUMN_ID = "_ID";
@@ -67,6 +68,11 @@ public class SQLHelper extends SQLiteOpenHelper {
 			+ COLUMN_ID + INT + PRIMARYKEY + COMMA
 			+ COLUMN_LESSON_ID + INT + COMMA
 			+ COLUMN_PHRASE_ORDERING + BLOB + ");";
+	private static final String CREATE_MY_LESSONS = CREATE
+			+ TABLE_MY_LESSONS + " ("
+			+ COLUMN_ID + INT + PRIMARYKEY + COMMA
+			+ COLUMN_LESSON + TEXT + COMMA
+			+ COLUMN_LESSON_ID + INT + ");";
 
 	public SQLHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -79,16 +85,17 @@ public class SQLHelper extends SQLiteOpenHelper {
 		database.execSQL(CREATE_LESSONS);
 		database.execSQL(CREATE_PHRASES);
 		database.execSQL(CREATE_PHRASE_ORDER);
+		database.execSQL(CREATE_MY_LESSONS);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-		//Log.w(SQLHelper.class.getName(), "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
 		dropTable(database, TABLE_COUNTRIES);
 		dropTable(database, TABLE_LANGUAGES);
 		dropTable(database, TABLE_LESSONS);
 		dropTable(database, TABLE_PHRASES);
 		dropTable(database, TABLE_PHRASE_ORDER);
+		dropTable(database, TABLE_MY_LESSONS);
 		onCreate(database);
 	}
 	

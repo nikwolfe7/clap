@@ -30,6 +30,56 @@ public class ClapDatabase {
 		}
 	}
 
+	public void addLessonToMyLessons(String lessonName, String lessonId) {
+		openDatabaseIfNotOpen();
+		
+		// add to the database
+		ContentValues values = new ContentValues();
+		values.put(SQLHelper.COLUMN_LESSON, lessonName);
+		values.put(SQLHelper.COLUMN_LESSON_ID, lessonId);
+		database.insert(SQLHelper.TABLE_MY_LESSONS, null, values);
+	}
+
+	public void removeLessonFromMyLessons(String lessonName) {
+		openDatabaseIfNotOpen();
+		database.delete(SQLHelper.TABLE_MY_LESSONS, SQLHelper.COLUMN_LESSON + "=\"" + lessonName + "\"", null);
+	}
+	
+	public boolean lessonIsInMyLessons(String lessonName) {
+		openDatabaseIfNotOpen();
+		
+		Cursor cursor = database.query(SQLHelper.TABLE_MY_LESSONS, new String[] {
+				SQLHelper.COLUMN_ID, SQLHelper.COLUMN_LESSON, SQLHelper.COLUMN_LESSON_ID }, null,
+				null, null, null, null);
+		
+		if (cursor.moveToFirst()) {
+			while (!cursor.isAfterLast()) {
+				if (lessonName.equals(cursor.getString(cursor.getColumnIndexOrThrow(SQLHelper.COLUMN_LESSON)))) {
+					cursor.close();
+					return true;
+				}
+				cursor.moveToNext();
+			}
+		}
+		// Make sure to close the cursor
+		cursor.close();
+		return false;
+	}
+
+	public ArrayList<String> getMyLessons() {
+		openDatabaseIfNotOpen();
+
+		Cursor cursor = database.query(SQLHelper.TABLE_MY_LESSONS, new String[] {
+				SQLHelper.COLUMN_ID, SQLHelper.COLUMN_LESSON, SQLHelper.COLUMN_LESSON_ID }, null,
+				null, null, null, null);
+		
+		if (cursor.moveToFirst()) {
+			return getFromCursor(cursor, SQLHelper.COLUMN_LESSON);
+		} else {
+			return null;
+		}
+	}
+
 	public ArrayList<String> getCountryNames() throws Exception {
 		openDatabaseIfNotOpen();
 
@@ -129,7 +179,7 @@ public class ClapDatabase {
 				// Split it at the comma
 				String[] tempArray = s.split(",");
 				String lessonName = tempArray[0];
-				String lessonID = tempArray[1];
+				String lessonId = tempArray[1];
 
 				lessonNames.add(lessonName);
 
@@ -137,7 +187,7 @@ public class ClapDatabase {
 				ContentValues values = new ContentValues();
 				values.put(SQLHelper.COLUMN_LANGUAGE, languageName);
 				values.put(SQLHelper.COLUMN_LESSON, lessonName);
-				values.put(SQLHelper.COLUMN_LESSON_ID, lessonID);
+				values.put(SQLHelper.COLUMN_LESSON_ID, lessonId);
 				database.insert(SQLHelper.TABLE_LESSONS, null, values);
 			}
 			return lessonNames;

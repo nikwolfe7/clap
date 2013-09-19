@@ -12,14 +12,19 @@ public class LessonActivity extends ClapActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		USE_OPTIONS_MENU_EXPORT = true;
+		USE_OPTIONS_MENU_ADD = true;
+
 		setContentView(R.layout.lesson_activity);
 
 		Intent i = getIntent();
 		Bundle b = i.getExtras();
 		lesson = b.getString(EXTRA_LESSON_NAME);
-		setTitle(lesson);
+		title = lesson;
+		
+		super.onCreate(savedInstanceState);
 
+		// Put a new line between the Language Name and the Lesson Number for the TextView
 		TextView lessonTitle = (TextView)findViewById(R.id.lesson_title);
 		lessonTitle.setText(lesson.replace(" L", "\nL"));
 		

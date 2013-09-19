@@ -1,5 +1,9 @@
 package com.clap;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -7,12 +11,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class ClapActivity extends Activity {
+	protected String title = "Applause";
+
 	// the EXTRA Strings are used get Extras that are sent
 	// when one Activity calls another Activity
 	protected static final String EXTRA_COUNTRY_NAME = "country name";
@@ -22,25 +29,51 @@ public class ClapActivity extends Activity {
 	// Menu Items
 	private static final int ITEM_PREFERENCES = 0;
 	private static final int ITEM_CLEAR_DATA = 1;
+	private static final int ITEM_EXPORT_PHRASES = 2;
+	private static final int ITEM_ADD_TO_MY_LESSONS = 3;
 	
 	private int clearDataItemSelected = 0;
+	private boolean lessonIsInMyLessons = false;
 	
 	// boolean to determine if the back button on the Action Bar should be used
 	protected boolean USE_ACTION_BAR_BACK_BUTTON = true;
 	
+	// booleans to determine if the activity should have the options menu for:
+	//   exporting phrases to text file
+	protected boolean USE_OPTIONS_MENU_EXPORT = false;
+	//   adding the lesson to 'My Lessons'
+	protected boolean USE_OPTIONS_MENU_ADD = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTitle(title);
 		if (USE_ACTION_BAR_BACK_BUTTON) {
 			getActionBar().setHomeButtonEnabled(true);
 			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+		if (USE_OPTIONS_MENU_ADD) {
+			ApplicationState applicationState = (ApplicationState)getApplication();
+			lessonIsInMyLessons = applicationState.lessonIsInMyLessons(getLessonName());
 		}
 	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(Menu.NONE, ITEM_PREFERENCES, 0, getString(R.string.preferences)).setIcon(android.R.drawable.ic_menu_preferences);
-		menu.add(Menu.NONE, ITEM_CLEAR_DATA, 0, getString(R.string.menu_clear)).setIcon(android.R.drawable.ic_menu_delete);
+		menu.add(Menu.NONE, ITEM_PREFERENCES, 0, getString(R.string.menu_preferences)).setIcon(android.R.drawable.ic_menu_preferences);
+		menu.add(Menu.NONE, ITEM_CLEAR_DATA, 0, getString(R.string.menu_clear_data)).setIcon(android.R.drawable.ic_menu_delete);
+		if (USE_OPTIONS_MENU_EXPORT) {
+			menu.add(Menu.NONE, ITEM_EXPORT_PHRASES, 0, getString(R.string.menu_export_phrases)).setIcon(android.R.drawable.ic_menu_manage);
+		}
+		if (USE_OPTIONS_MENU_ADD) {
+			String menuTitle;
+			if (!lessonIsInMyLessons) {
+				menuTitle = getString(R.string.menu_add_to_my_lessons);
+			} else {
+				menuTitle = getString(R.string.menu_remove_from_my_lessons);
+			}
+			menu.add(Menu.NONE, ITEM_ADD_TO_MY_LESSONS, 0, menuTitle).setIcon(android.R.drawable.ic_menu_add);
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -51,16 +84,44 @@ public class ClapActivity extends Activity {
 				startActivity(new Intent(this, ClapPreferenceActivity.class));
 				return true;
 			case ITEM_CLEAR_DATA:
-				// TODO: need to find a better way to do this, right now
-				// if this is not done in the main menu the list of items
-				// in the current and previous activities are not cleared
 				clearData();
 				return true;
+			case ITEM_EXPORT_PHRASES:
+				if (USE_OPTIONS_MENU_EXPORT) {
+					// This option is only in:
+					//   PlayActivity
+					//   StudyActivity
+					//   LessonActivity
+					exportPhrases();
+					return true;
+				} else {
+					return false;
+				}
+			case ITEM_ADD_TO_MY_LESSONS:
+				if (USE_OPTIONS_MENU_ADD) {
+					// This option is only in:
+					//   PlayActivity
+					//   StudyActivity
+					//   LessonActivity
+					if (!lessonIsInMyLessons) {
+						addToMyLessons();
+						lessonIsInMyLessons = true;
+						item.setTitle(R.string.menu_remove_from_my_lessons);
+					} else {
+						removeFromMyLessons();
+						lessonIsInMyLessons = false;
+						item.setTitle(R.string.menu_add_to_my_lessons);
+					}
+					return true;
+				} else {
+					return false;
+				}
 		}
 		return false;
 	}
 
 	private void clearData() {
+		//AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 		dialogBuilder.setTitle("Clear Data");
 		dialogBuilder.setSingleChoiceItems(R.array.dialog_clear_items, 0, new dialogItemClick());
@@ -68,13 +129,91 @@ public class ClapActivity extends Activity {
 		dialogBuilder.setNegativeButton(R.string.dialog_cancel, new cancelOnClick());
 		
 		AlertDialog clearDataDialog = dialogBuilder.create();
+		clearDataDialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.default_background));
 		clearDataDialog.show();
 	}
 	
+	private void exportPhrases() {
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		dialogBuilder.setTitle("Export Phrases");
+		String lessonName = getLessonName();
+		String fileName = getFileName(lessonName);
+		dialogBuilder.setMessage("The phrases for \'" + lessonName + "\' will be exported to file: " + fileName);
+		dialogBuilder.setPositiveButton(R.string.dialog_export, new exportPhrasesOnClick(lessonName, fileName));
+		dialogBuilder.setNegativeButton(R.string.dialog_cancel, new cancelOnClick());
+		
+		AlertDialog exportPhrasesDialog = dialogBuilder.create();
+		exportPhrasesDialog.show();
+	}
+
+	private void addToMyLessons() {
+		String lessonName = getLessonName();
+		ApplicationState applicationState = (ApplicationState)getApplication();
+		applicationState.addLessonToMyLessons(lessonName);
+	}
+
+	private void removeFromMyLessons() {
+		String lessonName = getLessonName();
+		ApplicationState applicationState = (ApplicationState)getApplication();
+		applicationState.removeLessonFromMyLessons(lessonName);
+	}
+
+	private String getLessonName() {
+		String lessonName = (String)this.getTitle();
+		if (lessonName.contains(":")) {
+			// In the PlayActivity when audio is playing or paused the title will be
+			// "Playing: LessonName" or "Paused: LessonName" - we just want LessonName
+			lessonName = lessonName.substring(lessonName.indexOf(":") + 2);
+		}
+		return lessonName;
+	}
+
+	private String getFileName(String lessonName) {
+		ApplicationState appState = (ApplicationState)getApplication();
+		return appState.getAppDirectory() + "/" + lessonName.split(" ")[0] + "/"
+				+ lessonName.replace(' ', '_') + ".txt";
+	}
+
 	private class dialogItemClick implements OnClickListener {
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			clearDataItemSelected = which;
+		}
+	}
+
+	private class exportPhrasesOnClick implements OnClickListener {
+		private String fileName;
+		private String lessonName;
+		
+		public exportPhrasesOnClick(String lName, String fName) {
+			fileName = fName;
+			lessonName = lName;
+		}
+		
+		@Override
+		public void onClick(final DialogInterface dialog, int which) {
+			Thread thread = new Thread(new Runnable() {
+				public void run() {
+					try {
+						ApplicationState appState = (ApplicationState)getApplication();
+						ArrayList<Phrase> phrases = appState.getPhrases(lessonName);
+						FileOutputStream fileOutput = new FileOutputStream(new File(fileName));
+						for (Phrase p : phrases) {
+							String line = p.getPhraseText() + " : " + p.getTranslatedText() + "\n";
+							fileOutput.write(line.getBytes());
+						}
+						fileOutput.close();
+					} catch (final Exception e) {
+						dialog.dismiss();
+						runOnUiThread(new Runnable() {
+							public void run() {
+								showErrorMessage(e, false);
+							}
+						});
+					}
+				}
+			});
+			thread.start();
 		}
 	}
 
@@ -153,6 +292,28 @@ public class ClapActivity extends Activity {
 		@Override
 		protected void onPostExecute(Void param) {
 			progressDialog.dismiss();
+			
+			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+			dialogBuilder.setTitle("Restart Applause");
+			dialogBuilder.setMessage("To See The Changes Immediately Applause Must Be Restarted");
+			dialogBuilder.setPositiveButton(getString(R.string.ok), new onRestartOkClick(context));
+			dialogBuilder.setNeutralButton(getString(R.string.dialog_cancel), null);
+			
+			AlertDialog alertDialog = dialogBuilder.create();
+			alertDialog.show();
+		}
+		
+		private class onRestartOkClick implements OnClickListener {
+			private Context context;
+			
+			public onRestartOkClick(Context c) {
+				context = c;
+			}
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				startActivity(new Intent(context, SplashActivity.class));
+			}
 		}
 	}
 

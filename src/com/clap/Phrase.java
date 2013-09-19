@@ -51,6 +51,11 @@ public class Phrase {
 		return audioLocation;
 	}
 
+	public boolean audioFileExists() {
+		File audioFile = new File(audioLocation);
+		return audioFile.exists();
+	}
+
 	public void downloadAudio(Context c) throws IOException {
 		File audioFile = new File(audioLocation);
 		if (!audioFile.exists()) {

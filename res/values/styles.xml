@@ -15,8 +15,13 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:windowBackground">@color/default_background</item>
     </style>
 
+    <style name="DefaultDialogStyle" parent="@android:style/Theme.Dialog" >
+        <item name="android:background">@color/default_dialog_background</item>
+    </style>
+    
     <style name="DefaultPreferenceStyle">
         <item name="android:windowBackground">@color/default_background</item>
     </style>
@@ -43,6 +48,12 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="DialogButtonStyle" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textColor">@color/default_text_color</item>
+        <item name="android:layout_height">fill_parent</item>
     </style>
 
     <style name="DefaultButtonStyle" parent="@android:style/Widget.Button">

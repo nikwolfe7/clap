@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -47,9 +49,21 @@
             android:launchMode="singleTask"
             android:theme="@style/DefaultPreferenceStyle">
         </activity>
-        <activity android:name="com.clap.CountriesListActivity"
+        <activity android:name="com.clap.FindLanguagesActivity"
             android:launchMode="singleTask"
             android:parentActivityName="MainMenuActivity" >
+        </activity>
+        <activity android:name="com.clap.MyLessonsActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName="MainMenuActivity" >
+        </activity>
+        <activity android:name="com.clap.CountriesListActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName="FindLanguagesActivity" >
+        </activity>
+        <activity android:name="com.clap.FindByLocationActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName="FindLanguagesActivity" >
         </activity>
         <activity android:name="com.clap.LanguageListActivity"
             android:launchMode="singleTask"

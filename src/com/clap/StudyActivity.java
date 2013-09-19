@@ -13,6 +13,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 public class StudyActivity extends ClapListActivity {
 
@@ -20,12 +21,14 @@ public class StudyActivity extends ClapListActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		USE_OPTIONS_MENU_EXPORT = true;
+		USE_OPTIONS_MENU_ADD = true;
+		
 		Intent i = getIntent();
 		Bundle b = i.getExtras();
 
 		lesson = b.getString(EXTRA_LESSON_NAME);
-		title = "Phrase List for " + lesson;
-
+		title = lesson;
 		super.onCreate(savedInstanceState);
 
 		new LoadPhraseListTask(this).execute();
@@ -37,6 +40,7 @@ public class StudyActivity extends ClapListActivity {
 		public LoadPhraseListTask(Context c) {
 			super(c);
 			emptyListMessage = "Phrases for " + lesson + " are currently unavailable!";
+			loadMessage = "Loading phrases for " + lesson + "...";
 		}
 
 		@Override
@@ -97,20 +101,46 @@ public class StudyActivity extends ClapListActivity {
 			}
 
 			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				MediaPlayer mediaPlayer = new MediaPlayer();
-				mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-				try {
-					// Try to download then play the Audio File
-					phrase.downloadAudio(context);
-					mediaPlayer.setDataSource(phrase.getAudioLocation());
-					mediaPlayer.prepare();
-					mediaPlayer.start();
-				} catch (Exception e) {
-					// Before displaying the error, dismiss the current dialog
-					dialog.dismiss();
-					showErrorMessage(e, false);
-				}
+			public void onClick(final DialogInterface dialog, int which) {
+				// Create a new thread, that doesn't run on the UI thread
+				// Download Audio cannot be on the UI thread
+				Thread thread = new Thread(new Runnable() {
+					public void run() {
+						MediaPlayer mediaPlayer = new MediaPlayer();
+						mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+						try {
+							if (!phrase.audioFileExists()) {
+								runOnUiThread(new Runnable() {
+									public void run() {
+										Toast.makeText(context, "Downloading Audio File",
+												Toast.LENGTH_SHORT).show();
+									}
+								});
+								phrase.downloadAudio(context);
+								runOnUiThread(new Runnable() {
+									public void run() {
+										Toast.makeText(context,
+												"\'" + phrase.getPhraseText()+ "\' Audio Downloaded",
+												Toast.LENGTH_SHORT).show();
+									}
+								});
+							}
+							mediaPlayer.setDataSource(phrase.getAudioLocation());
+							mediaPlayer.prepare();
+							mediaPlayer.start();
+						} catch (final Exception e) {
+							// Before displaying the error, dismiss the current dialog
+							dialog.dismiss();
+							// Run showErrorMessage on the UI thread, it creates a dialog box
+							runOnUiThread(new Runnable() {
+								public void run() {
+									showErrorMessage(e, false);
+								}
+							});
+						}
+					}
+				});
+				thread.start();
 			}
 		}
 	}

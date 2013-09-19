@@ -5,7 +5,8 @@
     android:layout_height="match_parent" >
 
 	<LinearLayout 
-	    style="@style/DefaultLinearLayoutStyle">
+	    style="@style/DefaultLinearLayoutStyle" >
+
 	    
 	    <TextView
 	        style="@style/DefaultTextViewStyle"
@@ -48,18 +49,17 @@
 		<LinearLayout
 		    android:id="@+id/layoutButtons"
 		    android:background="@drawable/rounded_border"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"
-		    android:layout_marginTop="20dp"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
 		    android:gravity="center|bottom"
-		    android:orientation="horizontal"
-		    android:weightSum="7" >
+		    android:orientation="horizontal" >
 		    
 		    <Button
 		        android:id="@+id/btnPrevious"
 		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="10dp"
+		        android:layout_height="fill_parent"
+		        android:layout_marginTop="5dp"
+		        android:layout_marginBottom="5dp"
 		        android:layout_marginRight="10dp"
 		        android:background="@drawable/previous_button"
 		        android:onClick="click" />
@@ -67,8 +67,9 @@
 		    <Button
 		        android:id="@+id/btnPlay"
 		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="10dp"
+		        android:layout_height="fill_parent"
+		        android:layout_marginTop="5dp"
+		        android:layout_marginBottom="5dp"
 		        android:layout_marginLeft="10dp"
 		        android:layout_marginRight="10dp"
 		        android:background="@drawable/play_button"
@@ -77,8 +78,9 @@
 		    <Button
 		        android:id="@+id/btnNext"
 		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="10dp"
+		        android:layout_height="fill_parent"
+		        android:layout_marginTop="5dp"
+		        android:layout_marginBottom="5dp"
 		        android:layout_marginLeft="10dp"
 		        android:background="@drawable/next_button"
 		        android:onClick="click" />

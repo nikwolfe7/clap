@@ -2,12 +2,15 @@
 <resources>
 
     <string name="app_name">Applause</string>
-    <string name="preferences">Preferences</string>
     <string name="clap">The Celebrate Language Audio Project</string>
     <string name="clap2">CLAP</string>
     <string name="website">www.celebrate-language.com</string>
-    <string name="btnCountry">Country</string>
-    <string name="btnReset">Reset</string><string name="btnHelp">Help</string>
+    <string name="btnFindByCountry">By Country</string>
+    <string name="btnFindByLocation">By Location</string>
+    <string name="btnSearch">Search</string>
+    <string name="btnFindLanguages">Find Languages</string>
+    <string name="btnMyLessons">My Lessons</string>
+    <string name="btnHelp">Help</string>
     <string name="btnAbout">About</string>
     <string name="ok">OK</string>
     <string name="splash_img_desc">Africa Image</string>
@@ -20,21 +23,27 @@
     <string name="btnNext">Next</string>
    	<string name="btnBack">Back</string>
    	<string name="btnPlay">Play</string>
+   	<string name="btnYes">Yes</string>
+   	<string name="btnNo">No</string>
     <string name="about_full">Developed by Peace Corps Ghana in collaboration with Coders4Africa and Mobile Web Ghana</string>
     <string name="play">Play</string>
     <string name="close">Close</string>
-    <string name="help">HELP!!!!!!!!!!</string>
-    <string name="pref_location">Location</string>
+    <string name="help">Help Is On The Way</string>
     <string name="about_name">Applause\nApplication for Language Audio Users</string>
-    <string name="menu_clear">Clear Data</string>
+    <string name="menu_preferences">Preferences</string>
+    <string name="menu_clear_data">Clear Data</string>
+    <string name="menu_export_phrases">Export Phrases</string>
+    <string name="menu_add_to_my_lessons">Add To My Lessons</string>
+    <string name="menu_remove_from_my_lessons">Remove From My Lessons</string>
     <string name="dialog_clear">Clear</string>
+    <string name="dialog_export">Export</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="pref_data_usage">Data Usage</string>
     <string name="pref_text_size">Text Size</string>
-    <string name="pref_text_size_summary">Medium</string>
     <string name="pref_text_size_default">medium</string>
-    <string name="pref_location_summary">Allow Applause to use your location</string>
-    <string name="pref_data_usage_summary">Download data using Any Connection, WiFi Only or None</string>
+    <string name="pref_location">Use Location</string>
+    <string name="pref_location_enabled">Applause Will Use Your Location</string>
+    <string name="pref_location_disabled">Applause Will Not Use Your Location</string>
     <string name="pref_data_usage_default">any</string>
     <string name="press_back_again">Please press BACK again to exit</string>
     <string name="english">English</string>

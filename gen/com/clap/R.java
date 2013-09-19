@@ -16,8 +16,9 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int color=0x7f060002;
+        public static final int color=0x7f060003;
         public static final int default_background=0x7f060000;
+        public static final int default_dialog_background=0x7f060002;
         public static final int default_text_color=0x7f060001;
     }
     public static final class dimen {
@@ -58,78 +59,97 @@ public final class R {
         public static final int trannyplay=0x7f020018;
     }
     public static final class id {
-        public static final int btnNext=0x7f0a0013;
-        public static final int btnPlay=0x7f0a0012;
-        public static final int btnPrevious=0x7f0a0011;
-        public static final int btn_memorize=0x7f0a0006;
-        public static final int btn_play_lesson=0x7f0a0004;
-        public static final int btn_study_phrases=0x7f0a0005;
-        public static final int button1=0x7f0a000b;
-        public static final int button2=0x7f0a000c;
-        public static final int buttonAbout=0x7f0a000a;
-        public static final int buttonCountry=0x7f0a0008;
-        public static final int buttonHelp=0x7f0a0009;
-        public static final int item_id=0x7f0a0002;
-        public static final int language=0x7f0a000e;
-        public static final int layoutButtons=0x7f0a0010;
-        public static final int lesson_title=0x7f0a0003;
-        public static final int list=0x7f0a0007;
+        public static final int btnNext=0x7f0a001a;
+        public static final int btnPlay=0x7f0a0019;
+        public static final int btnPrevious=0x7f0a0018;
+        public static final int btn_memorize=0x7f0a000c;
+        public static final int btn_play_lesson=0x7f0a000a;
+        public static final int btn_study_phrases=0x7f0a000b;
+        public static final int button1=0x7f0a0012;
+        public static final int button2=0x7f0a0013;
+        public static final int buttonAbout=0x7f0a0011;
+        public static final int buttonDialog1=0x7f0a0003;
+        public static final int buttonDialog2=0x7f0a0004;
+        public static final int buttonFindByCountry=0x7f0a0005;
+        public static final int buttonFindByLocation=0x7f0a0006;
+        public static final int buttonFindLanguages=0x7f0a000e;
+        public static final int buttonHelp=0x7f0a0010;
+        public static final int buttonMyLessons=0x7f0a000f;
+        public static final int buttonSearch=0x7f0a0007;
+        public static final int dialogText=0x7f0a0002;
+        public static final int item_id=0x7f0a0008;
+        public static final int language=0x7f0a0015;
+        public static final int layoutButtons=0x7f0a0017;
+        public static final int lesson_title=0x7f0a0009;
+        public static final int list=0x7f0a000d;
         public static final int main_icon=0x7f0a0000;
         public static final int pc_icon=0x7f0a0001;
-        public static final int phraseText=0x7f0a000d;
-        public static final int translatedText=0x7f0a000f;
+        public static final int phraseText=0x7f0a0014;
+        public static final int translatedText=0x7f0a0016;
     }
     public static final class layout {
         public static final int about_activity=0x7f030000;
-        public static final int help_activity=0x7f030001;
-        public static final int item=0x7f030002;
-        public static final int lesson_activity=0x7f030003;
-        public static final int list=0x7f030004;
-        public static final int main_menu=0x7f030005;
-        public static final int phrase_activity=0x7f030006;
-        public static final int phrase_dialog=0x7f030007;
-        public static final int play_activity=0x7f030008;
-        public static final int splash_screen=0x7f030009;
+        public static final int custom_dialog=0x7f030001;
+        public static final int find_languages=0x7f030002;
+        public static final int help_activity=0x7f030003;
+        public static final int item=0x7f030004;
+        public static final int lesson_activity=0x7f030005;
+        public static final int list=0x7f030006;
+        public static final int main_menu=0x7f030007;
+        public static final int phrase_activity=0x7f030008;
+        public static final int phrase_dialog=0x7f030009;
+        public static final int play_activity=0x7f03000a;
+        public static final int splash_screen=0x7f03000b;
     }
     public static final class string {
-        public static final int about_full=0x7f080014;
-        public static final int about_name=0x7f080019;
+        public static final int about_full=0x7f080018;
+        public static final int about_name=0x7f08001c;
         public static final int app_name=0x7f080000;
-        public static final int btnAbout=0x7f080008;
-        public static final int btnBack=0x7f080012;
-        public static final int btnCountry=0x7f080005;
-        public static final int btnHelp=0x7f080007;
-        public static final int btnMemorize=0x7f08000e;
-        public static final int btnNext=0x7f080011;
-        public static final int btnPlay=0x7f080013;
-        public static final int btnPlayLesson=0x7f08000c;
-        public static final int btnPrevious=0x7f080010;
-        public static final int btnQuit=0x7f08000f;
-        public static final int btnReset=0x7f080006;
-        public static final int btnStudyPhrases=0x7f08000d;
-        public static final int clap=0x7f080002;
-        public static final int clap2=0x7f080003;
-        public static final int close=0x7f080016;
-        public static final int dialog_cancel=0x7f08001c;
-        public static final int dialog_clear=0x7f08001b;
-        public static final int english=0x7f080025;
-        public static final int help=0x7f080017;
-        public static final int menu_clear=0x7f08001a;
-        public static final int ok=0x7f080009;
-        public static final int pc_logo=0x7f08000b;
-        public static final int play=0x7f080015;
-        public static final int pref_data_usage=0x7f08001d;
-        public static final int pref_data_usage_default=0x7f080023;
-        public static final int pref_data_usage_summary=0x7f080020;
-        public static final int pref_location=0x7f080018;
-        public static final int pref_location_summary=0x7f08001f;
-        public static final int pref_text_size=0x7f08001e;
-        public static final int pref_text_size_default=0x7f080022;
-        public static final int pref_text_size_summary=0x7f080021;
-        public static final int preferences=0x7f080001;
-        public static final int press_back_again=0x7f080024;
-        public static final int splash_img_desc=0x7f08000a;
-        public static final int website=0x7f080004;
+        public static final int btnAbout=0x7f08000a;
+        public static final int btnBack=0x7f080014;
+        public static final int btnFindByCountry=0x7f080004;
+        public static final int btnFindByLocation=0x7f080005;
+        public static final int btnFindLanguages=0x7f080007;
+        public static final int btnHelp=0x7f080009;
+        public static final int btnMemorize=0x7f080010;
+        public static final int btnMyLessons=0x7f080008;
+        public static final int btnNext=0x7f080013;
+        public static final int btnNo=0x7f080017;
+        public static final int btnPlay=0x7f080015;
+        public static final int btnPlayLesson=0x7f08000e;
+        public static final int btnPrevious=0x7f080012;
+        public static final int btnQuit=0x7f080011;
+        public static final int btnSearch=0x7f080006;
+        public static final int btnStudyPhrases=0x7f08000f;
+        public static final int btnYes=0x7f080016;
+        public static final int clap=0x7f080001;
+        public static final int clap2=0x7f080002;
+        public static final int close=0x7f08001a;
+        public static final int dialog_cancel=0x7f080024;
+        public static final int dialog_clear=0x7f080022;
+        public static final int dialog_export=0x7f080023;
+        public static final int english=0x7f08002f;
+        public static final int help=0x7f08001b;
+        public static final int menu_add_to_my_lessons=0x7f080020;
+        public static final int menu_clear_data=0x7f08001e;
+        public static final int menu_export_phrases=0x7f08001f;
+        public static final int menu_preferences=0x7f08001d;
+        public static final int menu_remove_from_my_lessons=0x7f080021;
+        public static final int ok=0x7f08000b;
+        public static final int pc_logo=0x7f08000d;
+        public static final int play=0x7f080019;
+        public static final int pref_data_usage=0x7f080025;
+        public static final int pref_data_usage_default=0x7f08002d;
+        public static final int pref_data_usage_summary=0x7f08002c;
+        public static final int pref_location=0x7f080029;
+        public static final int pref_location_disabled=0x7f08002b;
+        public static final int pref_location_enabled=0x7f08002a;
+        public static final int pref_text_size=0x7f080026;
+        public static final int pref_text_size_default=0x7f080028;
+        public static final int pref_text_size_summary=0x7f080027;
+        public static final int press_back_again=0x7f08002e;
+        public static final int splash_img_desc=0x7f08000c;
+        public static final int website=0x7f080003;
     }
     public static final class style {
         /** 
@@ -155,15 +175,16 @@ public final class R {
          */
         public static final int AppBaseTheme=0x7f090000;
         /**  Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f090001;
-        public static final int DefaultAppTheme=0x7f090007;
-        public static final int DefaultButtonStyle=0x7f090006;
-        public static final int DefaultLinearLayoutStyle=0x7f090005;
-        public static final int DefaultListViewStyle=0x7f090003;
-        public static final int DefaultPreferenceStyle=0x7f090002;
-        public static final int DefaultTextViewStyle=0x7f090004;
+        public static final int DefaultAppTheme=0x7f090009;
+        public static final int DefaultButtonStyle=0x7f090008;
+        public static final int DefaultDialogStyle=0x7f090002;
+        public static final int DefaultLinearLayoutStyle=0x7f090006;
+        public static final int DefaultListViewStyle=0x7f090004;
+        public static final int DefaultPreferenceStyle=0x7f090003;
+        public static final int DefaultTextViewStyle=0x7f090005;
+        public static final int DialogButtonStyle=0x7f090007;
     }
     public static final class xml {
         public static final int preferences=0x7f040000;
